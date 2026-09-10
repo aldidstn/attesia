@@ -1,0 +1,119 @@
+{
+  "description": "Fixed expected bytes and digests; never regenerate during the checker run.",
+  "artifacts": [
+    {
+      "name": "sha256-abc",
+      "utf8": "abc",
+      "sha256": "0xba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    },
+    {
+      "name": "example-artifact",
+      "file": "artifact.txt",
+      "sha256": "0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889"
+    }
+  ],
+  "keccakKnownAnswer": {
+    "utf8": "abc",
+    "keccak256": "0x4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45"
+  },
+  "metadata": [
+    {
+      "name": "canonical-key-order",
+      "value": {
+        "z": 1,
+        "a": "Attestia"
+      },
+      "canonical": "{\"a\":\"Attestia\",\"z\":1}",
+      "keccak256": "0x1f2926bf41d133133126d6712fa0a50f145b947585ebd23a73814220e84b6c42"
+    },
+    {
+      "name": "rfc8785-number-rendering",
+      "value": {
+        "numbers": [
+          333333333.3333333,
+          1e+30,
+          4.5,
+          0.002,
+          1e-27
+        ],
+        "literals": [
+          null,
+          true,
+          false
+        ]
+      },
+      "canonical": "{\"literals\":[null,true,false],\"numbers\":[333333333.3333333,1e+30,4.5,0.002,1e-27]}",
+      "keccak256": "0x1883eb246ca77324cd7a6e164c38ec243c90e5b494e243252d319ddfec3af9f8"
+    },
+    {
+      "name": "utf16-property-order",
+      "value": {
+        "": "private-use",
+        "😀": "emoji",
+        "a": "ASCII"
+      },
+      "canonical": "{\"a\":\"ASCII\",\"😀\":\"emoji\",\"\":\"private-use\"}",
+      "keccak256": "0x51ad46ceeab8518dbb3bbaec89711be8b856c748529ba378eb37123aa63e8dbc"
+    },
+    {
+      "name": "contribution",
+      "file": "valid/contribution.json",
+      "canonical": "{\"artifact\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"collaborators\":[],\"createdAt\":\"2026-09-05T00:00:00Z\",\"creatorProfileId\":\"0x1111111111111111111111111111111111111111111111111111111111111111\",\"provenance\":{\"aiAssistance\":\"assistive\",\"disclosureVersion\":1,\"humanInput\":\"Contributor authored the change, reviewed generated suggestions, and verified the result.\",\"schema\":\"attestia.provenance.v1\",\"sources\":[{\"accessedAt\":\"2026-09-05T00:00:00Z\",\"digest\":null,\"digestAlgorithm\":null,\"title\":\"Example merged pull request\",\"url\":\"https://github.com/example/project/pull/42\"}],\"tools\":[\"Example coding assistant; details voluntarily disclosed\"]},\"revision\":{\"notes\":\"Initial version.\",\"parentId\":null},\"schema\":\"attestia.contribution.v1\",\"summary\":\"Synthetic merged-PR example used to review the submission flow.\",\"title\":\"Improve contribution verification documentation\",\"type\":\"pull_request\",\"visibility\":\"public\",\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0xf70657ef5e64695e7cea0de649c3890840bf5eb626cf4284ef5ec1586ec7e9f8"
+    },
+    {
+      "name": "rubric",
+      "file": "valid/rubric.json",
+      "canonical": "{\"criteria\":[{\"description\":\"A reviewer can repeat the documented verification steps.\",\"id\":\"reproducible\",\"passCondition\":\"Every documented command succeeds against the stated revision.\",\"title\":\"Reproducible verification\"}],\"description\":\"Synthetic draft rubric. No design partner has validated this rubric.\",\"id\":\"0x6666666666666666666666666666666666666666666666666666666666666666\",\"previousVersionDigest\":null,\"publishedAt\":\"2026-09-05T00:00:00Z\",\"schema\":\"attestia.rubric.v1\",\"title\":\"Example merged-PR review\",\"version\":1,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0xd488cd0577de036af34017c251a7831b20ffe08fa317523704353d81bec77c96"
+    },
+    {
+      "name": "claim-quality",
+      "file": "valid/claim-quality.json",
+      "canonical": "{\"assessment\":{\"criterionResults\":[{\"criterionId\":\"reproducible\",\"notes\":\"All documented steps were reproduced.\",\"result\":1}]},\"attester\":\"0x4444444444444444444444444444444444444444\",\"claimType\":\"QUALITY\",\"conflictOfInterest\":{\"disclosure\":null,\"hasConflict\":false},\"contributionId\":\"0x3333333333333333333333333333333333333333333333333333333333333333\",\"createdAt\":\"2026-09-05T00:00:00Z\",\"evidence\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"reason\":null,\"result\":1,\"rubric\":{\"digest\":\"0xd488cd0577de036af34017c251a7831b20ffe08fa317523704353d81bec77c96\",\"id\":\"0x6666666666666666666666666666666666666666666666666666666666666666\",\"uri\":\"https://example.org/rubrics/merged-pr-v1.json\",\"version\":1},\"schema\":\"attestia.claim.quality.v1\",\"supersedes\":null,\"validUntil\":0,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0x54cec909b4fc3f59553e671120abf212b54c4d212d7ca372c677a0707ce0c519"
+    },
+    {
+      "name": "profile",
+      "file": "valid/profile.json",
+      "canonical": "{\"agentLink\":null,\"bio\":\"Synthetic identity for local review.\",\"communities\":[\"Example workspace\"],\"displayName\":\"Demo Contributor\",\"role\":\"Contributor\",\"schema\":\"attestia.profile.v1\",\"skills\":[\"Solidity\",\"Documentation\"],\"type\":\"human\"}",
+      "keccak256": "0x003563b1195183c1d19c268eb7671096462715fb6fe1fcdafd1552b9581d2d86"
+    },
+    {
+      "name": "provenance",
+      "file": "valid/provenance.json",
+      "canonical": "{\"aiAssistance\":\"assistive\",\"disclosureVersion\":1,\"humanInput\":\"Contributor authored the change, reviewed generated suggestions, and verified the result.\",\"schema\":\"attestia.provenance.v1\",\"sources\":[{\"accessedAt\":\"2026-09-05T00:00:00Z\",\"digest\":null,\"digestAlgorithm\":null,\"title\":\"Example merged pull request\",\"url\":\"https://github.com/example/project/pull/42\"}],\"tools\":[\"Example coding assistant; details voluntarily disclosed\"]}",
+      "keccak256": "0x0168ecc110b6031b137df7f1fdd6e9543634ddf168a2aabfc6cf30771f685ffc"
+    },
+    {
+      "name": "declared-policy",
+      "file": "valid/declared-policy.json",
+      "canonical": "{\"agent\":{\"agentId\":\"42\",\"chainId\":10143,\"registry\":\"0x8888888888888888888888888888888888888888\"},\"allowedActions\":[\"read:public-sources\"],\"approvalRequired\":true,\"blockedActions\":[\"transfer:funds\"],\"capabilities\":[\"Summarize public source material\"],\"emergencyPauseContact\":\"0x4444444444444444444444444444444444444444\",\"enforcement\":\"declared\",\"expiresAt\":\"2026-12-31T23:59:59Z\",\"limits\":{\"approvalThresholdBaseUnits\":\"0\",\"asset\":\"native\",\"periodSeconds\":86400,\"spendingCeilingBaseUnits\":\"0\"},\"previousVersionDigest\":null,\"schema\":\"attestia.declared-policy.v1\",\"version\":1}",
+      "keccak256": "0xc75d083ed459347f1b5f530b6f0e0e3cbf0302df368a04317153a4f88c8eeca7"
+    },
+    {
+      "name": "claim-completion",
+      "file": "valid/claim-completion.json",
+      "canonical": "{\"assessment\":{\"deliverable\":\"The pull request contains the documented change.\",\"observedAt\":\"2026-09-05T00:00:00Z\"},\"attester\":\"0x4444444444444444444444444444444444444444\",\"claimType\":\"COMPLETION\",\"conflictOfInterest\":{\"disclosure\":null,\"hasConflict\":false},\"contributionId\":\"0x3333333333333333333333333333333333333333333333333333333333333333\",\"createdAt\":\"2026-09-05T00:00:00Z\",\"evidence\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"reason\":null,\"result\":1,\"rubric\":null,\"schema\":\"attestia.claim.completion.v1\",\"supersedes\":null,\"validUntil\":0,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0xb43ab68ef1d2aead3f3b0203a47bce7635b61f13d6cd273da8f9c371c172a9e4"
+    },
+    {
+      "name": "claim-authorship",
+      "file": "valid/claim-authorship.json",
+      "canonical": "{\"assessment\":{\"basis\":\"Reviewed commit history and the contributor disclosure.\",\"contributionRole\":\"Code author\"},\"attester\":\"0x4444444444444444444444444444444444444444\",\"claimType\":\"AUTHORSHIP\",\"conflictOfInterest\":{\"disclosure\":null,\"hasConflict\":false},\"contributionId\":\"0x3333333333333333333333333333333333333333333333333333333333333333\",\"createdAt\":\"2026-09-05T00:00:00Z\",\"evidence\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"reason\":null,\"result\":1,\"rubric\":null,\"schema\":\"attestia.claim.authorship.v1\",\"supersedes\":null,\"validUntil\":0,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0xc83ad358996bb10a2683126dbb632f7cf52e0c3c93efa188bad78009e061e349"
+    },
+    {
+      "name": "claim-usage",
+      "file": "valid/claim-usage.json",
+      "canonical": "{\"assessment\":{\"action\":\"merged\",\"observedAt\":\"2026-09-05T00:00:00Z\",\"referenceUrl\":\"https://github.com/example/project/pull/42\"},\"attester\":\"0x4444444444444444444444444444444444444444\",\"claimType\":\"USAGE\",\"conflictOfInterest\":{\"disclosure\":null,\"hasConflict\":false},\"contributionId\":\"0x3333333333333333333333333333333333333333333333333333333333333333\",\"createdAt\":\"2026-09-05T00:00:00Z\",\"evidence\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"reason\":null,\"result\":1,\"rubric\":null,\"schema\":\"attestia.claim.usage.v1\",\"supersedes\":null,\"validUntil\":0,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0x20fb319a898fa910d26ceaab58728bd76d373e09ea12819ffce54006ad995cdb"
+    },
+    {
+      "name": "claim-provenance",
+      "file": "valid/claim-provenance.json",
+      "canonical": "{\"assessment\":{\"notes\":\"The disclosure is consistent with the supplied review evidence.\",\"reviewedAspects\":[\"human-input\",\"sources\"]},\"attester\":\"0x4444444444444444444444444444444444444444\",\"claimType\":\"PROVENANCE\",\"conflictOfInterest\":{\"disclosure\":null,\"hasConflict\":false},\"contributionId\":\"0x3333333333333333333333333333333333333333333333333333333333333333\",\"createdAt\":\"2026-09-05T00:00:00Z\",\"evidence\":{\"byteLength\":35,\"fileName\":\"merged-pr.txt\",\"mediaType\":\"text/plain\",\"sha256\":\"0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889\",\"uri\":\"https://example.org/evidence/merged-pr.txt\"},\"reason\":null,\"result\":1,\"rubric\":null,\"schema\":\"attestia.claim.provenance.v1\",\"supersedes\":null,\"validUntil\":0,\"workspaceId\":\"0x2222222222222222222222222222222222222222222222222222222222222222\"}",
+      "keccak256": "0x97c4e1ae2858b272f8c584d21a1bd96c9f971a5f60eafbd46978c3c5f456ca5a"
+    }
+  ]
+}

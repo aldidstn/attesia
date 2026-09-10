@@ -1,0 +1,18 @@
+{
+  "schema": "attestia.rubric.v1",
+  "id": "0x6666666666666666666666666666666666666666666666666666666666666666",
+  "workspaceId": "0x2222222222222222222222222222222222222222222222222222222222222222",
+  "version": 1,
+  "title": "Example merged-PR review",
+  "description": "Synthetic draft rubric. No design partner has validated this rubric.",
+  "criteria": [
+    {
+      "id": "reproducible",
+      "title": "Reproducible verification",
+      "description": "A reviewer can repeat the documented verification steps.",
+      "passCondition": "Every documented command succeeds against the stated revision."
+    }
+  ],
+  "publishedAt": "2026-09-05T00:00:00Z",
+  "previousVersionDigest": null
+}

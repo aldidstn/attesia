@@ -1,0 +1,255 @@
+[
+  {
+    "name": "missing required title",
+    "base": "contribution.json",
+    "path": [
+      "title"
+    ],
+    "operation": "delete"
+  },
+  {
+    "name": "unknown metadata field",
+    "base": "contribution.json",
+    "path": [
+      "unreviewedField"
+    ],
+    "operation": "set",
+    "value": "not allowed"
+  },
+  {
+    "name": "unknown nested provenance field",
+    "base": "contribution.json",
+    "path": [
+      "provenance",
+      "privatePrompt"
+    ],
+    "operation": "set",
+    "value": "not allowed"
+  },
+  {
+    "name": "unsafe source URL",
+    "base": "contribution.json",
+    "path": [
+      "provenance",
+      "sources",
+      0,
+      "url"
+    ],
+    "operation": "set",
+    "value": "javascript:alert(1)"
+  },
+  {
+    "name": "source URL missing host",
+    "base": "contribution.json",
+    "path": [
+      "provenance",
+      "sources",
+      0,
+      "url"
+    ],
+    "operation": "set",
+    "value": "https://"
+  },
+  {
+    "name": "nonpublic artifact scheme",
+    "base": "contribution.json",
+    "path": [
+      "artifact",
+      "uri"
+    ],
+    "operation": "set",
+    "value": "file:///private/data.txt"
+  },
+  {
+    "name": "unsupported private v1 evidence",
+    "base": "contribution.json",
+    "path": [
+      "visibility"
+    ],
+    "operation": "set",
+    "value": "private"
+  },
+  {
+    "name": "malformed digest",
+    "base": "contribution.json",
+    "path": [
+      "artifact",
+      "sha256"
+    ],
+    "operation": "set",
+    "value": "0x1234"
+  },
+  {
+    "name": "invalid contribution type",
+    "base": "contribution.json",
+    "path": [
+      "type"
+    ],
+    "operation": "set",
+    "value": "tweet"
+  },
+  {
+    "name": "missing source access date",
+    "base": "contribution.json",
+    "path": [
+      "provenance",
+      "sources",
+      0,
+      "accessedAt"
+    ],
+    "operation": "delete"
+  },
+  {
+    "name": "timestamps must be UTC",
+    "base": "contribution.json",
+    "path": [
+      "createdAt"
+    ],
+    "operation": "set",
+    "value": "2026-09-05T07:00:00+07:00"
+  },
+  {
+    "name": "invalid calendar timestamp",
+    "base": "contribution.json",
+    "path": [
+      "createdAt"
+    ],
+    "operation": "set",
+    "value": "2026-02-30T00:00:00Z"
+  },
+  {
+    "name": "negative byte length",
+    "base": "contribution.json",
+    "path": [
+      "artifact",
+      "byteLength"
+    ],
+    "operation": "set",
+    "value": -1
+  },
+  {
+    "name": "unsupported neutral result",
+    "base": "claim-completion.json",
+    "path": [
+      "result"
+    ],
+    "operation": "set",
+    "value": 0
+  },
+  {
+    "name": "negative reason missing",
+    "base": "claim-negative-testnet.json",
+    "path": [
+      "reason"
+    ],
+    "operation": "set",
+    "value": null
+  },
+  {
+    "name": "quality rubric missing",
+    "base": "claim-quality.json",
+    "path": [
+      "rubric"
+    ],
+    "operation": "set",
+    "value": null
+  },
+  {
+    "name": "quality workspace missing",
+    "base": "claim-quality.json",
+    "path": [
+      "workspaceId"
+    ],
+    "operation": "set",
+    "value": null
+  },
+  {
+    "name": "claim discriminator mismatch",
+    "base": "claim-usage.json",
+    "path": [
+      "claimType"
+    ],
+    "operation": "set",
+    "value": "AUTHORSHIP"
+  },
+  {
+    "name": "conflict requires disclosure",
+    "base": "claim-completion.json",
+    "path": [
+      "conflictOfInterest"
+    ],
+    "operation": "set",
+    "value": {
+      "hasConflict": true,
+      "disclosure": null
+    }
+  },
+  {
+    "name": "missing agent identity",
+    "base": "agent-profile.json",
+    "path": [
+      "agentLink"
+    ],
+    "operation": "set",
+    "value": null
+  },
+  {
+    "name": "false enforcement claim",
+    "base": "declared-policy.json",
+    "path": [
+      "enforcement"
+    ],
+    "operation": "set",
+    "value": "enforced"
+  },
+  {
+    "name": "floating monetary value",
+    "base": "declared-policy.json",
+    "path": [
+      "limits",
+      "spendingCeilingBaseUnits"
+    ],
+    "operation": "set",
+    "value": "1.5"
+  },
+  {
+    "name": "rubric revision missing predecessor",
+    "base": "rubric.json",
+    "path": [
+      "version"
+    ],
+    "operation": "set",
+    "value": 2
+  },
+  {
+    "name": "wallet address malformed",
+    "base": "claim-completion.json",
+    "path": [
+      "attester"
+    ],
+    "operation": "set",
+    "value": "0x1234"
+  },
+  {
+    "name": "credentials forbidden in public artifact URI",
+    "base": "contribution.json",
+    "path": [
+      "artifact",
+      "uri"
+    ],
+    "operation": "set",
+    "value": "https://example-user:example-secret@attestia.example/artifact"
+  },
+  {
+    "name": "credentials forbidden in public source URI",
+    "base": "contribution.json",
+    "path": [
+      "provenance",
+      "sources",
+      0,
+      "url"
+    ],
+    "operation": "set",
+    "value": "https://example-user:example-secret@attestia.example/source"
+  }
+]

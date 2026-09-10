@@ -1,0 +1,40 @@
+{
+  "schema": "attestia.contribution.v1",
+  "title": "Improve contribution verification documentation",
+  "type": "pull_request",
+  "summary": "Synthetic merged-PR example used to review the submission flow.",
+  "creatorProfileId": "0x1111111111111111111111111111111111111111111111111111111111111111",
+  "workspaceId": "0x2222222222222222222222222222222222222222222222222222222222222222",
+  "visibility": "public",
+  "createdAt": "2026-09-05T00:00:00Z",
+  "artifact": {
+    "uri": "https://example.org/evidence/merged-pr.txt",
+    "sha256": "0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889",
+    "mediaType": "text/plain",
+    "fileName": "merged-pr.txt",
+    "byteLength": 35
+  },
+  "collaborators": [],
+  "provenance": {
+    "schema": "attestia.provenance.v1",
+    "aiAssistance": "assistive",
+    "humanInput": "Expanded disclosure: contributor also reviewed all AI-generated suggestions.",
+    "tools": [
+      "Example coding assistant; details voluntarily disclosed"
+    ],
+    "sources": [
+      {
+        "title": "Example merged pull request",
+        "url": "https://github.com/example/project/pull/42",
+        "digest": null,
+        "digestAlgorithm": null,
+        "accessedAt": "2026-09-05T00:00:00Z"
+      }
+    ],
+    "disclosureVersion": 1
+  },
+  "revision": {
+    "parentId": "0x3333333333333333333333333333333333333333333333333333333333333333",
+    "notes": "Clarify provenance; artifact bytes are unchanged."
+  }
+}

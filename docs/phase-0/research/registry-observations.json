@@ -1,0 +1,63 @@
+{
+  "purpose": "Dependency observations, not an Attestia deployment manifest",
+  "networks": [
+    {
+      "name": "Monad Testnet",
+      "chainId": 10143,
+      "rpc": "https://testnet-rpc.monad.xyz",
+      "identity": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+      "reputation": "0x8004B663056A597Dffe9eCcC1965A193B7388713",
+      "observedAt": "2026-09-05T10:10:03.408Z",
+      "status": "read-only probe succeeded",
+      "blockNumber": "59877922",
+      "blockHash": "0x5d0e5fb19bd6310500010a9e276a27414a27963f1517e3e5b6e44d6f20519a9a",
+      "records": {
+        "identity": {
+          "address": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+          "codeBytes": 130,
+          "codeKeccak256": "0xd0e45b1d89fa9b6cc7e97c1f155d64180e5c232aaccf9900ef9d4fd738c02b41",
+          "getVersionRaw": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000005322e302e30000000000000000000000000000000000000000000000000000000",
+          "implementationSlot": "0x0000000000000000000000007274e874ca62410a93bd8bf61c69d8045e399c02"
+        },
+        "reputation": {
+          "address": "0x8004B663056A597Dffe9eCcC1965A193B7388713",
+          "codeBytes": 130,
+          "codeKeccak256": "0xd0e45b1d89fa9b6cc7e97c1f155d64180e5c232aaccf9900ef9d4fd738c02b41",
+          "getVersionRaw": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000005322e302e30000000000000000000000000000000000000000000000000000000",
+          "implementationSlot": "0x00000000000000000000000016e0fa7f7c56b9a767e34b192b51f921be31da34"
+        }
+      },
+      "reputationIdentityRaw": "0x0000000000000000000000008004a818bfb912233c491871b3d84c89a494bd9e",
+      "identityMatches": true
+    },
+    {
+      "name": "Monad Mainnet",
+      "chainId": 143,
+      "rpc": "https://rpc.monad.xyz",
+      "identity": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      "reputation": "0x8004BAa17C55a88189AE136b182e5fdA19dE9b63",
+      "observedAt": "2026-09-05T10:10:02.575Z",
+      "status": "read-only probe succeeded",
+      "blockNumber": "102157445",
+      "blockHash": "0x67b81248cbf0aa1795af20a2f5836bf6538b199f1bcdabcc289c207493a6a34d",
+      "records": {
+        "identity": {
+          "address": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+          "codeBytes": 130,
+          "codeKeccak256": "0xd0e45b1d89fa9b6cc7e97c1f155d64180e5c232aaccf9900ef9d4fd738c02b41",
+          "getVersionRaw": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000005322e302e30000000000000000000000000000000000000000000000000000000",
+          "implementationSlot": "0x0000000000000000000000007274e874ca62410a93bd8bf61c69d8045e399c02"
+        },
+        "reputation": {
+          "address": "0x8004BAa17C55a88189AE136b182e5fdA19dE9b63",
+          "codeBytes": 130,
+          "codeKeccak256": "0xd0e45b1d89fa9b6cc7e97c1f155d64180e5c232aaccf9900ef9d4fd738c02b41",
+          "getVersionRaw": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000005322e302e30000000000000000000000000000000000000000000000000000000",
+          "implementationSlot": "0x00000000000000000000000016e0fa7f7c56b9a767e34b192b51f921be31da34"
+        }
+      },
+      "reputationIdentityRaw": "0x0000000000000000000000008004a169fb4a3325136eb29fa0ceb6d2e539a432",
+      "identityMatches": true
+    }
+  ]
+}

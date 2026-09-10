@@ -1,0 +1,1515 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://attestia.example/schemas/attestia.v1.schema.json",
+  "title": "Attestia public metadata v1 — Phase 0 specification",
+  "description": "Specification only. The .example identifier is not a deployed service. Private evidence requires a later schema and privacy review.",
+  "$defs": {
+    "bytes32": {
+      "type": "string",
+      "pattern": "^0x[0-9a-f]{64}$"
+    },
+    "address": {
+      "type": "string",
+      "pattern": "^0x[0-9a-f]{40}$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#@]+(?:[/?#]|$)",
+      "maxLength": 2048
+    },
+    "publicUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(?:https://[^/?#@]+(?:[/?#]|$)|ipfs://[a-zA-Z0-9]+(?:/|$))",
+      "maxLength": 2048
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "agentReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "registry": {
+          "$ref": "#/$defs/address"
+        },
+        "agentId": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,77})$"
+        }
+      },
+      "required": [
+        "chainId",
+        "registry",
+        "agentId"
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "$ref": "#/$defs/publicUri"
+        },
+        "sha256": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "mediaType": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$"
+        },
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "uri",
+        "sha256",
+        "mediaType",
+        "fileName",
+        "byteLength"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "digestAlgorithm": {
+          "enum": [
+            "sha256",
+            null
+          ]
+        },
+        "accessedAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "digest",
+        "digestAlgorithm",
+        "accessedAt"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "digest": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "digestAlgorithm": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "digestAlgorithm": {
+                "const": "sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "collaborator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "profileId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wallet": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/address"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "relationship": {
+          "const": "claimed"
+        },
+        "shareBasisPoints": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "profileId",
+        "wallet",
+        "role",
+        "relationship",
+        "shareBasisPoints"
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "profileId": {
+              "$ref": "#/$defs/bytes32"
+            },
+            "wallet": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "profileId": {
+              "type": "null"
+            },
+            "wallet": {
+              "$ref": "#/$defs/address"
+            }
+          }
+        }
+      ]
+    },
+    "rubricReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "digest": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "uri": {
+          "$ref": "#/$defs/publicUri"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "digest",
+        "uri"
+      ]
+    },
+    "conflictDisclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hasConflict": {
+          "type": "boolean"
+        },
+        "disclosure": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "hasConflict",
+        "disclosure"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "hasConflict": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "disclosure": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.profile.v1"
+        },
+        "type": {
+          "enum": [
+            "human",
+            "organization",
+            "agent"
+          ]
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "bio": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "maxItems": 30,
+          "minItems": 0
+        },
+        "role": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 120
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "maxItems": 30,
+          "minItems": 0
+        },
+        "agentLink": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/agentReference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "type",
+        "displayName",
+        "bio",
+        "skills",
+        "role",
+        "communities",
+        "agentLink"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "agent"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "agentLink": {
+                "$ref": "#/$defs/agentReference"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "agentLink": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.provenance.v1"
+        },
+        "aiAssistance": {
+          "enum": [
+            "none",
+            "assistive",
+            "substantial",
+            "agent-led",
+            "unknown"
+          ]
+        },
+        "humanInput": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 30,
+          "minItems": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "maxItems": 100,
+          "minItems": 0
+        },
+        "disclosureVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        }
+      },
+      "required": [
+        "schema",
+        "aiAssistance",
+        "humanInput",
+        "tools",
+        "sources",
+        "disclosureVersion"
+      ]
+    },
+    "contribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.contribution.v1"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "type": {
+          "enum": [
+            "research",
+            "pull_request",
+            "design",
+            "smart_contract",
+            "bounty",
+            "community_task",
+            "other"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "creatorProfileId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "workspaceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "visibility": {
+          "const": "public"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "artifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "collaborators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/collaborator"
+          },
+          "maxItems": 100,
+          "minItems": 0
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "revision": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "parentId": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/bytes32"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "parentId",
+            "notes"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "title",
+        "type",
+        "summary",
+        "creatorProfileId",
+        "workspaceId",
+        "visibility",
+        "createdAt",
+        "artifact",
+        "collaborators",
+        "provenance",
+        "revision"
+      ]
+    },
+    "rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.rubric.v1"
+        },
+        "id": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "workspaceId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,63}$"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "passCondition": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "description",
+              "passCondition"
+            ]
+          },
+          "maxItems": 50,
+          "minItems": 1
+        },
+        "publishedAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "previousVersionDigest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "workspaceId",
+        "version",
+        "title",
+        "description",
+        "criteria",
+        "publishedAt",
+        "previousVersionDigest"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "previousVersionDigest": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousVersionDigest": {
+                "$ref": "#/$defs/bytes32"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claimCompletion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.claim.completion.v1"
+        },
+        "claimType": {
+          "const": "COMPLETION"
+        },
+        "contributionId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "attester": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "workspaceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rubric": {
+          "type": "null"
+        },
+        "evidence": {
+          "$ref": "#/$defs/artifact"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflictOfInterest": {
+          "$ref": "#/$defs/conflictDisclosure"
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deliverable": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "observedAt": {
+              "$ref": "#/$defs/utcTimestamp"
+            }
+          },
+          "required": [
+            "deliverable",
+            "observedAt"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "claimType",
+        "contributionId",
+        "attester",
+        "result",
+        "workspaceId",
+        "rubric",
+        "evidence",
+        "reason",
+        "createdAt",
+        "validUntil",
+        "supersedes",
+        "conflictOfInterest",
+        "assessment"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": -1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claimAuthorship": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.claim.authorship.v1"
+        },
+        "claimType": {
+          "const": "AUTHORSHIP"
+        },
+        "contributionId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "attester": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "workspaceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rubric": {
+          "type": "null"
+        },
+        "evidence": {
+          "$ref": "#/$defs/artifact"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflictOfInterest": {
+          "$ref": "#/$defs/conflictDisclosure"
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "contributionRole": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            }
+          },
+          "required": [
+            "contributionRole",
+            "basis"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "claimType",
+        "contributionId",
+        "attester",
+        "result",
+        "workspaceId",
+        "rubric",
+        "evidence",
+        "reason",
+        "createdAt",
+        "validUntil",
+        "supersedes",
+        "conflictOfInterest",
+        "assessment"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": -1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claimQuality": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.claim.quality.v1"
+        },
+        "claimType": {
+          "const": "QUALITY"
+        },
+        "contributionId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "attester": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "workspaceId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "rubric": {
+          "$ref": "#/$defs/rubricReference"
+        },
+        "evidence": {
+          "$ref": "#/$defs/artifact"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflictOfInterest": {
+          "$ref": "#/$defs/conflictDisclosure"
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "criterionResults": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "criterionId": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  "result": {
+                    "enum": [
+                      -1,
+                      1
+                    ]
+                  },
+                  "notes": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "criterionId",
+                  "result",
+                  "notes"
+                ]
+              },
+              "maxItems": 50,
+              "minItems": 1
+            }
+          },
+          "required": [
+            "criterionResults"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "claimType",
+        "contributionId",
+        "attester",
+        "result",
+        "workspaceId",
+        "rubric",
+        "evidence",
+        "reason",
+        "createdAt",
+        "validUntil",
+        "supersedes",
+        "conflictOfInterest",
+        "assessment"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": -1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claimUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.claim.usage.v1"
+        },
+        "claimType": {
+          "const": "USAGE"
+        },
+        "contributionId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "attester": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "workspaceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rubric": {
+          "type": "null"
+        },
+        "evidence": {
+          "$ref": "#/$defs/artifact"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflictOfInterest": {
+          "$ref": "#/$defs/conflictDisclosure"
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "enum": [
+                "merged",
+                "deployed",
+                "used",
+                "accepted"
+              ]
+            },
+            "referenceUrl": {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            "observedAt": {
+              "$ref": "#/$defs/utcTimestamp"
+            }
+          },
+          "required": [
+            "action",
+            "referenceUrl",
+            "observedAt"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "claimType",
+        "contributionId",
+        "attester",
+        "result",
+        "workspaceId",
+        "rubric",
+        "evidence",
+        "reason",
+        "createdAt",
+        "validUntil",
+        "supersedes",
+        "conflictOfInterest",
+        "assessment"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": -1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "claimProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.claim.provenance.v1"
+        },
+        "claimType": {
+          "const": "PROVENANCE"
+        },
+        "contributionId": {
+          "$ref": "#/$defs/bytes32"
+        },
+        "attester": {
+          "$ref": "#/$defs/address"
+        },
+        "result": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "workspaceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rubric": {
+          "type": "null"
+        },
+        "evidence": {
+          "$ref": "#/$defs/artifact"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "validUntil": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799
+        },
+        "supersedes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflictOfInterest": {
+          "$ref": "#/$defs/conflictDisclosure"
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "reviewedAspects": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "human-input",
+                  "ai-disclosure",
+                  "sources",
+                  "collaborators",
+                  "revision-history"
+                ]
+              },
+              "maxItems": 5,
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            }
+          },
+          "required": [
+            "reviewedAspects",
+            "notes"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "claimType",
+        "contributionId",
+        "attester",
+        "result",
+        "workspaceId",
+        "rubric",
+        "evidence",
+        "reason",
+        "createdAt",
+        "validUntil",
+        "supersedes",
+        "conflictOfInterest",
+        "assessment"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": -1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "declaredPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "attestia.declared-policy.v1"
+        },
+        "agent": {
+          "$ref": "#/$defs/agentReference"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "enforcement": {
+          "const": "declared"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 50,
+          "minItems": 0
+        },
+        "allowedActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 100,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "blockedActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 100,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "asset": {
+              "anyOf": [
+                {
+                  "const": "native"
+                },
+                {
+                  "$ref": "#/$defs/address"
+                }
+              ]
+            },
+            "periodSeconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "spendingCeilingBaseUnits": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,77})$"
+            },
+            "approvalThresholdBaseUnits": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,77})$"
+            }
+          },
+          "required": [
+            "asset",
+            "periodSeconds",
+            "spendingCeilingBaseUnits",
+            "approvalThresholdBaseUnits"
+          ]
+        },
+        "approvalRequired": {
+          "type": "boolean"
+        },
+        "expiresAt": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "emergencyPauseContact": {
+          "$ref": "#/$defs/address"
+        },
+        "previousVersionDigest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bytes32"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "agent",
+        "version",
+        "enforcement",
+        "capabilities",
+        "allowedActions",
+        "blockedActions",
+        "limits",
+        "approvalRequired",
+        "expiresAt",
+        "emergencyPauseContact",
+        "previousVersionDigest"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "previousVersionDigest": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "previousVersionDigest": {
+                "$ref": "#/$defs/bytes32"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/profile"
+    },
+    {
+      "$ref": "#/$defs/contribution"
+    },
+    {
+      "$ref": "#/$defs/provenance"
+    },
+    {
+      "$ref": "#/$defs/claimCompletion"
+    },
+    {
+      "$ref": "#/$defs/claimAuthorship"
+    },
+    {
+      "$ref": "#/$defs/claimQuality"
+    },
+    {
+      "$ref": "#/$defs/claimUsage"
+    },
+    {
+      "$ref": "#/$defs/claimProvenance"
+    },
+    {
+      "$ref": "#/$defs/rubric"
+    },
+    {
+      "$ref": "#/$defs/declaredPolicy"
+    }
+  ]
+}

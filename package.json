@@ -1,0 +1,21 @@
+{
+  "name": "attestia-phase-zero",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.0.0" },
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "python3 -m http.server 4173 --bind 127.0.0.1 --directory docs/phase-0",
+    "check": "node docs/phase-0/scripts/check-spec.mjs && node docs/phase-0/scripts/check-docs.mjs && node --check docs/phase-0/wireflow/app.js",
+    "test:ui": "playwright test",
+    "test": "pnpm check && pnpm test:ui"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@noble/hashes": "2.4.0",
+    "@playwright/test": "1.63.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "canonicalize": "2.1.0"
+  }
+}

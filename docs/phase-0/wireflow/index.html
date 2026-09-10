@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#16165c" />
+    <meta
+      name="description"
+      content="Attestia Phase 0 interactive wireflow. All identities, evidence, and transactions are simulated."
+    />
+    <title>Attestia — Your work, with evidence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-focus="main">Skip to content</a>
+    <div class="prototype-banner">
+      <span class="banner-dot" aria-hidden="true"></span>Interactive prototype ·
+      simulated data · no wallet or chain writes
+    </div>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#dashboard" aria-label="Attestia overview"
+          ><svg viewBox="0 0 40 42" fill="none" aria-hidden="true">
+            <path
+              d="M20 3 36 12v18L20 39 4 30V12L20 3Z"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="m12 23 6 6 11-16M20 3v8M4 30l7-4M36 30l-7-4"
+              stroke="currentColor"
+              stroke-width="2"
+            /></svg
+          ><span>attestia<span class="brand-point">.</span></span></a
+        >
+        <div class="workspace">
+          <span class="workspace-symbol" aria-hidden="true">O</span>
+          <div>Open Source Lab<small>Illustrative workspace</small></div>
+          <span class="workspace-chevron" aria-hidden="true">⌄</span>
+        </div>
+        <p class="nav-label">YOUR WORKSPACE</p>
+        <nav id="navigation"></nav>
+        <div class="sidebar-note">
+          <span class="tiny-orbit" aria-hidden="true"></span>
+          <p>Work is the story.<br />Evidence is the signature.</p>
+          <a href="#profile"
+            >Explore your track record <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="sidebar-bottom">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>Offline simulation<small>No network connected</small></div>
+        </div>
+      </aside>
+      <div class="workspace-main">
+        <header class="topbar">
+          <p id="breadcrumb">
+            Workspace <span aria-hidden="true">/</span> Overview
+          </p>
+          <label class="actor-control"
+            ><span>Demo identity</span
+            ><select id="actor" aria-label="Demo identity">
+              <option value="mira">Mira · contributor</option>
+              <option value="jules">Jules · reviewer</option>
+              <option value="noor">Noor · reviewer</option>
+            </select></label
+          ><span class="avatar" id="actor-avatar" aria-hidden="true">MC</span>
+        </header>
+        <main id="main" tabindex="-1"></main>
+        <footer class="page-footer">
+          <span>Attestia / Phase 0</span
+          ><span>Evidence counts. Context stays.</span
+          ><button type="button" class="text-button" data-action="reset">
+            Reset prototype
+          </button>
+        </footer>
+        <details class="simulation-lab" id="simulation-lab">
+          <summary>
+            Prototype controls <span>Explore failure and recovery states</span>
+          </summary>
+          <div class="lab-body">
+            <label for="scenario">Next simulated write</label
+            ><select id="scenario">
+              <option value="normal">Normal flow</option>
+              <option value="reject">Rejected signature</option>
+              <option value="session">Expired session</option>
+              <option value="mismatch">Wallet mismatch</option>
+              <option value="duplicate">Duplicate submission</option>
+              <option value="evidence">Inaccessible evidence</option>
+              <option value="lag">Indexer lag</option></select
+            ><button
+              type="button"
+              class="button small secondary"
+              data-action="preview-failure"
+            >
+              Preview selected state
+            </button>
+            <p>
+              Applies once to publishing or issuing a claim. Drafts remain saved
+              on this browser. These controls do not connect a wallet.
+            </p>
+            <div id="lab-feedback" role="status"></div>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div
+      id="announcement"
+      class="sr-only"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </body>
+</html>

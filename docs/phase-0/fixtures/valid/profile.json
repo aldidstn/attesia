@@ -1,0 +1,15 @@
+{
+  "schema": "attestia.profile.v1",
+  "type": "human",
+  "displayName": "Demo Contributor",
+  "bio": "Synthetic identity for local review.",
+  "skills": [
+    "Solidity",
+    "Documentation"
+  ],
+  "role": "Contributor",
+  "communities": [
+    "Example workspace"
+  ],
+  "agentLink": null
+}

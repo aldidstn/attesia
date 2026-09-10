@@ -1,0 +1,19 @@
+{
+  "schema": "attestia.profile.v1",
+  "type": "agent",
+  "displayName": "Example agent",
+  "bio": "Synthetic identity for local review.",
+  "skills": [
+    "Solidity",
+    "Documentation"
+  ],
+  "role": "Contributor",
+  "communities": [
+    "Example workspace"
+  ],
+  "agentLink": {
+    "chainId": 10143,
+    "registry": "0x8888888888888888888888888888888888888888",
+    "agentId": "42"
+  }
+}

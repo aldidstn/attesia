@@ -1,0 +1,18 @@
+{
+  "schema": "attestia.provenance.v1",
+  "aiAssistance": "assistive",
+  "humanInput": "Contributor authored the change, reviewed generated suggestions, and verified the result.",
+  "tools": [
+    "Example coding assistant; details voluntarily disclosed"
+  ],
+  "sources": [
+    {
+      "title": "Example merged pull request",
+      "url": "https://github.com/example/project/pull/42",
+      "digest": null,
+      "digestAlgorithm": null,
+      "accessedAt": "2026-09-05T00:00:00Z"
+    }
+  ],
+  "disclosureVersion": 1
+}

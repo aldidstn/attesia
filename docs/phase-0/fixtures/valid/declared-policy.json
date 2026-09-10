@@ -1,0 +1,29 @@
+{
+  "schema": "attestia.declared-policy.v1",
+  "agent": {
+    "chainId": 10143,
+    "registry": "0x8888888888888888888888888888888888888888",
+    "agentId": "42"
+  },
+  "version": 1,
+  "enforcement": "declared",
+  "capabilities": [
+    "Summarize public source material"
+  ],
+  "allowedActions": [
+    "read:public-sources"
+  ],
+  "blockedActions": [
+    "transfer:funds"
+  ],
+  "limits": {
+    "asset": "native",
+    "periodSeconds": 86400,
+    "spendingCeilingBaseUnits": "0",
+    "approvalThresholdBaseUnits": "0"
+  },
+  "approvalRequired": true,
+  "expiresAt": "2026-12-31T23:59:59Z",
+  "emergencyPauseContact": "0x4444444444444444444444444444444444444444",
+  "previousVersionDigest": null
+}

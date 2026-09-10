@@ -1,0 +1,31 @@
+{
+  "schema": "attestia.claim.provenance.v1",
+  "claimType": "PROVENANCE",
+  "contributionId": "0x3333333333333333333333333333333333333333333333333333333333333333",
+  "attester": "0x4444444444444444444444444444444444444444",
+  "result": 1,
+  "workspaceId": "0x2222222222222222222222222222222222222222222222222222222222222222",
+  "rubric": null,
+  "evidence": {
+    "uri": "https://example.org/evidence/merged-pr.txt",
+    "sha256": "0x31eb86de074af84ba1b493d69cf4ed0b2be1a2e739bd0ab9d221fc17c477a889",
+    "mediaType": "text/plain",
+    "fileName": "merged-pr.txt",
+    "byteLength": 35
+  },
+  "reason": null,
+  "createdAt": "2026-09-05T00:00:00Z",
+  "validUntil": 0,
+  "supersedes": null,
+  "conflictOfInterest": {
+    "hasConflict": false,
+    "disclosure": null
+  },
+  "assessment": {
+    "reviewedAspects": [
+      "human-input",
+      "sources"
+    ],
+    "notes": "The disclosure is consistent with the supplied review evidence."
+  }
+}

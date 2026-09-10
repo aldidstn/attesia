@@ -1,0 +1,25 @@
+[
+  {
+    "name": "artifact bytes mismatch",
+    "kind": "artifact",
+    "metadata": "valid/contribution.json",
+    "artifact": "artifact.txt",
+    "tamper": "artifact",
+    "expected": "digest-mismatch"
+  },
+  {
+    "name": "anchored artifact digest mismatch",
+    "kind": "artifact",
+    "metadata": "valid/contribution.json",
+    "artifact": "artifact.txt",
+    "tamper": "digest",
+    "expected": "digest-mismatch"
+  },
+  {
+    "name": "anchored metadata digest mismatch",
+    "kind": "metadata",
+    "metadata": "valid/contribution.json",
+    "anchoredDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "expected": "digest-mismatch"
+  }
+]

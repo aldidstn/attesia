@@ -98,6 +98,21 @@ test('invalid fields focus linked summary; drafts survive reload; unsafe source 
   await expect(page.locator('#source')).toHaveAttribute('aria-invalid', 'true');
 });
 
+test('publication requires explicit review and keeps the record unpublished on error', async ({ page }) => {
+  await page.goto('./#compose');
+  await page.locator('#contribution-form button[type=submit]').click();
+  await page.locator('#publication-form button[type=submit]').click();
+
+  await expect(page.locator('#error-summary')).toBeFocused();
+  await expect(page.locator('#publication-check')).toHaveAttribute('aria-invalid', 'true');
+  expect((await state(page)).contribution).toBeNull();
+  await expect(page).toHaveURL(/#review$/);
+
+  await page.locator('#publication-check').check();
+  await page.locator('#publication-form button[type=submit]').click();
+  await expect.poll(async () => (await state(page)).contribution?.status).toBe('Indexed');
+});
+
 test('keyboard skip link focuses the current screen without navigating away', async ({ page }) => {
   await page.goto('./#compose');
   await page.keyboard.press('Tab');

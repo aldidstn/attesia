@@ -28,7 +28,7 @@ Open [interactive wireflow](http://127.0.0.1:4173/wireflow/) or the standalone [
 | [Security](SECURITY.md) | Publication/retention policy, threats, negative tests, moderation and privacy gates |
 | [Dependencies](DEPENDENCIES.md) | Verified official tooling, pinned ERC-8004 revisions/ABIs and sponsorship acceptance boundaries |
 | [RPC observations](research/registry-observations.json) | Dated read-only network/dependency observations; not an Attestia deployment |
-| [Handoff](HANDOFF.md) | Ordered Phase 1 backlog, review rules, owners and unresolved external gates |
+| [Handoff](HANDOFF.md) | Ordered Phase 1 backlog, review rules, owners and historical external-gate status |
 
 ## Walkthrough
 
@@ -44,13 +44,13 @@ Open [interactive wireflow](http://127.0.0.1:4173/wireflow/) or the standalone [
 ```sh
 pnpm check
 pnpm exec playwright install chromium
-pnpm test:ui
+pnpm test:phase0
 ```
 
 The schema checker validates positive/negative fixtures, fixed digest vectors and executable lifecycle examples. It never rewrites expected vectors. Browser checks exercise the narrative, failure recovery, mobile layout, keyboard focus and axe rules. Test results are summarized in [validation record](VALIDATION.md).
 
 These checks do not test Solidity, signatures, actual API endpoints, production scanning/ACL, real chain finality, sponsorship, or independent human usability. Phase 1+ acceptance is specified rather than fabricated.
 
-## Remaining gates
+## Current status
 
-No partner identified; no interviews or approved privacy/legal policy. The full Phase 0 business/privacy gate remains open. Sponsorship has a documented candidate but no account-backed test. Foundry 1.8.0 capability was checked in isolation; Phase 1 must pin it and run contract tests. No paid infrastructure, mainnet activation, live billing, outreach or deployment was performed.
+Phase 0 is complete against its engineering acceptance criteria. Its former partner, interview, and privacy-review exit gates are deprecated and non-blocking. Sponsorship has a documented candidate but no account-backed test. Phase 1 contract tests use pinned Foundry 1.8.0, and its Monad Testnet deployment and smoke run are complete. No paid infrastructure, mainnet activation, live billing, or outreach was performed.

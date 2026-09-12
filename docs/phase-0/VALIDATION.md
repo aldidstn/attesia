@@ -30,4 +30,4 @@ Detected issues repaired during QA: 360px navigation/graph overflow, profile gri
 
 Screenshots show synthetic UI. Automated axe and keyboard checks do not establish complete WCAG conformance or replace screen-reader/user testing. Other browser engines, 100-node graph performance, real signing/finality, production URL fetching/scanning, private ACL, billing, deployment verification and load/availability targets belong to later-phase tests.
 
-Interviews conducted: **0**. Partner commitment: **pending**. Legal/privacy review: **pending**. Sponsorship: **documented candidate, untested with accounts**. Contract deployments and onchain writes: **0**. Full Phase 0 external gates therefore remain open.
+Interviews conducted: **0**. Partner commitment: **none recorded**. Legal/privacy review: **not conducted**. These former Phase 0 external exit gates are **deprecated and non-blocking**. Sponsorship is a documented candidate, untested with accounts. Phase 1 later added a Monad Testnet deployment and onchain smoke run; the Phase 0 wireflow itself remains simulated.

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "chainId": 10143,
+  "completedAt": "2026-09-12T07:33:05Z",
+  "finalBlockNumber": 61841857,
+  "actors": {
+    "creator": "0xC891D6926Ed618D424ec47BC695Fd2c376F987F6",
+    "reviewer": "0x1041c5f6B556109b3A405Ea47DbdC54A275fb2E1"
+  },
+  "records": {
+    "creatorProfileId": "0x12f62f6d72c9974c33a220b8b0216933cb71fa9fb43ab9d5573d8d7febde38f3",
+    "reviewerProfileId": "0x47b6b208cf9730bb1b15aefb773bb24e9dbf9cf4e1a8b48163872acbc9618096",
+    "contributionId": "0x80b859667040407f7a26eae91b17474fe3ed9095040d3ad235d3ce65fb5db798",
+    "completionAttestationId": "0x763fed27b91feb462e115c6d8b9079ce9b7dcba763a3038833d0a72313471a30",
+    "authorshipAttestationId": "0xfb3f2f54b4797045f7ba45f51db0c5a8fd3e18c6153cc69d878d9a9a830fe059"
+  },
+  "transactions": {
+    "fundReviewer": "0x1a0314db76dfd6d39f9062249e6e95e697eee62f5b57e5a7b95f48894063b0f2",
+    "createCreatorProfile": "0x3565ec80adfb3e6d5ea0fcd5c1c1f02d50d1464844f8db79f4b29bf99f2f9731",
+    "createReviewerProfile": "0x38152975cf6403f0eb2b639f89184c5af0bcb29c3cc67de0ebaf45c0a1d812e9",
+    "registerContribution": "0x4e4f08b47d5c650a0494c9c1b223ebbd1a757b46369ea4f17521e661e7d69bd8",
+    "completionAttestation": "0x4258d7b2831381c567a44d667f3c9d531ac7876c3daa9df24e0fa49c32537b23",
+    "authorshipAttestation": "0xb17cc0f588a8604d7d6d6d3dff55edbd33bd8cd2e7a2cb33553bbe9be08fc153",
+    "issuerRevocation": "0x2e9d7f99c14b679b6fafd77768dfa17d3eb51fc52262b2b701a48f42e586097b"
+  },
+  "assertions": {
+    "twoIndependentWallets": true,
+    "unauthorizedRevocationRejected": true,
+    "directIssuerRevocationSucceeded": true,
+    "completionActiveAfterRevocation": false,
+    "authorshipActive": true
+  },
+  "sourceVerification": {
+    "provider": "Sourcify via MonadVision",
+    "status": "match",
+    "jobs": {
+      "AttestiaProfileRegistry": "809be66c-18c3-4c3e-8453-d9b01ad93a10",
+      "ContributionRegistry": "53709860-7559-4201-8398-86ea0215096b",
+      "AttestationRegistry": "35aef11a-c7db-4bb5-af63-1dd05228e835"
+    }
+  }
+}

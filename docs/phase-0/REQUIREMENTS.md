@@ -143,7 +143,7 @@ Phase 0 covers eight connected screens: dashboard, contribution composer, public
 | T03 | Private permission negatives; axe plus manual keyboard/screen reader | P4; relevant static prototype checks P0 |
 | T04 | Duplicate/delayed/malformed events, finality, full replay, deterministic scores, synthetic graph/feed load | P2–4; never use mainnet user data for synthetic load |
 | T05 | Five usability tasks: publish/privacy, authorship, verify tx, revoke/explain, claimed-vs-attested | Interview script P0; five-participant observations P4; ≥4/5 directional target |
-| G00 / §17 Phase 0 | Interviews 3–5; taxonomy/incentives; schemas/policy; wireframes/threat/ADR/analytics; partner commitment + privacy clarity | Engineering artifacts/checks recorded in README; actual interviews, commitment, privacy review remain pending |
+| G00 / §17 Phase 0 | Schemas/policy; wireframes/threat/ADR/analytics; optional interviews and taxonomy/incentive research | **Complete:** engineering artifacts/checks recorded in README; former interview, commitment, and privacy-review exit gates deprecated |
 | G01 / Phase 1 | Versioned contracts, tests/fuzz/invariants/gas, manifest, testnet deploy/verify | CI clean; no critical/high internal finding; manual revoke via Cast; explicit manual deployment gate |
 | G02 / Phase 2 | Contributor/reviewer/auth/integrity/indexer/public API/recovery real | Two independent wallets complete end-to-end without developer assistance |
 | G03 / Phase 3 | Versioned counts/graph/agent policy/feed | Revocation changes count and graph; registry ownership resolved |
@@ -156,15 +156,15 @@ Phase 0 covers eight connected screens: dashboard, contribution composer, public
 
 ## Phase 0 acceptance ledger
 
-This ledger distinguishes an artifact from the evidence it still needs. See [Handoff](HANDOFF.md) for owners, run commands, and blocking findings.
+This ledger distinguishes completed Phase 0 artifacts from optional research and later-phase evidence. See [Handoff](HANDOFF.md) for owners, run commands, and blocking findings.
 
-| Deliverable | Phase 0 evidence | External or later evidence still required |
+| Deliverable | Phase 0 evidence | Optional research or later-phase evidence |
 |---|---|---|
-| Discovery pack | Scenario, hypotheses, scripts, blank evidence/commitment log, metric definitions | Actual 3–5 interviews, reviewed observations, recruited partner/reviewers |
+| Discovery pack | Scenario, hypotheses, scripts, blank evidence/commitment log, metric definitions | Optional interviews and partner observations; deprecated as Phase 0 exit requirements |
 | Specification | Versioned canonical schemas, fixtures, byte/hash vectors, fixed decisions | Production boundary enforcement and approved handling of real personal data |
 | Architecture | Interfaces, data flow, EAS ADR, dependencies, cost assumptions | Chain/provider capability checks marked unresolved, funded accounts, deployed contracts |
 | Wireflow | Eight connected screens, simulated primary workflow, specified failure examples | Real wallet/RPC/indexer flow; production accessibility/browser coverage |
 | Security | Threats mapped to controls and negative tests; privacy boundaries/gates | Independent review, legal/privacy conclusions, signed operational policies |
-| Handoff | Phase 1 backlog and acceptance checks; known external gates separated | Actual Phase 1 implementation, CI, approved testnet deployment and verified source |
+| Handoff | Phase 1 backlog and acceptance checks; historical gate decisions recorded | **Complete:** implementation, CI, approved testnet deployment, verified source, manifest, and Cast smoke evidence |
 
 No requirement is dropped to make Phase 0 appear complete. Optional embedded wallet, agent registration, white-label SDK, and agent enforcement retain the PRD's explicit optional/demand/security gates; all other deferred requirements have a target phase above.

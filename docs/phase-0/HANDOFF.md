@@ -1,6 +1,6 @@
 # Phase 1 handoff and release gates
 
-Status: Phase 0 engineering artifacts are reviewable. Phase 1 contracts are not implemented. The complete discovery gate remains open because no design partner, interviews or legal/privacy approval exist.
+Status: Phase 0 and Phase 1 are complete against their acceptance criteria. The former Phase 0 design-partner, interview, and privacy-review exit gates are deprecated and non-blocking. Phase 1 contracts are deployed and source-verified on Monad Testnet, with two-wallet Cast smoke evidence.
 
 ## Read order
 
@@ -31,19 +31,19 @@ No production contract may accept negative claims until separate legal review/de
 | Gate | Status | Owner role / required evidence |
 |---|---|---|
 | Phase 0 engineering artifacts | Delivered, see validation record in README | Builder: schema checks, prototype walkthrough, traceability and review |
-| Stakeholder discovery | **Pending** | Product owner: 3–5 interviews with dated notes and disconfirming findings |
-| Real pilot commitment | **Pending** | Product owner: one partner, named coordinator, actual contribution and two reviewers/test window |
-| Critical privacy ambiguity | **Pending** | Privacy owner/counsel: publication classification, digest exposure and approved handling policy |
-| Foundry compatibility | Verified replacement choice; Phase 1 environment setup pending | Builder: pin official 1.8.0 and run contract CI in Monad mode |
-| ERC-8004 | Read-only deployment/version probe complete; integration pending | Builder: agent resolution/write tests against pinned dependency |
+| Stakeholder discovery | **Deprecated / non-blocking** | Optional research: 3–5 interviews with dated notes and disconfirming findings |
+| Real pilot commitment | **Deprecated / non-blocking** | Optional pilot input: one partner, named coordinator, actual contribution and two reviewers/test window |
+| Phase 0 privacy-review exit gate | **Deprecated / non-blocking** | Optional Phase 0 review; later production privacy controls retain their own phase-specific gates |
+| Foundry compatibility | **Complete locally** with official 1.8.0 and CI pin | Builder: keep checksum, compiler, Monad mode, tests and snapshots reproducible |
+| ERC-8004 | **Complete for Phase 1** | Official Monad Testnet registry address checked for bytecode immediately before deployment; ownership behavior covered by contract tests |
 | Sponsorship | Documented candidate; **not integration-tested** | Builder/operator: account-backed acceptance in DEPENDENCIES |
-| Testnet write/deployment | **Not performed** | Deployer: explicit manual approval, funded wallet, verified sources and manifest |
+| Testnet write/deployment | **Complete** | Three source-verified registries, public manifest, two wallets, two claims, rejected unauthorized revoke, and successful issuer revoke |
 | Public negative claims | **Blocked for production** | Counsel/operator: specific PRD legal review gate; first production contract disallows negatives |
 | Phase 4 pilot checklist | Future | Security/operator: ACL, export, independent review, load, backups and incident drill |
 | Phase 5 mainnet pilot | Future | Operator: multisig + extra signer, funded services, approved policies, independent review, then two-week stability evidence |
 | Phase 6 live billing | Future | Business owner: WTP, merchant eligibility, pricing, signed webhooks, compliance review |
 
-No named legal/incident owner or support address has been invented. The self-seeded scenario enables engineering/usability rehearsal; it does not count as partner commitment. Documentation alone cannot satisfy the PRD's real-world validation gate.
+No named legal/incident owner or support address has been invented. The self-seeded scenario enables engineering/usability rehearsal. The former real-world validation requirement is deprecated as a Phase 0 exit gate; any future interview or partner evidence must still be reported as observed rather than inferred.
 
 ## Phase 0 review rules
 

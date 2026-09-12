@@ -1,0 +1,18 @@
+{
+  "status": "deployed",
+  "chainId": 10143,
+  "blockNumber": 61841093,
+  "transactionHashes": [
+    "0xf38d43f3875087fbda3ccac9aaf89558c49e763cbbfacf4cd2d7168780632ca5",
+    "0x783089ff479c51cb4cebda46ed0512cfda83b3acd2fb4386fb73aee459e57a5c",
+    "0xb3c1884c54e04aec65fceb21724d026c9b2f0761ea151832e63e7e1080c07b77"
+  ],
+  "pauseAuthority": "0xC891D6926Ed618D424ec47BC695Fd2c376F987F6",
+  "erc8004IdentityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "negativeClaimsEnabled": false,
+  "contracts": {
+    "AttestiaProfileRegistry": "0x610b0399d82d8cE68E558a4f7a8CE87d84BdA32E",
+    "ContributionRegistry": "0x7BFB7e4A6325FC7Dd9141A13039B978852AF6c65",
+    "AttestationRegistry": "0xa948F485d0ddEb514402B046B3707Dfc16830b71"
+  }
+}

@@ -4,9 +4,10 @@
 
 Attestia is a contribution attestation platform designed to help people document their work, disclose human and AI provenance, and collect evidence-backed claims from reviewers.
 
-The current **Phase 0 prototype** demonstrates contribution publication, authorship and completion claims, claim revocation, profile counts, and verification/export screens. All identities and transactions are simulated; no wallet, smart contract, backend, or payment integration is connected.
+The **Phase 0 prototype** demonstrates contribution publication, claims, revocation, profile counts, and verification/export screens. Its identities and transactions remain simulated. **Phase 1** adds tested and source-verified Solidity registries for profiles, contributions, attestations, revocation, and ERC-8004-linked agents on Monad Testnet.
 
-See the [Phase 0 guide](docs/phase-0/README.md) for specifications, architecture, and research. Stakeholder interviews, partner commitment, and privacy/legal review remain pending.
+See the [Phase 0 guide](docs/phase-0/README.md) for specifications, architecture, and research. The former Phase 0 interview, partner-commitment, and privacy-review exit gates are deprecated and non-blocking.
+See the [Phase 1 guide](docs/phase-1/README.md) for contract scope, acceptance status, and deployment gates.
 
 ## How to run
 
@@ -27,6 +28,8 @@ To run specification and browser checks:
 pnpm exec playwright install chromium
 pnpm test
 ```
+
+Phase-specific TDD commands and the requirement coverage matrix are in [docs/TESTING.md](docs/TESTING.md).
 
 ## Demo
 
@@ -54,5 +57,6 @@ Prototype controls also demonstrate rejected signatures, expired sessions, walle
 | Integrity checks | RFC 8785 canonicalization, keccak256 metadata hashes, SHA-256 artifact hashes; canonicalize and @noble/hashes |
 | Testing | Playwright and axe-core accessibility checks |
 | Tooling | Node.js and pnpm |
+| Smart contracts | Solidity 0.8.28, Foundry 1.8.0, OpenZeppelin Contracts 5.6.1 |
 
-Monad smart contracts and ERC-8004 integration are planned in the [Phase 1 handoff](docs/phase-0/HANDOFF.md).
+Monad Testnet deployment, source verification, two-wallet Cast smoke checks, and direct issuer revocation are complete; see [deployment evidence](docs/phase-1/DEPLOYMENT.md).

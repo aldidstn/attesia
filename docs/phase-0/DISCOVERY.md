@@ -1,6 +1,6 @@
 # Phase 0 discovery and analytics
 
-Status: **prepared, not validated**. No stakeholder interviews, organization commitment, willingness-to-pay evidence, or privacy/legal approval have been supplied. The prototype uses synthetic records and simulated transactions. None of these artifacts establish production readiness or partner validation.
+Status: **prepared, not validated**. No stakeholder interviews, organization commitment, willingness-to-pay evidence, or privacy/legal approval have been supplied. The prototype uses synthetic records and simulated transactions. The former external Phase 0 exit gates are deprecated and non-blocking; these artifacts still do not claim production readiness or partner validation.
 
 Source: [PRD](../../Attestia-PRD.md) §§2–6, 16–20. Engineering decisions live in [Architecture](ARCHITECTURE.md), canonical data in [Specification](SPECIFICATION.md), and release gates in [Handoff](HANDOFF.md).
 
@@ -10,7 +10,7 @@ The initial workflow is one public merged GitHub pull request. A contributor pub
 
 The merge supports a separate `USAGE` claim if someone actually reviews its evidence. Completion does not automatically imply usage, quality, or authorship. The primary scenario requires two claim types from two external reviewers; it does not require a quality judgment. All seven PRD contribution types remain in the schemas.
 
-For the wireflow, all people, workspace names, results, identifiers, and activity are illustrative. Before a real testnet pilot, replace them with a consenting contributor's public artifact and two recruited reviewers. Synthetic activity stays excluded from product metrics. A self-seeded demo can test engineering; it does not satisfy the committed-partner gate.
+For the wireflow, all people, workspace names, results, identifiers, and activity are illustrative. Before a real testnet pilot, replace them with a consenting contributor's public artifact and two recruited reviewers. Synthetic activity stays excluded from product metrics. A self-seeded demo can test engineering; partner commitment is optional research evidence rather than a Phase 0 exit gate.
 
 | Hypothesis | Test in discovery/pilot | Evidence required to change status |
 |---|---|---|
@@ -83,9 +83,9 @@ All rows below are unfilled. Add de-identified observations only after interview
 
 After interviews, record claim terminology changes, minimum evidence per claim, median observed review effort, privacy exclusions, incentive findings, and WTP evidence strength. Revise schemas/interfaces through a versioned decision; never rewrite results to fit the current design. Five usability participants provide directional feedback, not statistical proof.
 
-## Partner and privacy gate
+## Optional partner and privacy research
 
-Engineering handoff may be prepared while these remain pending. Full Phase 0 acceptance requires both a real partner commitment and no unresolved critical privacy ambiguity.
+This checklist is retained for a future real pilot, but it no longer controls Phase 0 acceptance. Phase 0 is complete from its engineering artifacts; later production and negative-claim reviews keep their own explicit gates.
 
 - [ ] Organization and authorized contact identified; their role and consent recorded privately.
 - [ ] A named workflow owner agrees to test one real public contribution.
@@ -99,7 +99,7 @@ Engineering handoff may be prepared while these remain pending. Full Phase 0 acc
 - [ ] Budget conversation recorded as a hypothesis or commitment at its actual evidence level.
 - [ ] Written commitment reference/date recorded; no commitment inferred from a prototype walkthrough.
 
-Current result: **all partner evidence pending; privacy review pending**. No real negative-claim pilot or EU personal-data anchoring proceeds without the separate review gates in [Security](SECURITY.md).
+Current result: **no partner evidence or privacy review recorded; non-blocking for Phase 0**. No real negative-claim pilot or EU personal-data anchoring proceeds without the separate later-phase review gates in [Security](SECURITY.md).
 
 ## Analytics specification
 

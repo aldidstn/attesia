@@ -8,7 +8,7 @@ Checked 5 September 2026. **Documented**, **observed read-only**, and **integrat
 - Official [Monad Foundry guide](https://docs.monad.xyz/tooling-and-infra/toolkits/foundry.md) requires **1.8+** and `network = "monad"`. The legacy Monad fork is unsuitable for current execution rules.
 - [Official v1.8.0 release](https://github.com/foundry-rs/foundry/releases/tag/v1.8.0), published 2026-08-27, was downloaded into a task-specific temporary directory. SHA-256 matched the release checksum: `0599b28a19af97c3ae91fab12ad868a1922db7770c4adff6b6d26235862153d0` for `foundry_v1.8.0_darwin_arm64.tar.gz`.
 - Executed binary reported **1.8.0**, commit `61ae26af36320d4fa1020f7db53785885e29eeb5`; Anvil help includes `monad`. Global tooling was not replaced. Temporary probe path was `/tmp/attestia-foundry-v1.8.0/` and is not a durable project dependency.
-- Phase 1 pins official **1.8.0**, verifies release checksum/attestation per platform, sets Monad network, and runs unit/fuzz/invariant/gas checks. Phase 0 confirms binary capability, not contract execution equivalence or deployment readiness.
+- Phase 1 CI pins official **1.8.0**, sets Monad network, and runs unit/fuzz/invariant/gas checks. Local Phase 1 verification used the checksum-matched binary above; 36 tests pass, including 4,096 invariant calls. This proves local contract behavior, not deployment readiness.
 
 ## Networks and ERC-8004
 

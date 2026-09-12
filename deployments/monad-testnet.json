@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "status": "deployed",
+  "generatedAt": "2026-09-12T07:34:06.423Z",
+  "source": {
+    "commit": "c99f7d064c4f8eca2cbd0880c81746bd4b96c7c6",
+    "dirty": true
+  },
+  "toolchain": {
+    "foundry": "1.8.0",
+    "solidity": "0.8.28",
+    "openzeppelinContracts": "5fd1781b1454fd1ef8e722282f86f9293cacf256",
+    "forgeStd": "77041d2ce690e692d6e03cc812b57d1ddaa4d505",
+    "foundryNetwork": "monad"
+  },
+  "deployment": {
+    "chainId": 10143,
+    "blockNumber": 61841093,
+    "transactionHashes": [
+      "0xf38d43f3875087fbda3ccac9aaf89558c49e763cbbfacf4cd2d7168780632ca5",
+      "0x783089ff479c51cb4cebda46ed0512cfda83b3acd2fb4386fb73aee459e57a5c",
+      "0xb3c1884c54e04aec65fceb21724d026c9b2f0761ea151832e63e7e1080c07b77"
+    ],
+    "pauseAuthority": "0xC891D6926Ed618D424ec47BC695Fd2c376F987F6",
+    "erc8004IdentityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+    "negativeClaimsEnabled": false
+  },
+  "contracts": {
+    "AttestiaProfileRegistry": {
+      "address": "0x610b0399d82d8cE68E558a4f7a8CE87d84BdA32E",
+      "source": "src/AttestiaProfileRegistry.sol",
+      "abiSha256": "0x1d481e0dab9536bcee6bb1a352ff18f6ccb2303925cc207aaec3f5d9960b73af",
+      "creationBytecodeKeccak256": "0x8008e8f71bbf3b8c3851c35bd210fce54b7fdb2a7e544d866d080f98af4a13bf",
+      "compiledRuntimeTemplateKeccak256": "0x132b29fe9962fd6a860687e0bc607a59d0b02f980b395d1dd48bee6d7d7d51dd",
+      "deployedRuntimeBytecodeKeccak256": "0x9c3cb0af6b19cb9ad0c19f972744f48141250b7c6067d1598ed712313890e32e"
+    },
+    "ContributionRegistry": {
+      "address": "0x7BFB7e4A6325FC7Dd9141A13039B978852AF6c65",
+      "source": "src/ContributionRegistry.sol",
+      "abiSha256": "0xc00bd71d9e3a73ffc9e880bc08979759190101e79d5e4d66a962f70ea0076da6",
+      "creationBytecodeKeccak256": "0x65824ee189008d5a2f5eaea674f398073b708f742a6ba088afa7d32f6d02da24",
+      "compiledRuntimeTemplateKeccak256": "0xfdfa85409d8b27b70e05e4b8eb0f785e1ce38d38931f4d798d48465afe0ee191",
+      "deployedRuntimeBytecodeKeccak256": "0x106a576adca359844587bfffc2bfbe23d3bcdadd3bf5b10578c4acef03a0da27"
+    },
+    "AttestationRegistry": {
+      "address": "0xa948F485d0ddEb514402B046B3707Dfc16830b71",
+      "source": "src/AttestationRegistry.sol",
+      "abiSha256": "0xc62ef73cb08705c6fe6fa06c801b879b86de867006fa20d223adc329733bc0da",
+      "creationBytecodeKeccak256": "0x4fb3668aeac20d2cb1f97fc5480309c8a0c80005e8c9d0d12878ff5cef47b6ed",
+      "compiledRuntimeTemplateKeccak256": "0x160044790c24784a5cca0fa7edb2fb5f63e9f0046bab06d405f6cc3baa6504c0",
+      "deployedRuntimeBytecodeKeccak256": "0xe395f74910d25a1e45684b5f650221655f49788fafc8ae439dae57488c48f4f4"
+    }
+  }
+}

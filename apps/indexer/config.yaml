@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../node_modules/envio/evm.schema.json
+name: attestia-monad-testnet
+description: Attestia profiles, contributions, and attestations on Monad Testnet
+address_format: lowercase
+disable_default_cross_chain: true
+contracts:
+  - name: AttestiaProfileRegistry
+    abi_file_path: ./abis/AttestiaProfileRegistry.json
+    events:
+      - event: ProfileCreated
+      - event: AgentProfileCreated
+      - event: ProfileUpdated
+      - event: DelegateChanged
+      - event: AgentPolicyUpdated
+      - event: AgentPolicyPaused
+  - name: ContributionRegistry
+    abi_file_path: ./abis/ContributionRegistry.json
+    events:
+      - event: ContributionRegistered
+      - event: ContributionArchived
+  - name: AttestationRegistry
+    abi_file_path: ./abis/AttestationRegistry.json
+    events:
+      - event: AttestationCreated
+      - event: AttestationSuperseded
+      - event: AttestationRevoked
+chains:
+  - id: 10143
+    start_block: 61841076
+    rpc: ${MONAD_TESTNET_RPC_URL:-https://testnet-rpc.monad.xyz}
+    contracts:
+      - name: AttestiaProfileRegistry
+        address: "0x610b0399d82d8ce68e558a4f7a8ce87d84bda32e"
+      - name: ContributionRegistry
+        address: "0x7bfb7e4a6325fc7dd9141a13039b978852af6c65"
+      - name: AttestationRegistry
+        address: "0xa948f485d0ddeb514402b046b3707dfc16830b71"

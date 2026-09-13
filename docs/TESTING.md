@@ -43,3 +43,17 @@ pnpm test:phase1
 ```
 
 Foundry coverage instrumentation cannot compile the intentionally wide `attest(...)` ABI: normal mode reports stack-too-deep and `--ir-minimum` reports a Yul stack exception. Requirement-level tests and invariants remain the acceptance evidence. This limitation does not waive Slither and independent review before mainnet.
+
+## Phase 2
+
+Vitest checks canonicalization, fixed hashes, URL/file/credential rejection, deterministic transaction intent and legal lifecycle transitions. Envio projection tests cover duplicate events, self claims, disputes, supersession, and revocation. HyperIndex code generation type-checks every configured event handler.
+
+```sh
+pnpm test:phase2
+pnpm test:phase2:anvil
+pnpm --filter @attestia/indexer codegen
+pnpm --filter @attestia/indexer typecheck
+pnpm --filter @attestia/web build
+```
+
+The Envio Cloud deployment is active and its GraphQL schema, chain checkpoint, and indexed lifecycle records have been queried successfully. The remaining two-user Privy, PostgreSQL, Pinata, sponsorship, and live Monad acceptance run requires the account values in `.env.example`; its evidence cannot be simulated.

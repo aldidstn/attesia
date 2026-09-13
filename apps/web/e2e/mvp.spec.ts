@@ -20,6 +20,7 @@ test("360px layout has no horizontal overflow and honors reduced motion", async 
 
 test("public API returns structured validation errors", async ({ request }) => {
   const response = await request.get("/api/profiles/not-a-bytes32"); expect(response.status()).toBe(400); const body = await response.json(); expect(body.error).toMatchObject({ code: "BAD_REQUEST" }); expect(body.error.correlationId).toBeTruthy();
+  const analytics = await request.post("/api/analytics", { data: { event: "activation", properties: { details: { wallet: "0x123" } } } }); expect(analytics.status()).toBe(400);
 });
 
 test("verification links prefill the public record", async ({ page }) => {

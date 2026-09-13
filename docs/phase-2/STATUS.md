@@ -19,7 +19,7 @@
 
 Phase 2 remains **integration pending** until the real two-user Privy flow succeeds. Envio Cloud is configured. A PostgreSQL `DATABASE_URL`, a rotated Pinata credential and gateway, and the account-backed Privy flow are still required. PostgreSQL may be supplied by Supabase, Neon, or another compatible provider. The optional local Envio runtime also needs Docker and `ENVIO_API_TOKEN`.
 
-Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 10 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
+Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 11 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
 
 The acceptance run must capture two independent users creating profiles, one contribution and provenance record, two claims, one revocation, the indexed count change, and artifact/metadata/transaction/explorer verification. Sponsorship must be tested separately; self-paid transactions are the visible fallback.
 

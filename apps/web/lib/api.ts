@@ -20,6 +20,8 @@ export function encodeCursor(value: string): string {
 
 export function decodeCursor(value: string | null): string {
   if (!value) return "";
-  try { return Buffer.from(value, "base64url").toString("utf8"); }
-  catch { throw new Error("Invalid pagination cursor"); }
+  if (!/^[A-Za-z0-9_-]+$/.test(value)) throw new Error("Invalid pagination cursor");
+  const decoded = Buffer.from(value, "base64url").toString("utf8");
+  if (!decoded || encodeCursor(decoded) !== value) throw new Error("Invalid pagination cursor");
+  return decoded;
 }

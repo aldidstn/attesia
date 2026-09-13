@@ -8,4 +8,8 @@ describe("opaque pagination cursor", () => {
     expect(cursor).not.toContain(id);
     expect(decodeCursor(cursor)).toBe(id);
   });
+  it("rejects malformed cursors", () => {
+    expect(() => decodeCursor("%%%")) .toThrow("Invalid pagination cursor");
+    expect(() => decodeCursor("a")) .toThrow("Invalid pagination cursor");
+  });
 });

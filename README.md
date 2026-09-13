@@ -18,6 +18,8 @@ git clone https://github.com/aldidstn/attesia.git
 cd attesia
 pnpm install --frozen-lockfile
 cp .env.example .env
+cp apps/web/.env.example apps/web/.env.local
+cp apps/indexer/.env.example apps/indexer/.env
 pnpm dev
 ```
 
@@ -53,9 +55,9 @@ Prototype controls also demonstrate rejected signatures, expired sessions, walle
 | Interface | Next.js 16, React 19, TypeScript 5.9, Tailwind CSS 4, Radix primitives |
 | Design | Violet surfaces, rounded panels, Manrope typography; [design reference](DESIGN.md) |
 | Wallet and auth | Privy embedded/external wallets, HTTP-only app sessions, SIWE fallback, wagmi, viem |
-| Application data | Supabase PostgreSQL through Drizzle ORM |
+| Application data | PostgreSQL through Drizzle ORM; Supabase, Neon, or Vercel Marketplace Postgres |
 | Public evidence | Pinata IPFS uploads from server routes; text/Markdown/JSON up to 4 MB |
-| Chain projection | Envio HyperIndex 3 with GraphQL reads and explicit freshness state |
+| Chain projection | Envio HyperIndex 3; the Monad Testnet cloud indexer is active with GraphQL freshness and lifecycle reads |
 | Specification | JSON Schema 2020-12, Ajv, ajv-formats |
 | Integrity checks | RFC 8785 canonicalization, keccak256 metadata hashes, SHA-256 artifact hashes; canonicalize and @noble/hashes |
 | Testing | Vitest, Playwright, axe-core, Foundry, Anvil |

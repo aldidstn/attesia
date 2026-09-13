@@ -1,0 +1,48 @@
+type Profile {
+  id: ID!
+  owner: String!
+  metadataDigest: String!
+  metadataURI: String!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+  isAgent: Boolean!
+  agentId: BigInt
+}
+
+type Contribution {
+  id: ID!
+  creatorProfileId: String!
+  artifactDigest: String!
+  metadataDigest: String!
+  metadataURI: String!
+  parentId: String
+  registeredBy: String!
+  createdAt: BigInt!
+  archivedAt: BigInt
+  attestations: [Attestation!]! @derivedFrom(field: "contribution")
+}
+
+type Attestation {
+  id: ID!
+  contribution: Contribution!
+  issuer: String!
+  claimType: String!
+  result: Int!
+  metadataDigest: String!
+  metadataURI: String!
+  evidenceDigest: String!
+  evidenceURI: String!
+  issuedAt: BigInt!
+  validUntil: BigInt!
+  supersedes: String
+  supersededBy: String
+  revokedAt: BigInt
+  selfAtIssuance: Boolean!
+  disputed: Boolean!
+}
+
+type ChainState {
+  id: ID!
+  latestBlock: BigInt!
+  latestTimestamp: BigInt!
+}

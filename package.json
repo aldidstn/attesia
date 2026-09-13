@@ -1,18 +1,23 @@
 {
-  "name": "attestia-phase-zero",
+  "name": "attestia",
   "private": true,
   "type": "module",
   "engines": { "node": ">=22.0.0" },
   "packageManager": "pnpm@10.32.1",
   "scripts": {
-    "dev": "python3 -m http.server 4173 --bind 127.0.0.1 --directory docs/phase-0",
+    "dev": "pnpm --filter @attestia/web dev",
+    "dev:phase0": "python3 -m http.server 4173 --bind 127.0.0.1 --directory docs/phase-0",
+    "dev:indexer": "pnpm --filter @attestia/indexer dev",
     "check": "pnpm test:phase0:spec",
     "contracts:manifest": "node scripts/build-contract-manifest.mjs",
+    "contracts:web": "node scripts/export-web-contracts.mjs",
     "test:phase0:spec": "node docs/phase-0/scripts/check-spec.mjs && node docs/phase-0/scripts/check-docs.mjs && node scripts/check-env-template.mjs && node --check docs/phase-0/wireflow/app.js",
     "test:phase0": "pnpm test:phase0:spec && pnpm test:ui",
     "test:phase1": "forge fmt --check && forge lint src script --severity high med --deny warnings && forge test --network monad && forge snapshot --network monad --check && forge build --sizes",
     "test:ui": "playwright test",
-    "test": "pnpm test:phase0 && pnpm test:phase1"
+    "test:phase2": "pnpm --filter @attestia/web test && pnpm --filter @attestia/web typecheck && pnpm --filter @attestia/indexer codegen && pnpm --filter @attestia/indexer typecheck && pnpm --filter @attestia/indexer test && pnpm --filter @attestia/web test:e2e && pnpm test:phase2:anvil",
+    "test:phase2:anvil": "bash scripts/test-anvil-phase2.sh",
+    "test": "pnpm test:phase0 && pnpm test:phase1 && pnpm test:phase2"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

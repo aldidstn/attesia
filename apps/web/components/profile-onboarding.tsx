@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { encodeFunctionData, keccak256, stringToHex } from "viem";
 import { advanceOperation, beginOperation, establishPrivySession, uploadPublicFile } from "@/lib/browser-wallet";
 import { contracts } from "@/lib/contracts.generated";
+import { privyAppId } from "@/lib/config";
 import { canonicalJson, metadataDigest } from "@/lib/integrity";
 import { publicClient } from "@/lib/onchain";
 import { useAttestiaWrite } from "@/lib/use-attestia-write";
@@ -39,4 +40,4 @@ function ProfileForm() {
   }
   return <form className="panel form-panel" onSubmit={publish}><p className="eyebrow">Human profile · Public metadata</p><h1 className="section-title">Create or update your profile</h1><p className="lede">Your wallet has one deterministic profile ID. Saving creates it the first time and updates it thereafter.</p><div className="stack composer-fields"><div className="field"><label htmlFor="name">Display name</label><input id="name" className="input" value={name} onChange={(e) => setName(e.target.value)} minLength={2} maxLength={80} required /></div><div className="field"><label htmlFor="bio">Bio</label><textarea id="bio" className="input" value={bio} onChange={(e) => setBio(e.target.value)} maxLength={280} /></div><div className="field"><label htmlFor="skills">Skills, comma separated</label><input id="skills" className="input" value={skills} onChange={(e) => setSkills(e.target.value)} /></div><div className="publication-warning"><b>Publication is permanent.</b><p>Only include information you want anyone to read.</p></div><button className="pill pill-primary">{authenticated ? "Save profile" : "Sign in to continue"}</button>{status && <p className="operation-status" role="status">{status}</p>}</div></form>;
 }
-export function ProfileOnboarding() { return process.env.NEXT_PUBLIC_PRIVY_APP_ID ? <ProfileForm /> : <section className="panel form-panel"><span className="badge" data-tone="pending">Configuration needed</span><h1 className="section-title">Connect Privy to create profiles</h1><p className="lede">Set the public App ID and server verification key. Read-only verification remains available.</p></section>; }
+export function ProfileOnboarding() { return privyAppId() ? <ProfileForm /> : <section className="panel form-panel"><span className="badge" data-tone="pending">Configuration needed</span><h1 className="section-title">Connect Privy to create profiles</h1><p className="lede">Set the public App ID and server verification key. Read-only verification remains available.</p></section>; }

@@ -5,7 +5,7 @@ import type { Hex } from "viem";
 import { monadWallet } from "./browser-wallet";
 import { monadTestnet } from "./chain";
 import { contracts } from "./contracts.generated";
-import { canOfferSelfPay } from "./sponsorship";
+import { canOfferSelfPay, isSponsorshipEnabled } from "./sponsorship";
 
 type SponsorshipKind = "create_profile" | "register_contribution" | "create_attestation" | "revoke_attestation";
 const sponsoredTargets: Record<SponsorshipKind, string> = {
@@ -17,7 +17,7 @@ const sponsoredTargets: Record<SponsorshipKind, string> = {
 
 export function useAttestiaWrite() {
   const { sendTransaction } = useSendTransaction();
-  const sponsorshipEnabled = process.env.NEXT_PUBLIC_SPONSORSHIP_ENABLED === "true";
+  const sponsorshipEnabled = isSponsorshipEnabled();
 
   async function writeContract({ wallet, to, data, sponsorshipKind }: { wallet: ConnectedWallet; to: `0x${string}`; data: Hex; sponsorshipKind?: SponsorshipKind }) {
     await wallet.switchChain(monadTestnet.id);

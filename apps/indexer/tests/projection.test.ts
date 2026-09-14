@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { claimCounts, projectClaim, type Projection } from "../src/projection";
-const empty = (): Projection => ({ claims: new Map(), activeByKey: new Map() });
+const empty = (): Projection => ({ claims: new Map() });
 describe("claim lifecycle projection", () => {
   it("is idempotent and excludes self claims from external counts", () => {
     const state = empty(); const event = { type: "created" as const, claim: { id: "a", contributionId: "c", issuer: "0x1", claimType: "COMPLETION", self: true, disputed: false } };

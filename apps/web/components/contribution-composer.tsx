@@ -5,11 +5,12 @@ import { ArrowLeft, ArrowRight, Check, UploadSimple } from "@phosphor-icons/reac
 import { contributionTypes } from "@/lib/schemas";
 import { canonicalJson, metadataDigest, sha256, validatePublicUrl, validateTextArtifact } from "@/lib/integrity";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
-import { encodeAbiParameters, keccak256, stringToHex } from "viem";
-import { advanceOperation, beginOperation, establishPrivySession, monadWallet, uploadPublicFile } from "@/lib/browser-wallet";
+import { encodeAbiParameters, encodeFunctionData, keccak256, stringToHex } from "viem";
+import { advanceOperation, beginOperation, establishPrivySession, uploadPublicFile } from "@/lib/browser-wallet";
 import { contracts } from "@/lib/contracts.generated";
 import { publicClient } from "@/lib/onchain";
 import { track } from "@/lib/analytics";
+import { useAttestiaWrite } from "@/lib/use-attestia-write";
 
 type Draft = { title: string; summary: string; type: (typeof contributionTypes)[number]; creatorProfileId: string; parentId: string; createdAt: string; aiUsed: boolean; tools: string; collaborators: string; sources: string; fileName?: string; artifactDigest?: string };
 const blank: Draft = { title: "", summary: "", type: "pull_request", creatorProfileId: "", parentId: "", createdAt: "", aiUsed: false, tools: "", collaborators: "", sources: "" };
@@ -17,6 +18,7 @@ const key = "attestia:contribution-draft";
 
 function PublishButton({ draft, file, metadata }: { draft: Draft; file?: File; metadata: Record<string, unknown> }) {
   const { authenticated, login, getAccessToken } = usePrivy(); const { wallets } = useWallets(); const [status, setStatus] = useState("");
+  const { writeContract, sponsorshipEnabled } = useAttestiaWrite();
   async function publish() {
     if (!authenticated) { login(); return; }
     try {
@@ -32,12 +34,13 @@ function PublishButton({ draft, file, metadata }: { draft: Draft; file?: File; m
       const duplicate = await publicClient.readContract({ ...contracts.ContributionRegistry, functionName: "contributionByRecordKey", args: [recordKey] });
       if (duplicate !== `0x${"0".repeat(64)}`) throw new Error(`Exact duplicate already exists: ${duplicate}`);
       const id = recordKey; const parent = draft.parentId || `0x${"0".repeat(64)}`; const operation = await beginOperation("register_contribution", wallet.address, digest, id); if (operation.transactionHash) { setStatus(`Already submitted ${operation.transactionHash}`); return; }
-      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting signature…"); const client = await monadWallet(await wallet.getEthereumProvider(), wallet.address as `0x${string}`);
-      const hash = await client.writeContract({ ...contracts.ContributionRegistry, functionName: "registerContribution", args: [id, draft.creatorProfileId as `0x${string}`, artifact.artifactDigest, digest, metadataUpload.uri, parent as `0x${string}`] });
+      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting signature…");
+      const data = encodeFunctionData({ ...contracts.ContributionRegistry, functionName: "registerContribution", args: [id, draft.creatorProfileId as `0x${string}`, artifact.artifactDigest, digest, metadataUpload.uri, parent as `0x${string}`] });
+      const { hash } = await writeContract({ wallet, to: contracts.ContributionRegistry.address, data, sponsorshipKind: "register_contribution" });
       await advanceOperation(operation.id, "submitted", hash); track("activation", { contributionType: draft.type }); localStorage.removeItem(key); setStatus(`Submitted ${hash}. Waiting for finality and indexing.`);
     } catch (error) { setStatus(error instanceof Error ? error.message : "Publication failed"); }
   }
-  return <><span className="badge" data-tone={process.env.NEXT_PUBLIC_SPONSORSHIP_ENABLED === "true" ? "active" : "pending"}>{process.env.NEXT_PUBLIC_SPONSORSHIP_ENABLED === "true" ? "Sponsorship requested · self-pay fallback" : "Self-paid testnet transaction"}</span><button type="button" className="pill pill-primary" onClick={publish}>{authenticated ? "Publish on Monad" : "Sign in to publish"}</button>{status && <p className="operation-status" role="status">{status}</p>}</>;
+  return <><span className="badge" data-tone={sponsorshipEnabled ? "active" : "pending"}>{sponsorshipEnabled ? "Sponsorship requested · self-pay fallback" : "Self-paid testnet transaction"}</span><button type="button" className="pill pill-primary" onClick={publish}>{authenticated ? "Publish on Monad" : "Sign in to publish"}</button>{status && <p className="operation-status" role="status">{status}</p>}</>;
 }
 
 export function ContributionComposer() {
@@ -49,7 +52,7 @@ export function ContributionComposer() {
     setDraft(saved ? JSON.parse(saved) : { ...blank, createdAt: new Date().toISOString() }); setHydrated(true);
   }, []);
   useEffect(() => { if (hydrated) localStorage.setItem(key, JSON.stringify(draft)); }, [draft, hydrated]);
-  const update = <K extends keyof Draft>(field: K, value: Draft[K]) => { const next = { ...draft, [field]: value }; localStorage.setItem(key, JSON.stringify(next)); setDraft(next); };
+  const update = <K extends keyof Draft>(field: K, value: Draft[K]) => setDraft((current) => ({ ...current, [field]: value }));
   async function selectFile(file?: File) {
     if (!file) return; try { const bytes = new Uint8Array(await file.arrayBuffer()); validateTextArtifact(file, bytes); setFile(file); update("fileName", file.name); update("artifactDigest", await sha256(bytes)); setError(""); } catch (cause) { setError(cause instanceof Error ? cause.message : "File rejected"); }
   }

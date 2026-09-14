@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Fingerprint, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
-import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return <div className="page">
@@ -8,7 +7,7 @@ export default function HomePage() {
       <p className="eyebrow">Evidence-backed contribution records</p>
       <h1 className="display">Make work<br /><span className="data">verifiable.</span></h1>
       <p className="lede">Publish a tamper-evident record, collect independent claims, and let anyone verify the evidence trail on Monad Testnet.</p>
-      <div className="cluster hero-actions"><Button asChild className="pill-primary"><Link href="/contributions/new">Publish contribution <ArrowRight /></Link></Button><Button asChild className="pill-secondary"><Link href="/verify">Verify a record</Link></Button></div>
+      <div className="cluster hero-actions"><Link className="pill pill-primary" href="/contributions/new">Publish contribution <ArrowRight /></Link><Link className="pill pill-secondary" href="/verify">Verify a record</Link></div>
     </section>
     <section className="feature-grid" aria-label="How Attestia works">
       <article className="panel feature"><Fingerprint size={28} aria-hidden="true" /><p className="eyebrow">01 · Publish</p><h2>Bind work to evidence</h2><p>Artifact SHA-256 and canonical metadata digest anchor the public record.</p></article>

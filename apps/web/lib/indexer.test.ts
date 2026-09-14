@@ -1,9 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { indexerCheckpoint, indexerOperationVisible } from "./indexer";
+import { indexerCheckpoint, indexerEndpoint, indexerOperationVisible } from "./indexer";
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); delete process.env.ENVIO_GRAPHQL_URL; delete process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL; });
 
 describe("Envio projection", () => {
+  it("prefers the server-only endpoint", () => {
+    process.env.ENVIO_GRAPHQL_URL = "https://server.example/graphql";
+    process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL = "https://public.example/graphql";
+    expect(indexerEndpoint()).toBe("https://server.example/graphql");
+  });
   it("uses the String primary-key type expected by HyperIndex", async () => {
     process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL = "https://indexer.example/v1/graphql";
     const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { ChainState_by_pk: { latestBlock: "42", latestTimestamp: "7" } } }) });

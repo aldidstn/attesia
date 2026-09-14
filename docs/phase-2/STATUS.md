@@ -14,14 +14,16 @@
 - Envio Cloud development deployment `db48410` from the `envio` branch is active and fully synced on Monad Testnet. The application uses its tested public GraphQL endpoint and shows indexed claim counts and checkpoint blocks.
 - Public/read and authenticated/write APIs with correlation IDs, structured errors, ETags where records are immutable, Retry-After on service outages, and opaque ID cursors.
 - Privacy-safe analytics allowlist. Wallet addresses, evidence, source contents, and metadata fields are rejected.
+- Privy-sponsored writes for the four allowlisted MVP actions, with an explicit self-paid fallback and no retry after user rejection or ambiguous provider failure.
+- Vercel Neon compatibility through `DATABASE_URL` or the integration-provided `storage_DATABASE_URL`.
 
-## Acceptance pending external configuration
+## Acceptance pending account interaction
 
-Phase 2 remains **integration pending** until the real two-user Privy flow succeeds. Envio Cloud is configured. A PostgreSQL `DATABASE_URL`, a rotated Pinata credential and gateway, and the account-backed Privy flow are still required. PostgreSQL may be supplied by Supabase, Neon, or another compatible provider. The optional local Envio runtime also needs Docker and `ENVIO_API_TOKEN`.
+Phase 2 remains **integration pending** until the real two-user Privy flow succeeds. The Neon database is reachable and migrated, the Pinata credential authenticates, and the Envio GraphQL endpoint responds successfully. The production deployment still needs the current database fallback build. The optional local Envio runtime needs Docker and `ENVIO_API_TOKEN`; hosted GraphQL does not.
 
-Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 11 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
+Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 15 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
 
-The acceptance run must capture two independent users creating profiles, one contribution and provenance record, two claims, one revocation, the indexed count change, and artifact/metadata/transaction/explorer verification. Sponsorship must be tested separately; self-paid transactions are the visible fallback.
+The remaining acceptance run must capture two independent users creating profiles, one contribution and provenance record, two claims, one revocation, the indexed count change, and artifact/metadata/transaction/explorer verification. Privy App Pays must be enabled for Monad Testnet before proving one sponsored write and the self-paid mode separately.
 
 ## Boundaries
 

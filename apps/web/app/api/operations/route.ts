@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const [row] = await db().insert(operations).values({ id, ownerSubject: session.subject, wallet: body.wallet.toLowerCase(), kind: body.kind, state: "draft", payloadDigest: body.payloadDigest, recordId: body.recordId }).onConflictDoNothing().returning();
     if (row) return json(row, { status: 201 });
     const [existing] = await db().select().from(operations).where(eq(operations.id, id)).limit(1); return json(existing);
-  } catch (error) { return apiError("CONFIG_REQUIRED", error instanceof Error ? error.message : "Operations unavailable", request); }
+  } catch (error) { const message = error instanceof Error ? error.message : "Operations unavailable"; return apiError(message.startsWith("Invalid operation") ? "BAD_REQUEST" : "CONFIG_REQUIRED", message, request); }
 }
 export async function PATCH(request: Request) {
   try {

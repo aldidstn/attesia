@@ -1,14 +1,16 @@
 "use client";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
-import { keccak256, stringToHex } from "viem";
-import { advanceOperation, beginOperation, establishPrivySession, monadWallet, uploadPublicFile } from "@/lib/browser-wallet";
+import { encodeFunctionData, keccak256, stringToHex } from "viem";
+import { advanceOperation, beginOperation, establishPrivySession, uploadPublicFile } from "@/lib/browser-wallet";
 import { contracts } from "@/lib/contracts.generated";
 import { canonicalJson, metadataDigest } from "@/lib/integrity";
 import { publicClient } from "@/lib/onchain";
+import { useAttestiaWrite } from "@/lib/use-attestia-write";
 
 function ProfileForm() {
   const { authenticated, login, getAccessToken } = usePrivy(); const { wallets } = useWallets();
+  const { writeContract } = useAttestiaWrite();
   const [name, setName] = useState(""); const [bio, setBio] = useState(""); const [skills, setSkills] = useState(""); const [status, setStatus] = useState("");
   useEffect(() => { const saved = localStorage.getItem("attestia:profile-draft"); if (saved) { const value = JSON.parse(saved);
     // Profile recovery must happen after hydration because localStorage is browser-only.
@@ -27,10 +29,11 @@ function ProfileForm() {
       const id = keccak256(stringToHex(`attestia:profile:${wallet.address.toLowerCase()}`)); const digest = metadataDigest(metadata);
       const exists = await publicClient.readContract({ ...contracts.AttestiaProfileRegistry, functionName: "profileExists", args: [id] });
       const operation = await beginOperation(exists ? "update_profile" : "create_profile", wallet.address, digest, id); if (operation.transactionHash) { setStatus(`Already submitted ${operation.transactionHash}`); return; }
-      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting signature…"); const client = await monadWallet(await wallet.getEthereumProvider(), wallet.address as `0x${string}`);
-      const hash = exists
-        ? await client.writeContract({ ...contracts.AttestiaProfileRegistry, functionName: "updateProfile", args: [id, uploaded.uri, digest] })
-        : await client.writeContract({ ...contracts.AttestiaProfileRegistry, functionName: "createProfile", args: [id, uploaded.uri, digest] });
+      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting signature…");
+      const data = exists
+        ? encodeFunctionData({ ...contracts.AttestiaProfileRegistry, functionName: "updateProfile", args: [id, uploaded.uri, digest] })
+        : encodeFunctionData({ ...contracts.AttestiaProfileRegistry, functionName: "createProfile", args: [id, uploaded.uri, digest] });
+      const { hash } = await writeContract({ wallet, to: contracts.AttestiaProfileRegistry.address, data, sponsorshipKind: exists ? undefined : "create_profile" });
       await advanceOperation(operation.id, "submitted", hash); localStorage.removeItem("attestia:profile-draft"); setStatus(`${exists ? "Update" : "Profile"} submitted ${hash}`);
     } catch (error) { setStatus(error instanceof Error ? error.message : "Profile creation failed"); }
   }

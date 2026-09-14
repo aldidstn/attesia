@@ -1,16 +1,18 @@
 "use client";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useState } from "react";
-import { encodeAbiParameters, keccak256, stringToHex } from "viem";
-import { advanceOperation, beginOperation, establishPrivySession, monadWallet, uploadPublicFile } from "@/lib/browser-wallet";
+import { encodeAbiParameters, encodeFunctionData, keccak256, stringToHex } from "viem";
+import { advanceOperation, beginOperation, establishPrivySession, uploadPublicFile } from "@/lib/browser-wallet";
 import { contracts } from "@/lib/contracts.generated";
 import { canonicalJson, metadataDigest, sha256, validatePublicUrl } from "@/lib/integrity";
 import { claimTypes } from "@/lib/schemas";
 import { track } from "@/lib/analytics";
+import { useAttestiaWrite } from "@/lib/use-attestia-write";
 
 const ZERO = `0x${"0".repeat(64)}` as `0x${string}`; const WORKSPACE = keccak256(stringToHex("attestia:public"));
 function Actions({ contributionId }: { contributionId: `0x${string}` }) {
   const { authenticated, login, getAccessToken } = usePrivy(); const { wallets } = useWallets();
+  const { writeContract } = useAttestiaWrite();
   const [claimType, setClaimType] = useState<(typeof claimTypes)[number]>("COMPLETION"); const [evidence, setEvidence] = useState(""); const [notes, setNotes] = useState(""); const [status, setStatus] = useState("");
   const [rubricId, setRubricId] = useState(""); const [rubricDigest, setRubricDigest] = useState(""); const [rubricUri, setRubricUri] = useState(""); const [rubricVersion, setRubricVersion] = useState(1); const [invitee, setInvitee] = useState("");
   async function session() { if (!authenticated) { login(); throw new Error("Sign in to continue; your input is preserved"); } const wallet = wallets[0]; const token = await getAccessToken(); if (!wallet || !token) throw new Error("Session expired; your input is preserved"); await establishPrivySession(token, wallet.address); return wallet; }
@@ -24,8 +26,9 @@ function Actions({ contributionId }: { contributionId: `0x${string}` }) {
       setStatus("Publishing claim metadata…"); const upload = await uploadPublicFile(new File([canonicalJson(metadata)], "attestation.json", { type: "application/json" })); const digest = metadataDigest(metadata);
       const attestationId = keccak256(encodeAbiParameters([{ type: "address" }, { type: "bytes32" }, { type: "bytes32" }, { type: "bytes32" }], [wallet.address as `0x${string}`, contributionId, keccak256(stringToHex(claimType)), digest]));
       const operation = await beginOperation("create_attestation", wallet.address, digest, attestationId); if (operation.transactionHash) { setStatus(`Already submitted ${operation.transactionHash}`); return; }
-      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting reviewer signature…"); const client = await monadWallet(await wallet.getEthereumProvider(), wallet.address as `0x${string}`);
-      const hash = await client.writeContract({ ...contracts.AttestationRegistry, functionName: "attest", args: [attestationId, contributionId, keccak256(stringToHex(claimType)), 1, claimType === "QUALITY" ? WORKSPACE : ZERO, claimType === "QUALITY" ? rubricId as `0x${string}` : ZERO, claimType === "QUALITY" ? rubricVersion : 0, claimType === "QUALITY" ? rubricDigest as `0x${string}` : ZERO, digest, upload.uri, evidenceDigest, evidence, 0n, ZERO] }); await advanceOperation(operation.id, "submitted", hash); track("reviewer_conversion", { claimType }); setStatus(`Submitted ${hash}. The indexer may lag behind finality.`);
+      await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting reviewer signature…");
+      const data = encodeFunctionData({ ...contracts.AttestationRegistry, functionName: "attest", args: [attestationId, contributionId, keccak256(stringToHex(claimType)), 1, claimType === "QUALITY" ? WORKSPACE : ZERO, claimType === "QUALITY" ? rubricId as `0x${string}` : ZERO, claimType === "QUALITY" ? rubricVersion : 0, claimType === "QUALITY" ? rubricDigest as `0x${string}` : ZERO, digest, upload.uri, evidenceDigest, evidence, 0n, ZERO] });
+      const { hash } = await writeContract({ wallet, to: contracts.AttestationRegistry.address, data, sponsorshipKind: "create_attestation" }); await advanceOperation(operation.id, "submitted", hash); track("reviewer_conversion", { claimType }); setStatus(`Submitted ${hash}. The indexer may lag behind finality.`);
     } catch (error) { setStatus(error instanceof Error ? error.message : "Attestation failed"); }
   }
   async function invite() { try { await session(); const response = await fetch("/api/invitations", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ contributionId, recipient: invitee }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error.message); setStatus(`Invitation prepared: ${body.id}`); } catch (error) { setStatus(error instanceof Error ? error.message : "Invitation failed"); } }

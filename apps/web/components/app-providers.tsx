@@ -5,12 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { monadTestnet } from "@/lib/chain";
+import { privyAppId } from "@/lib/config";
 
 const wagmiConfig = createConfig({ chains: [monadTestnet], transports: { [monadTestnet.id]: http() } });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
-  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+  const appId = privyAppId();
   const content = <WagmiProvider config={wagmiConfig}><QueryClientProvider client={queryClient}>{children}</QueryClientProvider></WagmiProvider>;
 
   if (!appId) return content;

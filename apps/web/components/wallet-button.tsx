@@ -1,6 +1,7 @@
 "use client";
 
 import { usePrivy } from "@privy-io/react-auth";
+import { privyAppId } from "@/lib/config";
 
 function ConfigNeeded() {
   return <span className="badge" data-tone="pending">Auth setup needed</span>;
@@ -15,5 +16,5 @@ function PrivyWalletButton() {
 }
 
 export function WalletButton() {
-  return process.env.NEXT_PUBLIC_PRIVY_APP_ID ? <PrivyWalletButton /> : <ConfigNeeded />;
+  return privyAppId() ? <PrivyWalletButton /> : <ConfigNeeded />;
 }

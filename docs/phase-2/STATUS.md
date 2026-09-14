@@ -21,7 +21,7 @@
 
 Phase 2 remains **integration pending** until the real two-user Privy flow succeeds. The production deployment reads the migrated Neon database and hosted Envio projection successfully, and the Pinata credential authenticates. The optional local Envio runtime needs Docker and `ENVIO_API_TOKEN`; hosted GraphQL does not.
 
-Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 17 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
+Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 18 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The live Envio projection currently contains two profiles, one contribution, two attestations, and the expected revocation lifecycle from the Phase 1 smoke run.
 
 Privy App Pays is enabled for Monad Testnet and accepts client-initiated requests. The remaining acceptance run must capture two independent users creating profiles, one contribution and provenance record, two claims, one revocation, the indexed count change, artifact/metadata/transaction/explorer verification, one sponsored write, and the self-paid mode separately.
 

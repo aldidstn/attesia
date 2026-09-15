@@ -1,18 +1,24 @@
 # Attestia — Product Requirements Document
 
-**Version:** 1.2<br>
+**Version:** 1.3<br>
 **Status:** Build-ready draft  
 **Primary network:** Monad Testnet (build/staging) → Monad Mainnet (**live network since 24 November 2025** — treat as a real-value environment, not a future milestone)  
 **Product category:** Trust, Identity & AI Infrastructure  
 **Prepared from:** `attestia_business_model.pdf`, Monad official documentation, Ethereum developer documentation, Privy documentation, EAS/ERC-8004 ecosystem documentation, and current coverage of Monad network status<br>
 **Research cut-off:** 12 September 2026<br>
-**Revision cut-off:** 12 September 2026 (v1.2 — see Changelog)
+**Revision cut-off:** 16 September 2026 (v1.3 — see Changelog)
 
 > **Positioning:** Attestia turns digital contributions into portable trust for people and AI agents.
 
 ---
 
 ## Changelog
+
+### v1.2 → v1.3
+
+- Made user-paid MON the only transaction-fee path. Attestia does not fund gas credits, operate a paymaster, or silently subsidize writes.
+- Retained Privy for optional email/external-wallet login, TEE-backed embedded wallets, token verification, and application sessions. Privy is the wallet-security and onboarding boundary, not the gas payer.
+- Removed sponsored-write acceptance and cost requirements. The MVP now proves the full two-user lifecycle with normal Monad transactions paid by each connected wallet.
 
 ### v1.1 → v1.2
 
@@ -84,12 +90,12 @@ Attestia does **not** claim to detect AI-generated content, prove objective trut
 ### 2.3 Key assumptions requiring validation
 
 - DAOs will accept reviewer-signed evidence as more useful than raw GitHub activity.
-- Contributors are willing to connect a wallet if gas can be sponsored or interactions are minimized.
+- Contributors are willing to connect or create a wallet and hold enough MON for transparent transaction fees.
 - Reviewers will complete structured verification without financial incentives.
 - One organization will act as a design partner and seed credible attesters.
 - Public contribution metadata is sufficient for the hackathon; private workspace demand is post-MVP.
 - Reviewers, admins, and pricing tiers behave as sketched even though no willingness-to-pay data exists yet (see §20).
-- Privy authentication, embedded wallets, and app-paid gas sponsorship work on Monad Testnet within the hackathon window; prove this with an account-backed integration test before relying on it in the demo (see §9.4–9.5).
+- Privy authentication, external-wallet login, and TEE-backed embedded wallets work on Monad Testnet without exposing seed phrases or private keys to Attestia (see §9.4–9.5).
 - ERC-8004's Identity Registry interface stays stable enough between now and ship date to avoid a breaking adapter rewrite (see §10.4).
 
 ### 2.4 Competitive and prior-art landscape
@@ -553,21 +559,20 @@ ERC-8004 Identity + Reputation Registries ──► Agent adapter/read model
 - Public RPC endpoints are acceptable for demos but production uses a provider with SLA and fallback.
 - Avoid polling historical logs per page request; query the indexer.
 
-### 9.4 Gas sponsorship and account abstraction
+### 9.4 Wallet-paid MON gas
 
-Privy is the selected MVP sponsorship path. Its current documentation lists app-paid gas sponsorship for Monad Mainnet and Monad Testnet and describes an EIP-7702/paymaster flow for EVM wallets. This documented capability is a dependency claim, not proof that Attestia's account and contract configuration works; Phase 1 must demonstrate it end to end.
+Every Attestia write is a normal Monad transaction paid in MON by the connected wallet. The MVP does not use Privy App Pays, gas credits, an ERC-4337 paymaster, or a custom relayer.
 
-- **Mechanism:** use Privy app-paid gas sponsorship for eligible EVM transactions. The client requests sponsorship explicitly; Attestia does not operate a custom bundler or paymaster in MVP.
-- **Sponsorship scope:** sponsor only profile creation, `registerContribution`, `attest`, and `revoke` calls tied to an authenticated session and an allowlisted Attestia deployment. Never sponsor arbitrary targets or calldata.
-- **Abuse prevention:** per-wallet daily sponsored-transaction cap, per-workspace monthly sponsorship budget, and a kill switch that falls back to self-paid gas without blocking the flow if the budget is exhausted.
-- **Fallback UX:** if sponsorship is unavailable (budget exhausted, relayer down, or user is on an unsupported wallet), the app degrades to a normal self-paid transaction with a clear explanation — it never silently fails the write.
-- **Acceptance:** two independent Privy users complete sponsored profile/contribution/attestation writes on Monad Testnet; the same flow succeeds self-paid when sponsorship is disabled; rejected signatures, wrong-chain wallets, duplicate requests, and provider outages preserve state and do not create duplicate records.
-- **Cost visibility:** track sponsored-gas spend as an operating cost against the unit-economics model in §20; this is real MON spend against a live-mainnet price, not a testnet-only convenience (see §13).
+- **Mechanism:** use the selected Privy embedded wallet or external wallet to sign and broadcast directly on Monad.
+- **Cost visibility:** show the target network and make it clear that the wallet pays MON gas before signature. Never describe a transaction as free or sponsored.
+- **Insufficient balance:** preserve the draft, expose the wallet address for copying, and explain that the wallet needs MON. Do not switch to another payer or wallet silently.
+- **Authorization:** contract ownership and delegation remain based on the signing wallet. Privy login identity never replaces onchain authorization.
+- **Acceptance:** two independent Privy users complete profile, contribution, attestation, and revocation writes with MON; rejected signatures, wrong-chain wallets, insufficient balance, duplicate requests, and provider outages preserve state and do not create duplicate records.
 
 ### 9.5 Privy integration boundary
 
 - Initialize `PrivyProvider` near the application root and render protected actions only after both authentication and wallet state report ready.
-- Set explicit `defaultChain` and `supportedChains`; never rely on Privy's default network list. Testnet and production use separate Privy app clients, allowed origins, chain configuration, sponsorship budgets, and secrets.
+- Set explicit `defaultChain` and `supportedChains`; never rely on Privy's default network list. Testnet and production use separate Privy app clients, allowed origins, chain configuration, and secrets.
 - Create an embedded Ethereum wallet on login only for users without a wallet. Preserve the external-wallet path and never create an additional wallet silently.
 - Keep Privy app secret and token verification server-side. The browser receives only the public app/client identifiers.
 - Apply Privy's required CSP origins narrowly alongside Attestia's own `connect-src`, `frame-src`, and `child-src` requirements. Production CSP and allowed domains are release-gated configuration.
@@ -796,7 +801,7 @@ Monad uses Ethereum’s address space and familiar transaction envelopes, suppor
 - Full nodes do not expose arbitrary historical state indefinitely. Persist event projections and source block metadata with an indexer.
 - Public RPCs are rate-limited. Batch reads, cache immutable records, and use production RPC fallback.
 - Standard Solidity semantics remain serially equivalent despite parallel execution. Do not add unsafe concurrency assumptions to contracts.
-- **Mainnet is a live, real-value network, not a future target.** Monad mainnet has been running since late November 2025 with a real MON token; treat every mainnet deployment decision (gas limits, sponsorship budget, upgrade timing) as a real-money decision from Phase 5 onward, not a low-stakes formality. The network has an active upgrade/hard-fork cadence — re-verify current gas/execution assumptions against the live fork immediately before each mainnet deploy, not just once at design time.
+- **Mainnet is a live, real-value network, not a future target.** Monad mainnet has been running since late November 2025 with a real MON token; treat every mainnet deployment decision (gas limits, user cost visibility, upgrade timing) as a real-money decision from Phase 5 onward, not a low-stakes formality. The network has an active upgrade/hard-fork cadence — re-verify current gas/execution assumptions against the live fork immediately before each mainnet deploy, not just once at design time.
 
 ### 13.3 Confirmation policy
 
@@ -907,7 +912,7 @@ These risks are named in §22 but need a concrete product/process answer, not ju
 
 - Unit tests for canonicalization, hash verification, scoring, auth nonce handling.
 - Privy integration tests for email and external-wallet login, one-time embedded-wallet provisioning, access-token rejection, session expiry, wallet/profile mismatch, and explicit Monad chain configuration.
-- Sponsored-transaction tests for success, user rejection, budget exhaustion, provider failure, idempotent retry, and the self-paid fallback.
+- Wallet-paid transaction tests for success, insufficient MON, user rejection, provider failure, wrong chain, and idempotent retry.
 - Integration tests against local Anvil `--network monad`.
 - Contract/API schema tests from generated ABIs.
 - Playwright end-to-end: connect/login, submit, attest, revoke, verify.
@@ -1101,7 +1106,7 @@ Do not monetize attestation issuance itself in MVP; pay-to-attest creates trust 
 
 Every price above is a hypothesis with zero supporting evidence. Before committing engineering time to billing infrastructure:
 
-- **Cost baseline first.** Estimate solo-builder monthly infra cost at expected pilot scale — RPC/indexer hosting (Envio), IPFS pinning, KMS + private object storage, and sponsored-gas spend (§9.4) — to know how many free-tier users the model can absorb before the free tier becomes a net cost problem.
+- **Cost baseline first.** Estimate solo-builder monthly infra cost at expected pilot scale — RPC/indexer hosting (Envio), IPFS pinning, and KMS + private object storage — to know how many free-tier users the model can absorb before the free tier becomes a net cost problem. User transaction gas is not an Attestia operating expense.
 - **Validate willingness-to-pay before pricing pages exist.** During Phase 0 discovery interviews (§17), explicitly ask design-partner admins what they currently pay for reviewer/workflow tooling and whether $29–$499/month is plausible for their org size — do not wait until Phase 6 to learn the pricing was wrong.
 - **No market-sizing claim yet.** This PRD makes no TAM/SAM/SOM claim for DAO/hackathon reputation tooling; treat that as an open research task for whoever owns fundraising or investor conversations, not an assumption baked into the roadmap.
 
@@ -1122,7 +1127,7 @@ Every price above is a hypothesis with zero supporting evidence. Before committi
 - [ ] Three registries deployed and source verified.
 - [ ] Privy login works for a walletless user and an external-wallet user; embedded-wallet creation occurs only when needed.
 - [ ] Monad Testnet is explicitly configured as the allowed chain; wrong-chain submission is blocked.
-- [ ] One sponsored write and the self-paid fallback both succeed end to end.
+- [x] Two independent Privy users complete wallet-paid Monad Testnet writes using MON.
 - [ ] Deployment manifest includes chain, address, block, compiler, commit, ABI hash.
 - [ ] Human profile, agent, contribution, two attestations, and revocation visible.
 - [ ] Metadata digest verification succeeds.
@@ -1166,7 +1171,7 @@ Every price above is a hypothesis with zero supporting evidence. Before committi
 ### Dependencies
 
 - Monad Testnet/Mainnet RPC and explorers.
-- Privy React SDK, app/client configuration, allowed domains, token verification, embedded-wallet availability, and Monad sponsorship support; pin the tested SDK version and keep self-paid writes available.
+- Privy React SDK, app/client configuration, allowed domains, token verification, TEE-backed embedded-wallet availability, and external-wallet login; pin the tested SDK version.
 - Official Foundry v1.8+ and viable viem version.
 - ERC-8004 registry availability/address verification per environment — re-verify per §13.4, since the spec is still Draft status.
 - Indexer support and hosted limits.
@@ -1213,7 +1218,7 @@ A beautiful profile with mocked transactions does not satisfy this definition.
 4. Validate ERC-8004 addresses and interface version on the target testnet before implementation, and re-check given its Draft-EIP status (§10.4).
 5. Freeze `attestia.contribution.v1` and five claim-type schemas.
 6. Wireframe the contribution, attestation, revocation, and score-explanation flows.
-7. Create separate Privy testnet and production app clients, then prove authentication, embedded-wallet creation, one sponsored write, and the self-paid fallback on Monad Testnet (§9.4–9.5).
+7. Create separate Privy testnet and production app clients, then prove authentication, TEE-backed embedded-wallet creation, external-wallet login, and wallet-paid MON writes on Monad Testnet (§9.4–9.5).
 8. Start contract development test-first in official Monad Foundry mode.
 9. Run Phase 0 discovery interviews with an explicit willingness-to-pay question (§20), not just workflow validation.
 10. Get an explicit legal read on the GDPR digest question and the defamation-gate design (§14.5) before any public negative-claim pilot.
@@ -1251,7 +1256,7 @@ A beautiful profile with mocked transactions does not satisfy this definition.
 - [Privy access tokens](https://docs.privy.io/authentication/user-authentication/access-tokens)
 - [Configure EVM networks](https://docs.privy.io/basics/react/advanced/configuring-evm-networks)
 - [Privy chain support](https://docs.privy.io/wallets/overview/chains)
-- [Privy gas sponsorship](https://docs.privy.io/wallets/gas-and-asset-management/gas/overview)
+- [Privy security architecture](https://docs.privy.io/security/wallet-infrastructure/architecture)
 - [Privy content-security-policy guidance](https://docs.privy.io/security/implementation-guide/content-security-policy)
 
 ### Ethereum official documentation

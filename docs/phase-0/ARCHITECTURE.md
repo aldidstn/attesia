@@ -54,7 +54,7 @@ Browser input, external URLs, wallet signatures, RPC results, metadata and index
 | ADR-07 | Public artifacts first, private evidence Phase 4 | Separate data classifications and storage paths. Do not publish private URIs, filenames, prompts or access tokens. See SECURITY. |
 | ADR-08 | Identity from ERC-8004; declared policies in Attestia | Resolve current owner from pinned registry at write time. Never infer enforcement from a policy digest. Native feedback stays separate. |
 | ADR-09 | Managed infrastructure, minimal integration boundaries | Vercel, Supabase Postgres, Envio, Pinata, Inngest, Upstash; S3/KMS in Phase 4. Managed adapters only at actual vendor boundaries. |
-| ADR-10 | Sponsorship conditional, self-paid baseline | Privy + Pimlico is a documented candidate, not yet an account-tested integration. Use ERC-4337 only after method, signer, budget and failure tests. No custom relayer. |
+| ADR-10 | Wallet pays MON for every write | Product decision updated 2026-09-16. Privy provides login and TEE-backed embedded wallets; Attestia does not fund gas credits, add a paymaster, or operate a relayer. This keeps Monad fees explicit and preserves direct wallet authorization. |
 | ADR-11 | Production negative issuance disabled | Testnet supports ±1. First production immutable registry rejects negative issuance; enabling later needs a separately reviewed deployment/version. Application moderation does not censor other protocols. Issuer revocation remains available. |
 | ADR-12 | Attestia owns `attestia.counts.v1`; workspaces own immutable rubrics | No workspace-specific hidden scoring weights. Policy versions and source block identify every projection. |
 
@@ -98,7 +98,7 @@ Public pagination: default 20, maximum 100; opaque cursor contains stable sort p
 
 ## Preliminary monthly cost model
 
-Budget worksheet, not a quote or spending authorization. Assumed pilot: one workspace, 200 active people, 100 submissions/month, 5 MB mean artifact, two claims + one revoke per submission, 100 profile writes, 100,000 public reads, one production region. Public artifact growth ≈0.5 GB/month; 400 potentially sponsored calls/month. Testnet MON has no modeled purchase cost. Mainnet gas is an additional variable, never zero by assumption.
+Budget worksheet, not a quote or spending authorization. Assumed pilot: one workspace, 200 active people, 100 submissions/month, 5 MB mean artifact, two claims + one revoke per submission, 100 profile writes, 100,000 public reads, one production region. Public artifact growth ≈0.5 GB/month. Transaction gas is paid in MON by each connected wallet and is not an Attestia infrastructure expense.
 
 | Cost line | Low USD/month | Higher USD/month | Evidence / qualification |
 |---|---:|---:|---|
@@ -113,6 +113,6 @@ Budget worksheet, not a quote or spending authorization. Assumed pilot: one work
 | Phase 4 S3/KMS/backup overhead | 5 | 20 | Planning allowance; region/request costs pending |
 | **Subtotal** | **175** | **565** | Three observed base prices; six explicit estimates |
 | Contingency, rounded up 25% | 44 | 142 | Includes uncertainty, not gas |
-| **Budget envelope** | **219** | **707** | Plus mainnet sponsored gas, taxes and payment fees |
+| **Budget envelope** | **219** | **707** | Plus taxes and payment fees |
 
-Mainnet sponsorship formula: `sum(measured gasLimit × effective gas price in MON) × MON/USD reference price`; record price time and sponsorship-provider markup separately. Do not substitute gas-used estimates if network bills gas limit. Cap daily wallet calls at 10; workspace sponsorship budget starts at zero until funded/configured. Before launch, replace all allowances with quotes and load measurements, set provider budget alerts and verify a self-paid fallback. At hypothetical $49/workspace, infrastructure-only break-even is 5–15 paying workspaces before gas, labor, support or fees; this arithmetic is not validated pricing or willingness to pay.
+Before launch, replace all allowances with quotes and load measurements. Measure user-visible gas for each write path and explain it before signature, but do not include user-paid MON in Attestia's operating budget. At hypothetical $49/workspace, infrastructure-only break-even is 5–15 paying workspaces before labor, support or fees; this arithmetic is not validated pricing or willingness to pay.

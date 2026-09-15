@@ -56,4 +56,4 @@ pnpm --filter @attestia/indexer typecheck
 pnpm --filter @attestia/web build
 ```
 
-The Envio Cloud deployment is active and its GraphQL schema, chain checkpoint, and indexed lifecycle records have been queried successfully. The remaining two-user Privy, PostgreSQL, Pinata, sponsorship, and live Monad acceptance run requires the account values in `.env.example`; its evidence cannot be simulated.
+The Envio Cloud deployment is active and its GraphQL schema, chain checkpoint, and indexed lifecycle records have been queried successfully. The two-user Privy, PostgreSQL, Pinata, and wallet-paid Monad acceptance flow completed on 2026-09-15; its transaction evidence is recorded in `docs/phase-2/STATUS.md`.

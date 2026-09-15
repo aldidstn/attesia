@@ -51,6 +51,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .panel-soft { border-radius: 24px; background: rgba(64, 60, 213, .26); }
 .stack { display: grid; gap: 1rem; }
 .cluster { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.wallet-controls { display: flex; align-items: center; gap: .5rem; }
+.wallet-controls .pill { padding: .55rem .8rem; }
 .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .pill { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: .5rem; border: 0; border-radius: 999px; padding: .75rem 1.15rem; cursor: pointer; font-weight: 600; transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease; }
 .pill-primary { background: var(--iris-600); color: var(--cloud); box-shadow: 0 0 22px rgba(60, 57, 185, .35); }

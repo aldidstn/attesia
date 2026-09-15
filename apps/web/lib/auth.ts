@@ -34,8 +34,8 @@ export async function endSession() {
 export async function verifyPrivy(accessToken: string) {
   const appId = privyAppId(); const verificationKey = process.env.PRIVY_VERIFICATION_KEY; const appSecret = process.env.PRIVY_APP_SECRET;
   if (!appId || (!verificationKey && !appSecret)) throw new Error("Privy verification is not configured");
-  if (verificationKey) return verifyAccessToken({ access_token: accessToken, app_id: appId, verification_key: normalizePrivyVerificationKey(verificationKey) });
-  return new PrivyClient({ appId, appSecret: appSecret! }).utils().auth().verifyAccessToken(accessToken);
+  if (appSecret) return new PrivyClient({ appId, appSecret }).utils().auth().verifyAccessToken(accessToken);
+  return verifyAccessToken({ access_token: accessToken, app_id: appId, verification_key: normalizePrivyVerificationKey(verificationKey!) });
 }
 export async function issueNonce(wallet?: string) {
   const nonce = generateSiweNonce(); const expiresAt = new Date(Date.now() + 10 * 60 * 1000);

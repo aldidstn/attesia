@@ -6,7 +6,7 @@ import { generateSiweNonce, parseSiweMessage } from "viem/siwe";
 import { db } from "@/db/client";
 import { nonces, sessions } from "@/db/schema";
 import { monadTestnet } from "./chain";
-import { privyAppId } from "./config";
+import { normalizePrivyVerificationKey, privyAppId } from "./config";
 
 const SESSION_COOKIE = "attestia_session";
 async function tokenHash(value: string) {
@@ -34,7 +34,7 @@ export async function endSession() {
 export async function verifyPrivy(accessToken: string) {
   const appId = privyAppId(); const verificationKey = process.env.PRIVY_VERIFICATION_KEY; const appSecret = process.env.PRIVY_APP_SECRET;
   if (!appId || (!verificationKey && !appSecret)) throw new Error("Privy verification is not configured");
-  if (verificationKey) return verifyAccessToken({ access_token: accessToken, app_id: appId, verification_key: verificationKey });
+  if (verificationKey) return verifyAccessToken({ access_token: accessToken, app_id: appId, verification_key: normalizePrivyVerificationKey(verificationKey) });
   return new PrivyClient({ appId, appSecret: appSecret! }).utils().auth().verifyAccessToken(accessToken);
 }
 export async function issueNonce(wallet?: string) {

@@ -36,7 +36,7 @@ Phase-specific TDD commands and the requirement coverage matrix are in [docs/TES
 
 ## Demo
 
-The hosted Monad Testnet demo is available at [attesia.vercel.app](https://attesia.vercel.app). It has completed the account-backed two-user profile, contribution, attestation, revocation, indexing, and public-verification flow. Privy App Pays remains pending a funded gas-credit balance; self-paid testnet transactions are available.
+The hosted Monad Testnet demo is available at [attesia.vercel.app](https://attesia.vercel.app). It has completed the account-backed two-user profile, contribution, attestation, revocation, indexing, and public-verification flow. Privy provides login and TEE-backed embedded wallets; each connected wallet pays its transaction fees in MON.
 
 1. Sign in through Privy and create a profile.
 2. Draft a contribution, attach reviewed public evidence, and disclose provenance.
@@ -54,7 +54,7 @@ Prototype controls also demonstrate rejected signatures, expired sessions, walle
 | --- | --- |
 | Interface | Next.js 16, React 19, TypeScript 5.9, Tailwind CSS 4, Radix primitives |
 | Design | Violet surfaces, rounded panels, Manrope typography; [design reference](DESIGN.md) |
-| Wallet and auth | Privy embedded/external wallets, HTTP-only app sessions, SIWE fallback, wagmi, viem |
+| Wallet and auth | Privy email/external-wallet login, TEE-backed embedded wallets, HTTP-only app sessions, SIWE fallback, wagmi, viem; wallets pay MON gas |
 | Application data | PostgreSQL through Drizzle ORM; Supabase, Neon, or Vercel Marketplace Postgres |
 | Public evidence | Pinata IPFS uploads from server routes; text/Markdown/JSON up to 4 MB |
 | Chain projection | Envio HyperIndex 3; the Monad Testnet cloud indexer is active with GraphQL freshness and lifecycle reads |

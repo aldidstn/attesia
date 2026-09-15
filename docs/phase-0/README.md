@@ -26,7 +26,7 @@ Open [interactive wireflow](http://127.0.0.1:4173/wireflow/) or the standalone [
 | [Invalid fixtures](fixtures/invalid-cases.json) | Reproducible mutations demonstrating required-field, URL and unknown-field rejection |
 | [Architecture](ARCHITECTURE.md) | System/data flow, ADRs, API interface, event reconstruction, infrastructure and explicit cost assumptions |
 | [Security](SECURITY.md) | Publication/retention policy, threats, negative tests, moderation and privacy gates |
-| [Dependencies](DEPENDENCIES.md) | Verified official tooling, pinned ERC-8004 revisions/ABIs and sponsorship acceptance boundaries |
+| [Dependencies](DEPENDENCIES.md) | Verified official tooling, pinned ERC-8004 revisions/ABIs and wallet-paid MON boundary |
 | [RPC observations](research/registry-observations.json) | Dated read-only network/dependency observations; not an Attestia deployment |
 | [Handoff](HANDOFF.md) | Ordered Phase 1 backlog, review rules, owners and historical external-gate status |
 
@@ -49,7 +49,7 @@ pnpm test:phase0
 
 The schema checker validates positive/negative fixtures, fixed digest vectors and executable lifecycle examples. It never rewrites expected vectors. Browser checks exercise the narrative, failure recovery, mobile layout, keyboard focus and axe rules. Test results are summarized in [validation record](VALIDATION.md).
 
-These checks do not test Solidity, signatures, actual API endpoints, production scanning/ACL, real chain finality, sponsorship, or independent human usability. Phase 1+ acceptance is specified rather than fabricated.
+These checks do not test Solidity, signatures, actual API endpoints, production scanning/ACL, real chain finality, wallet funding, or independent human usability. Phase 1+ acceptance is specified rather than fabricated.
 
 ## Current status
 

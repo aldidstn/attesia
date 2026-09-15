@@ -39,22 +39,21 @@ node docs/phase-0/scripts/probe-registries.mjs
 
 The checked-in observation is a dated snapshot; rerunning prints a new observation without silently changing it. An unavailable endpoint produces `unverified`, never a fabricated address or verification result.
 
-## Sponsorship: documented candidate, acceptance pending
+## Transaction fees: wallet-paid MON selected
 
-Monad's [Next.js sponsored-transactions template](https://docs.monad.xyz/templates/next-serwist-privy-smart-wallet.md) documents Privy smart wallets with Pimlico on Monad Testnet, using Kernel and EntryPoint v0.7. That is evidence of an integration path, not proof for Attestia methods or every external wallet.
+Attestia uses normal Monad transactions paid in MON by the connected wallet. Privy remains the optional login and TEE-backed embedded-wallet provider; it does not pay gas. External wallets remain supported.
 
-Default decision: self-paid external wallet flow first. Candidate for later sponsorship: managed ERC-4337 via Pimlico; embedded Privy path optional. Do not add account delegation or custom relayer infrastructure merely because it exists. Keep paymaster credentials and budget authorization server-side; do not copy example public-key patterns without restricting capabilities.
+This 2026-09-16 product decision supersedes the earlier sponsorship candidate. Do not add gas-credit billing, ERC-4337/paymaster dependencies, account delegation, or custom relayer infrastructure to the MVP.
 
-Before selecting/enabling candidate, demonstrate all of:
+Acceptance demonstrates all of:
 
-1. Funded testnet paymaster sponsors `registerContribution`, `attest`, `revoke` using Attestia ABI.
-2. Authenticated signer maps to actual transaction sender/smart-account profile owner, including wallet switch and delegate revocation.
-3. Arbitrary selectors, foreign registries, multicall bypass and unrelated value transfers rejected.
-4. Concurrent daily cap/monthly budget enforcement and kill switch tested.
-5. Rejected user operation, provider outage and exhausted budget recover through explicit self-paid review.
-6. Store user-operation hash, transaction hash, actual billed amount and reconciliation evidence.
+1. Authenticated signer maps to the actual transaction sender and profile owner.
+2. Monad Testnet is the only allowed chain and wrong-chain writes are blocked.
+3. Insufficient MON and rejected signatures preserve drafts without broadcasting duplicates.
+4. Transaction hashes reconcile after reload and indexer lag remains distinct from chain failure.
+5. The interface exposes the wallet address so users can fund it with MON.
 
-**Pending:** account credentials/funding and real method integration. Sponsor acceptance is not required to run Phase 0 or the self-paid local workflow; it is required before claiming sponsored onboarding works.
+No sponsored-onboarding claim is made or required.
 
 ## Remaining infrastructure
 

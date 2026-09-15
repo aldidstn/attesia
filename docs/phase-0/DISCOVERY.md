@@ -21,7 +21,7 @@ For the wireflow, all people, workspace names, results, identifiers, and activit
 | Public-only evidence supports the first pilot | Classify a real candidate artifact and its review evidence | Artifact owner permits publication; privacy checklist has no critical ambiguity |
 | A second community can reuse the record | Ask a verifier to assess an exported/public record | Independent verification or documented reason the record cannot be used |
 | Workflow or API reliability merits payment | Ask current spend, budget authority, alternatives, and tradeoffs | Unprompted budget range, approval path, and later explicit paid-pilot intent |
-| Wallet/signature steps are tolerable | Observe rejected signature and recovery; compare connect-at-publish timing | Completion and confusion observations; sponsorship remains a dependency test |
+| Wallet/signature and MON funding steps are tolerable | Observe rejected signature, insufficient balance, funding, and recovery; compare connect-at-publish timing | Completion and confusion observations; drafts must survive every interruption |
 
 ### Roles, needs, and support
 

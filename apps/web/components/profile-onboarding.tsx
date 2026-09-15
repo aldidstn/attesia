@@ -34,7 +34,7 @@ function ProfileForm() {
       const data = exists
         ? encodeFunctionData({ ...contracts.AttestiaProfileRegistry, functionName: "updateProfile", args: [id, uploaded.uri, digest] })
         : encodeFunctionData({ ...contracts.AttestiaProfileRegistry, functionName: "createProfile", args: [id, uploaded.uri, digest] });
-      const { hash } = await writeContract({ wallet, to: contracts.AttestiaProfileRegistry.address, data, sponsorshipKind: exists ? undefined : "create_profile" });
+      const { hash } = await writeContract({ wallet, to: contracts.AttestiaProfileRegistry.address, data });
       await advanceOperation(operation.id, "submitted", hash); localStorage.removeItem("attestia:profile-draft"); setStatus(`${exists ? "Update" : "Profile"} submitted ${hash}`);
     } catch (error) { setStatus(error instanceof Error ? error.message : "Profile creation failed"); }
   }

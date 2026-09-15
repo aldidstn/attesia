@@ -40,12 +40,12 @@ No public-by-default visibility toggle. Publication review presents exactly whic
 | T11 | Malicious display metadata / high | Frontend: escaped text, scheme validation, no raw HTML, safe download names | Script title, javascript/data URL, CSV formula payload do not execute |
 | T12 | Agent overclaim/ownership change / high | Adapter: current owner + pinned interface, declared-only label, unavailable validation state | Sold agent rejects old owner's new write; stale RPC never treated as authorization success |
 | T13 | Revocation censorship / high | Contracts: direct issuer revoke works while new-write pause enabled | Cast revoke succeeds during pause; admin cannot rewrite claim; original event remains |
-| T14 | Sponsorship abuse / high | Backend/paymaster: allowlisted chain/contract/selectors, session-to-smart-account binding, daily cap, atomic workspace budget and kill switch | Arbitrary call/batch/nested execution refused; exhausted budget prompts self-pay; concurrent requests respect cap |
+| T14 | Wallet funding confusion / medium | Product: explicit Monad network, wallet address copy, MON fee label, preserved drafts on insufficient balance | Zero-balance wallet cannot broadcast; user can fund the displayed address and retry without losing input |
 | T15 | Negative-claim harm / high | Operator: evidence/reason requirement, reports/disputes, legal release gate | Production negative issuance disabled in first deployment; testnet labels preserved; hide action doesn't falsify chain history |
 | T16 | Admin/key compromise or disappearance / critical | Operator: production multisig with additional signer, least privilege, incident/handoff runbook | Pause drill, signer unavailability, credential rotation and restore/index rebuild demonstrated before Phase 5 |
 | T17 | Billing/authentication abuse / high | Phase 6: verified Stripe webhook, idempotent events, reconciled subscription state, hashed API keys | Forged/replayed/out-of-order billing events never grant unauthorized paid access |
 
-Contract-level checks cannot validate offchain malware scans, truth or privacy. The official app controls publication and sponsorship; direct callers can issue malformed/spam records. Read models must show invalid/unavailable metadata without pretending those events vanished. Any stronger chain admission gate needs a separately documented design.
+Contract-level checks cannot validate offchain malware scans, truth or privacy. The official app controls its publication workflow; direct callers can issue malformed/spam records. Read models must show invalid/unavailable metadata without pretending those events vanished. Any stronger chain admission gate needs a separately documented design.
 
 ## Moderation and incidents
 
@@ -53,7 +53,7 @@ Subjects and workspace admins can open evidence-backed disputes. The audit log r
 
 Private deletion revokes application access and schedules object/backup purge; signed URLs may survive up to their 60-second TTL. Hosted illegal/sensitive material follows operator takedown process; never promise deletion of public replicas or blockchain history. Operator must publish support/abuse channel and target first response within two business days before pilot.
 
-Suspected leak: stop new publication/sponsorship, revoke access credentials, preserve restricted incident evidence, identify affected storage/versions, execute approved notification process and revalidate before resuming. Contract pause should preserve reads and issuer revocation. No automatic messages or external notifications are implemented or sent in Phase 0.
+Suspected leak: stop new publication, revoke access credentials, preserve restricted incident evidence, identify affected storage/versions, execute approved notification process and revalidate before resuming. Contract pause should preserve reads and issuer revocation. No automatic messages or external notifications are implemented or sent in Phase 0.
 
 ## Release evidence still required
 

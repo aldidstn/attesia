@@ -19,7 +19,7 @@ const key = "attestia:contribution-draft";
 
 function PublishButton({ draft, file, metadata }: { draft: Draft; file?: File; metadata: Record<string, unknown> }) {
   const { authenticated, login, getAccessToken } = usePrivy(); const { wallets } = useWallets(); const [status, setStatus] = useState("");
-  const { writeContract, sponsorshipEnabled } = useAttestiaWrite();
+  const { writeContract } = useAttestiaWrite();
   async function publish() {
     if (!authenticated) { login(); return; }
     try {
@@ -37,11 +37,11 @@ function PublishButton({ draft, file, metadata }: { draft: Draft; file?: File; m
       const id = recordKey; const parent = draft.parentId || `0x${"0".repeat(64)}`; const operation = await beginOperation("register_contribution", wallet.address, digest, id); if (operation.transactionHash) { setStatus(`Already submitted ${operation.transactionHash}`); return; }
       await advanceOperation(operation.id, "awaiting_signature"); setStatus("Awaiting signature…");
       const data = encodeFunctionData({ ...contracts.ContributionRegistry, functionName: "registerContribution", args: [id, draft.creatorProfileId as `0x${string}`, artifact.artifactDigest, digest, metadataUpload.uri, parent as `0x${string}`] });
-      const { hash } = await writeContract({ wallet, to: contracts.ContributionRegistry.address, data, sponsorshipKind: "register_contribution" });
+      const { hash } = await writeContract({ wallet, to: contracts.ContributionRegistry.address, data });
       await advanceOperation(operation.id, "submitted", hash); track("activation", { contributionType: draft.type }); localStorage.removeItem(key); setStatus(`Submitted ${hash}. Waiting for finality and indexing.`);
     } catch (error) { setStatus(error instanceof Error ? error.message : "Publication failed"); }
   }
-  return <><span className="badge" data-tone={sponsorshipEnabled ? "active" : "pending"}>{sponsorshipEnabled ? "Sponsorship requested · self-pay fallback" : "Self-paid testnet transaction"}</span><button type="button" className="pill pill-primary" onClick={publish}>{authenticated ? "Publish on Monad" : "Sign in to publish"}</button>{status && <p className="operation-status" role="status">{status}</p>}</>;
+  return <><span className="badge">Monad Testnet · wallet pays MON gas</span><button type="button" className="pill pill-primary" onClick={publish}>{authenticated ? "Publish on Monad" : "Sign in to publish"}</button>{status && <p className="operation-status" role="status">{status}</p>}</>;
 }
 
 export function ContributionComposer() {

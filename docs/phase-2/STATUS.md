@@ -14,7 +14,7 @@
 - Envio Cloud development deployment `db48410` from the `envio` branch is active and fully synced on Monad Testnet. The application uses its tested public GraphQL endpoint and shows indexed claim counts and checkpoint blocks.
 - Public/read and authenticated/write APIs with correlation IDs, structured errors, ETags where records are immutable, Retry-After on service outages, and opaque ID cursors.
 - Privacy-safe analytics allowlist. Wallet addresses, evidence, source contents, and metadata fields are rejected.
-- Privy-sponsored writes for the four allowlisted MVP actions, with an explicit self-paid fallback and no retry after user rejection or ambiguous provider failure.
+- Privy email/external-wallet login and TEE-backed embedded wallets. Every write is paid in MON by the connected wallet; Attestia has no gas-credit, paymaster, or relayer dependency.
 - Vercel Neon compatibility through `DATABASE_URL` or the integration-provided `storage_DATABASE_URL`.
 
 ## Live acceptance evidence
@@ -29,15 +29,15 @@ The account-backed flow ran on [attesia.vercel.app](https://attesia.vercel.app) 
 - The contribution metadata digest reproduced as `0x50226bc7b76b0494f4fb6272d32d34aea35d54e65edb2edcf32267efb5bbc628`. Its 298-byte Markdown artifact reproduced SHA-256 `0x76c362cd9880fe46cac57d8267a54eb7b558dcf97257ab5ca1ddb36655cf069e`.
 - The public verification screen reports `verified` and exposes JSON export. The Vercel production gateway configuration was corrected and retested against Pinata.
 
-The sponsorship probe claim and its cleanup revocation are recorded in transactions `0x8984c9323157fd5e96e540a8b70c4f12fe3b937811059e02a150343ef928bcad` and `0xb59f8c31d829d01931331f577a32a0c43769fa0212b49826b48e43d07695ee86`. Both were self-paid, and the temporary claim is historical rather than active.
+The wallet-paid gas probe claim and its cleanup revocation are recorded in transactions `0x8984c9323157fd5e96e540a8b70c4f12fe3b937811059e02a150343ef928bcad` and `0xb59f8c31d829d01931331f577a32a0c43769fa0212b49826b48e43d07695ee86`. Both charged MON to the reviewer wallet as intended, and the temporary claim is historical rather than active.
 
-## Remaining external gate
+## Phase 2 result
 
-Phase 2 remains **sponsorship pending**. Privy has TEE execution enabled, Monad Testnet selected, client transactions enabled, and the application sends `sponsor: true`. The live probe still charged the reviewer wallet because the Privy dashboard has `$0.00` gas credit. A funded Privy gas-credit balance and one receipt showing no signer balance decrease are required before Phase 2 is marked complete. No payment has been initiated.
+Phase 2 is **complete**. On 2026-09-16 the product fee policy was finalized as wallet-paid MON. Privy remains the login and wallet-security boundary; gas sponsorship was removed from the application and is not an acceptance gate. No gas credits were purchased.
 
 The production deployment reads the migrated Neon database and hosted Envio projection successfully. Pinata upload and retrieval authenticate. The optional local Envio runtime needs Docker and `ENVIO_API_TOKEN`; hosted GraphQL does not.
 
-Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 20 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. Before final signoff, rerun the full suite and rotate the integration credentials used during interactive setup.
+Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 17 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. Rotate the integration credentials used during interactive setup as an operational security follow-up.
 
 ## Boundaries
 

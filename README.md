@@ -36,7 +36,7 @@ Phase-specific TDD commands and the requirement coverage matrix are in [docs/TES
 
 ## Demo
 
-Run the application locally using the steps above. A hosted Phase 2 demo is pending account-backed acceptance.
+The hosted Monad Testnet demo is available at [attesia.vercel.app](https://attesia.vercel.app). It has completed the account-backed two-user profile, contribution, attestation, revocation, indexing, and public-verification flow. Privy App Pays remains pending a funded gas-credit balance; self-paid testnet transactions are available.
 
 1. Sign in through Privy and create a profile.
 2. Draft a contribution, attach reviewed public evidence, and disclose provenance.

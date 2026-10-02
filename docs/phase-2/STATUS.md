@@ -37,7 +37,7 @@ Phase 2 is **complete**. On 2026-09-16 the product fee policy was finalized as w
 
 The production deployment reads the migrated Neon database and hosted Envio projection successfully. Pinata upload and retrieval authenticate. The optional local Envio runtime needs Docker and `ENVIO_API_TOKEN`; hosted GraphQL does not.
 
-Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 17 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. Rotate the integration credentials used during interactive setup as an operational security follow-up.
+Credential-independent acceptance is green: Phase 0 has 68 schema checks and 13 browser tests; Phase 1 has 36 Foundry tests using official Foundry 1.8.0; Phase 2 has 17 web unit tests, 4 indexer projection tests, 5 browser tests, a disposable Anvil lifecycle run, lint, typecheck, Envio code generation, and a production Next.js build. The Privy app secret and Pinata JWT used during interactive setup were rotated on 2026-10-02; production was redeployed and verified before the old credentials were revoked.
 
 ## Boundaries
 

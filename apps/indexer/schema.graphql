@@ -9,6 +9,30 @@ type Profile {
   agentId: BigInt
 }
 
+type AgentPolicy {
+  id: ID!
+  profileId: String!
+  agentId: BigInt!
+  digest: String!
+  uri: String!
+  version: Int!
+  paused: Boolean!
+  actor: String!
+  updatedAt: BigInt!
+}
+
+type AgentPolicyVersion {
+  id: ID!
+  profileId: String!
+  agentId: BigInt!
+  digest: String!
+  uri: String!
+  version: Int!
+  actor: String!
+  publishedAt: BigInt!
+  pausedAt: BigInt
+}
+
 type Contribution {
   id: ID!
   creatorProfileId: String!
@@ -39,6 +63,8 @@ type Attestation {
   revokedAt: BigInt
   selfAtIssuance: Boolean!
   disputed: Boolean!
+  profileId: String!
+  category: String!
 }
 
 type ChainState {

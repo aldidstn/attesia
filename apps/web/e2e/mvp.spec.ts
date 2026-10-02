@@ -29,3 +29,9 @@ test("verification links prefill the public record", async ({ page }) => {
   await expect(page.getByLabel("Record type")).toHaveValue("profile");
   await expect(page.getByLabel("Record ID")).toHaveValue(id);
 });
+
+test("agent discovery is keyboard accessible at 360px", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 }); await page.emulateMedia({ reducedMotion: "reduce" }); await page.goto("/agents");
+  await expect(page.getByRole("heading", { name: /inspect a monad agent/i })).toBeVisible(); await page.getByLabel("Agent ID").fill("1");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]); expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+});

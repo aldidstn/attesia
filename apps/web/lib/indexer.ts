@@ -24,11 +24,15 @@ export async function indexerOperationVisible(kind: string, id: string, payloadD
     Profile_by_pk: { metadataDigest: string } | null;
     Contribution_by_pk: { metadataDigest: string } | null;
     Attestation_by_pk: { metadataDigest: string; revokedAt: string | null } | null;
-  }>("query($id:String!,$chainId:Int!){Profile_by_pk(id:$id,chainId:$chainId){metadataDigest} Contribution_by_pk(id:$id,chainId:$chainId){metadataDigest} Attestation_by_pk(id:$id,chainId:$chainId){metadataDigest revokedAt}}", { id, chainId: 10143 });
+    AgentPolicy_by_pk: { digest: string; paused: boolean } | null;
+  }>("query($id:String!,$chainId:Int!){Profile_by_pk(id:$id,chainId:$chainId){metadataDigest} Contribution_by_pk(id:$id,chainId:$chainId){metadataDigest} Attestation_by_pk(id:$id,chainId:$chainId){metadataDigest revokedAt} AgentPolicy_by_pk(id:$id,chainId:$chainId){digest paused}}", { id, chainId: 10143 });
   const digestMatches = (value?: string) => value?.toLowerCase() === payloadDigest.toLowerCase();
   if (kind === "create_profile" || kind === "update_profile") return digestMatches(result.Profile_by_pk?.metadataDigest);
   if (kind === "register_contribution") return digestMatches(result.Contribution_by_pk?.metadataDigest);
   if (kind === "create_attestation") return digestMatches(result.Attestation_by_pk?.metadataDigest);
   if (kind === "revoke_attestation") return result.Attestation_by_pk?.revokedAt != null;
+  if (kind === "create_agent_profile") return digestMatches(result.Profile_by_pk?.metadataDigest);
+  if (kind === "set_agent_policy") return digestMatches(result.AgentPolicy_by_pk?.digest);
+  if (kind === "pause_agent_policy") return result.AgentPolicy_by_pk?.paused === true;
   return false;
 }

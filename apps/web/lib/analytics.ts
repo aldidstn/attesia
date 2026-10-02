@@ -1,8 +1,9 @@
-export const analyticsEvents = ["activation", "vccr", "reviewer_conversion", "indexing_reliability", "retention"] as const;
+export const analyticsEvents = ["activation", "vccr", "reviewer_conversion", "indexing_reliability", "retention", "score_explanation_opened", "profile_shared", "agent_registered", "policy_published"] as const;
 export type AnalyticsEvent = (typeof analyticsEvents)[number];
 const allowedProperties: Record<AnalyticsEvent, readonly string[]> = {
   activation: ["contributionType"], vccr: ["eligible", "verified"], reviewer_conversion: ["claimType"],
   indexing_reliability: ["latencyMs", "outcome"], retention: ["periodDays", "returned"],
+  score_explanation_opened: ["algorithmVersion"], profile_shared: ["surface"], agent_registered: ["chainId"], policy_published: ["enforcement"],
 };
 
 export function sanitizeAnalyticsProperties(event: AnalyticsEvent, input: unknown) {

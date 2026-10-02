@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     let state = operation.state; let receiptBlock: bigint | undefined;
     if (operation.transactionHash && state !== "indexed") { const receipt = await publicClient.getTransactionReceipt({ hash: operation.transactionHash as `0x${string}` }).catch(() => null); if (receipt?.status === "success") { state = "finalized"; receiptBlock = receipt.blockNumber; } }
     if (!operation.transactionHash && operation.kind === "register_contribution" && operation.recordId) { const exists = await publicClient.readContract({ ...contracts.ContributionRegistry, functionName: "contributionExists", args: [operation.recordId as `0x${string}`] }); if (exists) state = "finalized"; }
+    if (!operation.transactionHash && operation.kind === "create_agent_profile" && operation.recordId) { const exists = await publicClient.readContract({ ...contracts.AttestiaProfileRegistry, functionName: "profileExists", args: [operation.recordId as `0x${string}`] }); if (exists) state = "finalized"; }
     if (state === "finalized" && indexerEndpoint()) {
       const indexed = receiptBlock !== undefined
         ? await indexerCheckpoint().then((checkpoint) => checkpoint && BigInt(checkpoint.latestBlock) >= receiptBlock).catch(() => false)

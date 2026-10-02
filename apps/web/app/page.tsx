@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle, Fingerprint, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
+import { PublicFeed } from "@/components/public-feed";
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const filters = await searchParams;
   return <div className="page">
     <section className="hero">
       <p className="eyebrow">Evidence-backed contribution records</p>
@@ -15,5 +17,6 @@ export default function HomePage() {
       <article className="panel feature"><ShieldCheck size={28} aria-hidden="true" /><p className="eyebrow">03 · Verify</p><h2>Inspect every layer</h2><p>Compare files, metadata, transaction state, and indexed projections.</p></article>
     </section>
     <section className="panel status-panel"><div><p className="eyebrow">Network status</p><h2 className="section-title">Monad Testnet</h2></div><div className="status-stats"><span><b className="data">10143</b> Chain</span><span><b>3</b> Registries</span><span><b className="mint">Public</b> Evidence</span></div></section>
+    <PublicFeed filters={filters} />
   </div>;
 }

@@ -2,7 +2,7 @@ import { isAddress, isHex } from "viem";
 
 export const operationStates = ["draft", "awaiting_signature", "submitted", "proposed", "finalized", "indexed"] as const;
 export type OperationState = (typeof operationStates)[number];
-export const operationKinds = ["create_profile", "update_profile", "register_contribution", "create_attestation", "revoke_attestation"] as const;
+export const operationKinds = ["create_profile", "update_profile", "register_contribution", "create_attestation", "revoke_attestation", "create_agent_profile", "set_agent_policy", "pause_agent_policy"] as const;
 
 const transitions: Record<OperationState, readonly OperationState[]> = {
   draft: ["awaiting_signature"],

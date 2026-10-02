@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { claimCounts, projectClaim, type Projection } from "../src/projection";
+import { claimCounts, projectClaim, projectPolicy, reputation, type Projection } from "../src/projection";
 const empty = (): Projection => ({ claims: new Map() });
 describe("claim lifecycle projection", () => {
   it("is idempotent and excludes self claims from external counts", () => {
@@ -21,5 +21,16 @@ describe("claim lifecycle projection", () => {
     ];
     const first = events.reduce(projectClaim, empty()); const rebuilt = events.reduce(projectClaim, empty());
     expect([...rebuilt.claims.entries()]).toEqual([...first.claims.entries()]); expect(claimCounts(rebuilt, "c").active).toBe(0);
+  });
+  it("projects expiry and evidence coverage deterministically", () => {
+    const state = empty();
+    projectClaim(state, { type: "created", claim: { id: "a", contributionId: "c", issuer: "0x1", claimType: "USAGE", self: false, disputed: false, issuedAt: 1n, validUntil: 10n, evidence: true } });
+    projectClaim(state, { type: "created", claim: { id: "b", contributionId: "c", issuer: "0x2", claimType: "USAGE", self: false, disputed: false, issuedAt: 2n, validUntil: 0n, evidence: false } });
+    expect(reputation(state, ["c"], 10n).USAGE).toMatchObject({ activeExternal: 1, expired: 1, evidenceCoverage: 0 });
+  });
+  it("keeps policy versions ordered and pauses only the current version", () => {
+    const v2 = projectPolicy(undefined, { type: "updated", version: 2, digest: "0x2", uri: "ipfs://2", at: 2n });
+    expect(projectPolicy(v2, { type: "updated", version: 1, digest: "0x1", uri: "ipfs://1", at: 1n })).toEqual(v2);
+    expect(projectPolicy(v2, { type: "paused", version: 2, at: 3n })).toMatchObject({ version: 2, paused: true, updatedAt: 3n });
   });
 });

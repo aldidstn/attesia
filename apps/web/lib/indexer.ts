@@ -12,11 +12,17 @@ export async function indexerQuery<T>(query: string, variables: Record<string, u
 }
 
 export async function indexerCheckpoint() {
-  const result = await indexerQuery<{ ChainState_by_pk: { latestBlock: string; latestTimestamp: string } | null }>(
-    "query($id:String!,$chainId:Int!){ChainState_by_pk(id:$id,chainId:$chainId){latestBlock latestTimestamp}}",
-    { id: "10143", chainId: 10143 },
+  const result = await indexerQuery<{ chain_metadata: Array<{ latest_processed_block: number | string }> }>(
+    "query($chainId:Int!){chain_metadata(where:{chain_id:{_eq:$chainId}},limit:1){latest_processed_block}}",
+    { chainId: 10143 },
   );
-  return result.ChainState_by_pk;
+  const indexed = result.chain_metadata[0]?.latest_processed_block;
+  if (indexed == null || BigInt(indexed) < 0n) return null;
+  // The event checkpoint stops on quiet contracts. Read chain time at Envio's
+  // processed block, never at the RPC head or the web server's wall clock.
+  const { publicClient } = await import("./onchain");
+  const block = await publicClient.getBlock({ blockNumber: BigInt(indexed) });
+  return { latestBlock: String(indexed), latestTimestamp: block.timestamp.toString() };
 }
 
 export async function indexerOperationVisible(kind: string, id: string, payloadDigest: string) {

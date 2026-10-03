@@ -15,3 +15,5 @@ For each category:
 Expiry uses the latest indexed block timestamp. Every API response includes the algorithm version, source block, and indexer freshness so the result can be reproduced. Event history remains the canonical input; no opaque aggregate score is stored.
 
 Feed order is deterministic: active external claims, evidence coverage, unique attesters, timestamp, then ID. Workspace relevance is `not_applicable` in Phase 3. Reciprocal issuer/creator relationships receive a visible mutual-cluster flag but no penalty.
+
+Freshness uses Envio `chain_metadata.latest_processed_block` with the timestamp of that exact Monad block. An event-free period therefore still advances expiry. Missing checkpoints fail closed; web server time is never used for scoring.

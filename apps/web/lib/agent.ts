@@ -16,18 +16,22 @@ const reputationAbi = [
 ] as const;
 
 export async function readAgent(agentId: bigint) {
+  const source = await publicClient.getBlock();
+  const blockNumber = source.number;
   const [owner, uri, wallet, linkedProfileId, policy, clients] = await Promise.all([
-    publicClient.readContract({ address: identityRegistry, abi: identityAbi, functionName: "ownerOf", args: [agentId] }),
-    publicClient.readContract({ address: identityRegistry, abi: identityAbi, functionName: "tokenURI", args: [agentId] }),
-    publicClient.readContract({ address: identityRegistry, abi: identityAbi, functionName: "getAgentWallet", args: [agentId] }),
-    publicClient.readContract({ ...contracts.AttestiaProfileRegistry, functionName: "profileByAgent", args: [agentId] }),
-    publicClient.readContract({ ...contracts.AttestiaProfileRegistry, functionName: "agentPolicy", args: [agentId] }),
-    publicClient.readContract({ address: reputationRegistry, abi: reputationAbi, functionName: "getClients", args: [agentId] }),
+    publicClient.readContract({ blockNumber, address: identityRegistry, abi: identityAbi, functionName: "ownerOf", args: [agentId] }),
+    publicClient.readContract({ blockNumber, address: identityRegistry, abi: identityAbi, functionName: "tokenURI", args: [agentId] }),
+    publicClient.readContract({ blockNumber, address: identityRegistry, abi: identityAbi, functionName: "getAgentWallet", args: [agentId] }),
+    publicClient.readContract({ blockNumber, ...contracts.AttestiaProfileRegistry, functionName: "profileByAgent", args: [agentId] }),
+    publicClient.readContract({ blockNumber, ...contracts.AttestiaProfileRegistry, functionName: "agentPolicy", args: [agentId] }),
+    publicClient.readContract({ blockNumber, address: reputationRegistry, abi: reputationAbi, functionName: "getClients", args: [agentId] }),
   ]);
   const selectedClients = clients.slice(0, 100);
-  const feedback = selectedClients.length ? await publicClient.readContract({ address: reputationRegistry, abi: reputationAbi, functionName: "readAllFeedback", args: [agentId, selectedClients, "", "", true] }) : [[], [], [], [], [], [], []] as const;
+  const feedback = selectedClients.length ? await publicClient.readContract({ blockNumber, address: reputationRegistry, abi: reputationAbi, functionName: "readAllFeedback", args: [agentId, selectedClients, "", "", true] }) : [[], [], [], [], [], [], []] as const;
   const policyHistory = await indexerQuery<{ AgentPolicyVersion: Array<{ version: number; digest: string; uri: string; actor: string; publishedAt: string; pausedAt?: string | null }> }>(`query{AgentPolicyVersion(where:{agentId:{_eq:${agentId}}},order_by:{version:desc}){version digest uri actor publishedAt pausedAt}}`, {}).then((value) => value.AgentPolicyVersion).catch(() => []);
   return {
+    sourceBlock: blockNumber.toString(), freshness: { latestBlock: blockNumber.toString(), latestTimestamp: source.timestamp.toString() },
+    metadataIntegrity: "registry-uri-only",
     chainId: 10143, agentId: agentId.toString(), owner, agentWallet: wallet, agentURI: uri,
     metadata: await readPublicJson(uri), identityRegistry, reputationRegistry,
     linkedProfileId, policy: { digest: policy.digest, uri: policy.uri, updatedAt: policy.updatedAt.toString(), version: policy.version, paused: policy.paused },

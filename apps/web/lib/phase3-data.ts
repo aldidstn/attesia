@@ -1,5 +1,5 @@
 import { indexerCheckpoint, indexerQuery } from "./indexer";
-import { buildReputation, rankFeed, type ReputationClaim } from "./reputation";
+import { REPUTATION_VERSION, buildReputation, rankFeed, type ReputationClaim } from "./reputation";
 import { readPublicJson } from "./public-metadata";
 import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db/client";
@@ -32,7 +32,8 @@ export async function profileProjection(profileId: string) {
     indexerQuery<{ Contribution: IndexedContribution[] }>(`query($id:String!){Contribution(where:{creatorProfileId:{_eq:$id}},limit:250,order_by:{createdAt:desc}){id creatorProfileId artifactDigest metadataDigest metadataURI parentId registeredBy createdAt archivedAt attestations{ id issuer claimType result evidenceDigest evidenceURI issuedAt validUntil supersededBy revokedAt selfAtIssuance disputed }}}`, { id: profileId }),
     indexerCheckpoint(),
   ]);
-  const now = BigInt(checkpoint?.latestTimestamp ?? Math.floor(Date.now() / 1000)); const disputedIds = await openDisputeIds(data.Contribution.map((item) => item.id));
+  if (!checkpoint) throw new Error("Indexed chain checkpoint unavailable");
+  const now = BigInt(checkpoint.latestTimestamp); const disputedIds = await openDisputeIds(data.Contribution.map((item) => item.id));
   const contributions = data.Contribution.map((item) => ({ ...item, attestations: item.attestations.map((claim) => ({ ...claim, disputed: claim.disputed || disputedIds.has(claim.id) })) }));
   const claims = contributions.flatMap((item) => item.attestations.map((value) => asClaim(value, item.id)));
   return { contributions, claims, reputation: buildReputation(claims, now), checkpoint };
@@ -44,20 +45,21 @@ export async function graphProjection(profileId: string, projection: Awaited<Ret
   for (const contribution of projection.contributions) {
     nodes.push({ id: contribution.id, kind: "contribution", label: contribution.id.slice(0, 10) }); edges.push({ source: profileId, target: contribution.id, relationship: "claimed" });
     if (contribution.parentId) edges.push({ source: contribution.parentId, target: contribution.id, relationship: "claimed" });
-    const metadata = await readPublicJson(contribution.metadataURI); const collaborators = Array.isArray(metadata?.collaborators) ? metadata.collaborators : []; const sources = metadata?.provenance && typeof metadata.provenance === "object" && Array.isArray((metadata.provenance as { sources?: unknown[] }).sources) ? (metadata.provenance as { sources: unknown[] }).sources : [];
+    const metadata = await readPublicJson(contribution.metadataURI, contribution.metadataDigest); const collaborators = Array.isArray(metadata?.collaborators) ? metadata.collaborators : []; const sources = metadata?.provenance && typeof metadata.provenance === "object" && Array.isArray((metadata.provenance as { sources?: unknown[] }).sources) ? (metadata.provenance as { sources: unknown[] }).sources : [];
     for (const value of collaborators) { if (!value || typeof value !== "object") continue; const collaborator = value as { profileId?: string; role?: string }; if (!collaborator.profileId) continue; if (!nodes.some((node) => node.id === collaborator.profileId)) nodes.push({ id: collaborator.profileId, kind: "collaborator", label: collaborator.role ?? "Collaborator" }); edges.push({ source: collaborator.profileId, target: contribution.id, relationship: "claimed" }); }
     for (const [index, value] of sources.entries()) { if (!value || typeof value !== "object") continue; const source = value as { url?: string; title?: string }; if (!source.url) continue; const sourceId = `${contribution.id}:source:${index}`; nodes.push({ id: sourceId, kind: "source", label: source.title?.slice(0, 18) ?? "Source" }); edges.push({ source: sourceId, target: contribution.id, relationship: "claimed" }); }
     for (const claim of contribution.attestations) { const issuer = claim.issuer.toLowerCase(); if (!nodes.some((node) => node.id === issuer)) nodes.push({ id: issuer, kind: "attester", label: `${issuer.slice(0, 8)}…` }); const lifecycle = claim.revokedAt ? "revoked" : claim.supersededBy ? "superseded" : BigInt(claim.validUntil) > 0n && BigInt(claim.validUntil) <= BigInt(projection.reputation.computedAt) ? "expired" : "active"; edges.push({ source: issuer, target: contribution.id, relationship: "attested", lifecycle }); }
   }
-  return { profileId, nodes, edges, sourceBlock: projection.checkpoint?.latestBlock ?? null, freshness: projection.checkpoint ?? null, truncated: projection.contributions.length >= 250 };
+  return { algorithmVersion: REPUTATION_VERSION, profileId, nodes, edges, sourceBlock: projection.checkpoint?.latestBlock ?? null, freshness: projection.checkpoint ?? null, truncated: projection.contributions.length >= 250 };
 }
 
 export async function feedProjection(limit = 100) {
   const [data, checkpoint] = await Promise.all([
-    indexerQuery<{ Contribution: IndexedContribution[]; Profile: Array<{ id: string; owner: string; metadataURI: string; isAgent: boolean; agentId?: string }> }>(`query($limit:Int!){Contribution(limit:$limit,order_by:{createdAt:desc}){id creatorProfileId artifactDigest metadataDigest metadataURI parentId registeredBy createdAt archivedAt attestations{ id issuer claimType result evidenceDigest evidenceURI issuedAt validUntil supersededBy revokedAt selfAtIssuance disputed }} Profile(limit:250){id owner metadataURI isAgent agentId}}`, { limit }),
+    indexerQuery<{ Contribution: IndexedContribution[]; Profile: Array<{ id: string; owner: string; metadataURI: string; metadataDigest: string; isAgent: boolean; agentId?: string }> }>(`query($limit:Int!){Contribution(limit:$limit,order_by:{createdAt:desc}){id creatorProfileId artifactDigest metadataDigest metadataURI parentId registeredBy createdAt archivedAt attestations{ id issuer claimType result evidenceDigest evidenceURI issuedAt validUntil supersededBy revokedAt selfAtIssuance disputed }} Profile(limit:250){id owner metadataURI metadataDigest isAgent agentId}}`, { limit }),
     indexerCheckpoint(),
   ]);
-  const now = BigInt(checkpoint?.latestTimestamp ?? Math.floor(Date.now() / 1000)); const disputedIds = await openDisputeIds(data.Contribution.map((item) => item.id)); data.Contribution = data.Contribution.map((item) => ({ ...item, attestations: item.attestations.map((claim) => ({ ...claim, disputed: claim.disputed || disputedIds.has(claim.id) })) }));
+  if (!checkpoint) throw new Error("Indexed chain checkpoint unavailable");
+  const now = BigInt(checkpoint.latestTimestamp); const disputedIds = await openDisputeIds(data.Contribution.map((item) => item.id)); data.Contribution = data.Contribution.map((item) => ({ ...item, attestations: item.attestations.map((claim) => ({ ...claim, disputed: claim.disputed || disputedIds.has(claim.id) })) }));
   const profiles = new Map(data.Profile.map((profile) => [profile.id, profile])); const ownerProfiles = new Map(data.Profile.map((profile) => [profile.owner.toLowerCase(), profile.id]));
   const attestEdges = new Set<string>();
   for (const item of data.Contribution) for (const claim of item.attestations) { const issuerProfile = ownerProfiles.get(claim.issuer.toLowerCase()); if (issuerProfile) attestEdges.add(`${issuerProfile}->${item.creatorProfileId}`); }
@@ -73,7 +75,7 @@ export async function feedProjection(limit = 100) {
 }
 
 export async function enrichedFeedProjection(limit = 100) {
-  const projection = await feedProjection(limit); const items = await Promise.all(projection.items.map(async (item) => ({ ...item, metadata: await readPublicJson(item.metadataURI), creatorMetadata: item.creator ? await readPublicJson(item.creator.metadataURI) : null })));
+  const projection = await feedProjection(limit); const items = await Promise.all(projection.items.map(async (item) => ({ ...item, metadata: await readPublicJson(item.metadataURI, item.metadataDigest), creatorMetadata: item.creator ? await readPublicJson(item.creator.metadataURI, item.creator.metadataDigest) : null })));
   return { ...projection, items };
 }
 

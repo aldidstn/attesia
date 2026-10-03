@@ -9,6 +9,6 @@
 | Agent impersonation | Ownership comes from live ERC-8004 `ownerOf`; Attestia contract repeats the check on writes |
 | Misleading capability claims | Policy UI always labels records as declared and does not imply enforcement |
 | Trust-source mixing | ERC-8004 feedback and Attestia contribution claims render in separate sections |
-| Malicious metadata | Server retrieval uses HTTPS/IPFS gateway validation, five-second timeout, and 512 KB response cap |
+| Malicious metadata | Server retrieval uses HTTPS/IPFS gateway validation, five-second timeout, streaming/inline 512 KB limit, disabled redirects, and digest verification for Attestia metadata |
 | Feed manipulation | Ranking inputs and order are displayed; mutual clusters are flagged without secret weighting |
 | Analytics disclosure | New events use the existing primitive allowlist and reject addresses, URLs, evidence, and metadata |

@@ -1,7 +1,7 @@
 import { apiError, decodeCursor, encodeCursor, json } from "@/lib/api";
 import { metadataDigest } from "@/lib/integrity";
 import { enrichedFeedProjection, filterFeedItems } from "@/lib/phase3-data";
-import { categoryName } from "@/lib/reputation";
+import { REPUTATION_VERSION, categoryName } from "@/lib/reputation";
 
 export async function GET(request: Request) {
   try {
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     if (status && !["active", "unattested", "disputed"].includes(status)) return apiError("BAD_REQUEST", "status must be active, unattested, or disputed", request);
     const projection = await enrichedFeedProjection(200); const filtered = filterFeedItems(projection.items, { type, community, skill, status: status ?? undefined, actor: actor ?? undefined }, BigInt(projection.at));
     const page = filtered.slice(offset, offset + limit).map((item) => ({ ...item, createdAt: item.createdAt.toString(), claimCategories: [...new Set(item.attestations.map((claim) => categoryName(claim.claimType)).filter(Boolean))], rankExplanation: { workspaceRelevance: "not_applicable", activeExternal: item.activeExternal, evidenceCoverage: item.evidenceCoverage, uniqueAttesters: item.uniqueAttesters, freshnessBucket: item.freshnessBucket } }));
-    const data = { items: page, nextCursor: offset + limit < filtered.length ? encodeCursor(String(offset + limit)) : null, sourceBlock: projection.checkpoint?.latestBlock ?? null, freshness: projection.checkpoint ?? null };
+    const data = { algorithmVersion: REPUTATION_VERSION, items: page, nextCursor: offset + limit < filtered.length ? encodeCursor(String(offset + limit)) : null, sourceBlock: projection.checkpoint?.latestBlock ?? null, freshness: projection.checkpoint ?? null };
     return json({ data }, { etag: `"${metadataDigest(data)}"` });
   } catch (error) { const message = error instanceof Error ? error.message : "Indexer unavailable"; return apiError(message === "Invalid pagination cursor" ? "BAD_REQUEST" : "UPSTREAM_UNAVAILABLE", message, request); }
 }

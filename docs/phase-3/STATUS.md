@@ -34,6 +34,17 @@ Monad Testnet Identity Registry `0x8004A818BFB912233c491871b3d84c89A494BD9e` has
 
 Phase 3 is **not yet complete**. Existing historical revoke evidence is not a replacement for the requested new agent acceptance flow.
 
-- Supply an existing ERC-8004 Monad Testnet agent controlled by a test user's wallet. Four indexed Attestia profiles inspected were human profiles; no owned agent was inferred.
+- Register an agent through `/agents/new`, or supply an existing ERC-8004 Monad Testnet agent controlled by a test user's wallet. Four indexed Attestia profiles inspected were human profiles; no owned agent was inferred.
 - Execute and document: existing agent → linked profile → declared policy → contribution → two independent claims → one revoke → changed reputation/graph/feed. Also publish a new policy version and pause it onchain.
 - Large-graph clustering and comprehensive delayed-event handler replay/agent-wallet browser coverage remain release checks; the present graph offers bounded progressive disclosure and an accessible relationship list.
+
+## Agent registration addition
+
+- `/agents/new` adds Privy-authenticated registration through `register(string)` on the same Monad Testnet Identity Registry. Gas remains self-paid in MON; no new dependency, contract or database migration.
+- Reviewed canonical metadata is uploaded through the existing authenticated Pinata endpoint. Optional URLs use the public HTTPS validator; credential checks run before publication. Identities start inactive with no claimed trust mechanism. The initial file has an empty `registrations` list because the ID is assigned by the registry; the confirmed receipt is the registration reference.
+- Wallet-scoped local drafts survive reload. Anonymous drafts transfer into the first signed-in wallet. Publication review resets after edits/reload. Atomic database state comparison admits one signature attempt per intent. Explicit wallet rejection permits retry; ambiguous responses remain locked and expose transaction-hash recovery.
+- Receipt confirmation checks success, registry address, owner and exact metadata URI before showing an ID/link. ERC-8004 registration is confirmed directly by RPC, not claimed as an Envio-indexed Attestia profile. Profile linking remains a separate transaction.
+- Limits: clearing browser storage loses the draft recovery context; reverted/unknown transactions are not automatically rebroadcast. This screen creates one identity per wallet/draft and does not provide identity management or metadata updates.
+- TDD: registration tests first failed with the missing implementation; 35 web unit/API tests now pass, including foreign/mismatched receipt rejection and concurrent-operation conflict handling. Typecheck and lint passed. All 9 Playwright regression tests passed, including draft reload, keyboard, axe, reduced motion and 360px. Ponytail review: no new dependencies or speculative layers.
+- Live user-wallet registration has not been performed by the assistant. Phase 3 acceptance remains pending.
+- Registration release: Vercel production `dpl_EWGBbUSR8vBKHAP47qv9pAKMuLa8` reached READY, including successful production build/typecheck, and was aliased to https://attesia.vercel.app. Entry point: https://attesia.vercel.app/agents/new.

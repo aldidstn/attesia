@@ -4,10 +4,12 @@
 
 Attestia is a contribution attestation platform designed to help people document their work, disclose human and AI provenance, and collect evidence-backed claims from reviewers.
 
-The Phase 3 application lets contributors publish public evidence, collect claims, inspect category reputation and provenance graphs, discover ERC-8004 agents, publish declared agent policies, and browse a transparent contribution feed on Monad Testnet.
+The Phase 3 application lets contributors publish public evidence, collect claims, inspect category reputation and provenance graphs, register and discover ERC-8004 agents, publish declared agent policies, and browse a transparent contribution feed on Monad Testnet.
 
 See the [Phase 0 guide](docs/phase-0/README.md) for specifications, architecture, and research. The former Phase 0 interview, partner-commitment, and privacy-review exit gates are deprecated and non-blocking.
 See the [Phase 1 guide](docs/phase-1/README.md) for contract scope, acceptance status, and deployment gates.
+
+Register an agent at `/agents/new`: sign in with Privy, review public metadata, and approve the Monad Testnet transaction using MON. The confirmed registry receipt supplies the agent ID; open it to link an Attestia profile. Registration creates an inactive identity, not a running AI service. No seed phrase or private key is requested.
 
 ## How to run
 

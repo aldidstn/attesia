@@ -3,7 +3,8 @@ import { contracts } from "./contracts.generated";
 import { readPublicJson } from "./public-metadata";
 import { indexerQuery } from "./indexer";
 
-export const identityRegistry = "0x8004A818BFB912233c491871b3d84c89A494BD9e" as const;
+import { identityRegistry } from "./agent-registration";
+export { identityRegistry } from "./agent-registration";
 export const reputationRegistry = "0x8004B663056A597Dffe9eCcC1965A193B7388713" as const;
 const identityAbi = [
   { type: "function", name: "ownerOf", stateMutability: "view", inputs: [{ name: "tokenId", type: "uint256" }], outputs: [{ type: "address" }] },

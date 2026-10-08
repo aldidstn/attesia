@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "data": {
+      "id": "0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e",
+      "creatorProfileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+      "artifactDigest": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+      "metadataDigest": "0x3c934f45dd4a798ad595a68faa70701ad53fcc04d6f793eb4c7484829d52677d",
+      "metadataURI": "ipfs://bafkreiappy7emdj5qvacbkbgq3qh4v6h6cyso6iqfjh6ioq65wyx4wpg3m",
+      "parentId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "registeredBy": "0xFdd98e2f0E331d6Eb645Bf1f480a559eb0d48cE0",
+      "createdAt": "1791421273",
+      "archivedAt": "0"
+    },
+    "metadata": {
+      "artifact": {
+        "byteLength": 765,
+        "fileName": "agent-2071-acceptance.md",
+        "mediaType": "text/markdown",
+        "sha256": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+        "uri": "ipfs://bafkreibwj7b356tegy34kmdxsn4akfs7m4k5mvb3k7f45agt7lulwjlfmq"
+      },
+      "collaborators": [],
+      "createdAt": "2026-09-15T15:40:03.092Z",
+      "creatorProfileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+      "provenance": {
+        "aiAssistance": "assistive",
+        "disclosureVersion": 1,
+        "humanInput": "Creator reviewed and accepted disclosed AI-assisted output.",
+        "schema": "attestia.provenance.v1",
+        "sources": [],
+        "tools": [
+          "OpenAI Codex"
+        ]
+      },
+      "revision": {
+        "notes": "Initial version.",
+        "parentId": null
+      },
+      "schema": "attestia.contribution.v1",
+      "summary": "Public AI-assisted test artifact for agent identity, declared policy versioning, contribution claims and revocation. This validates testnet mechanics, not production service quality.",
+      "title": "Agent 2071 — Phase 3 acceptance fixture",
+      "type": "other",
+      "visibility": "public",
+      "workspaceId": "0x5ae218453460de40ffcfd63b41820e3d4d6ccb6d8425f89778c4f84c1d8bb6b8"
+    },
+    "canonical": "{\"artifact\":{\"byteLength\":765,\"fileName\":\"agent-2071-acceptance.md\",\"mediaType\":\"text/markdown\",\"sha256\":\"0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564\",\"uri\":\"ipfs://bafkreibwj7b356tegy34kmdxsn4akfs7m4k5mvb3k7f45agt7lulwjlfmq\"},\"collaborators\":[],\"createdAt\":\"2026-09-15T15:40:03.092Z\",\"creatorProfileId\":\"0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24\",\"provenance\":{\"aiAssistance\":\"assistive\",\"disclosureVersion\":1,\"humanInput\":\"Creator reviewed and accepted disclosed AI-assisted output.\",\"schema\":\"attestia.provenance.v1\",\"sources\":[],\"tools\":[\"OpenAI Codex\"]},\"revision\":{\"notes\":\"Initial version.\",\"parentId\":null},\"schema\":\"attestia.contribution.v1\",\"summary\":\"Public AI-assisted test artifact for agent identity, declared policy versioning, contribution claims and revocation. This validates testnet mechanics, not production service quality.\",\"title\":\"Agent 2071 — Phase 3 acceptance fixture\",\"type\":\"other\",\"visibility\":\"public\",\"workspaceId\":\"0x5ae218453460de40ffcfd63b41820e3d4d6ccb6d8425f89778c4f84c1d8bb6b8\"}",
+    "integrity": {
+      "status": "verified",
+      "expected": "0x3c934f45dd4a798ad595a68faa70701ad53fcc04d6f793eb4c7484829d52677d",
+      "actual": "0x3c934f45dd4a798ad595a68faa70701ad53fcc04d6f793eb4c7484829d52677d"
+    }
+  },
+  "artifact": {
+    "artifact": {
+      "status": "verified",
+      "expected": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+      "actual": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+      "bytes": 765
+    }
+  }
+}

@@ -48,3 +48,9 @@ Phase 3 is **not yet complete**. Existing historical revoke evidence is not a re
 - TDD: registration tests first failed with the missing implementation; 35 web unit/API tests now pass, including foreign/mismatched receipt rejection and concurrent-operation conflict handling. Typecheck and lint passed. All 9 Playwright regression tests passed, including draft reload, keyboard, axe, reduced motion and 360px. Ponytail review: no new dependencies or speculative layers.
 - Live user-wallet registration has not been performed by the assistant. Phase 3 acceptance remains pending.
 - Registration release: Vercel production `dpl_EWGBbUSR8vBKHAP47qv9pAKMuLa8` reached READY, including successful production build/typecheck, and was aliased to https://attesia.vercel.app. Entry point: https://attesia.vercel.app/agents/new.
+
+## Update — 8 October 2026
+
+See [live acceptance evidence](evidence/2026-10-08-acceptance.md). Agent 2071 was registered, linked, assigned declared policy versions 1/2 and paused; its contribution is published and indexed. Replay lifecycle regressions were fixed with failing-first handler tests. Graphs over 100 nodes now offer type clusters and progressive expansion. Source `97eaed3` is live on Vercel and Envio.
+
+Remaining live gate: independent reviewer login → two external claims → revoke one → verify changed reputation/graph/feed. The earlier request to supply an agent is resolved. Phase 3 remains pending this reviewer flow; no completion is inferred from historical claims or synthetic tests.

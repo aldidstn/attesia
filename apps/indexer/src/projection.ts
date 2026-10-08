@@ -46,6 +46,6 @@ export function reputation(state: Projection, contributionIds: string[], at: big
 
 export type PolicyProjection = { version: number; digest: string; uri: string; paused: boolean; updatedAt: bigint };
 export function projectPolicy(current: PolicyProjection | undefined, event: { type: "updated"; version: number; digest: string; uri: string; at: bigint } | { type: "paused"; version: number; at: bigint }) {
-  if (event.type === "updated") return !current || event.version >= current.version ? { version: event.version, digest: event.digest, uri: event.uri, paused: false, updatedAt: event.at } : current;
+  if (event.type === "updated") return !current || event.version > current.version ? { version: event.version, digest: event.digest, uri: event.uri, paused: false, updatedAt: event.at } : current;
   return current && event.version === current.version ? { ...current, paused: true, updatedAt: event.at } : current;
 }

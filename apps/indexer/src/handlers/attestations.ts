@@ -1,3 +1,4 @@
+import { checkpoint } from "../checkpoint";
 import { indexer } from "envio";
 const ZERO = `0x${"0".repeat(64)}`;
 const categories: Record<string, string> = {
@@ -8,15 +9,15 @@ const categories: Record<string, string> = {
   "0xf3ad510c7dab54a684cd9e0046afa1d4225cc8861a4f92f66da3eba8a3a3ca0b": "PROVENANCE",
 };
 indexer.onEvent({ contract: "AttestationRegistry", event: "AttestationCreated" }, async ({ event, context }) => {
-  const p = event.params; const contribution = await context.Contribution.get(p.contributionId); if (!contribution) return; const category = categories[p.claimType.toLowerCase()] ?? p.claimType;
+  const p = event.params; if (await context.Attestation.get(p.attestationId)) return; const contribution = await context.Contribution.get(p.contributionId); if (!contribution) return; const category = categories[p.claimType.toLowerCase()] ?? p.claimType;
   context.Attestation.set({ id: p.attestationId, contribution_id: p.contributionId, issuer: p.issuer, claimType: p.claimType, result: Number(p.result), metadataDigest: p.metadataDigest, metadataURI: p.metadataURI, evidenceDigest: p.evidenceDigest, evidenceURI: p.evidenceURI, issuedAt: p.issuedAt, validUntil: p.validUntil, supersedes: p.supersedes === ZERO ? undefined : p.supersedes, supersededBy: undefined, revokedAt: undefined, selfAtIssuance: p.selfAtIssuance, disputed: false, profileId: contribution.creatorProfileId, category });
-  context.ChainState.set({ id: String(event.chainId), latestBlock: BigInt(event.block.number), latestTimestamp: BigInt(event.block.timestamp) });
+  await checkpoint(context, event);
 });
 indexer.onEvent({ contract: "AttestationRegistry", event: "AttestationSuperseded" }, async ({ event, context }) => {
   const old = await context.Attestation.get(event.params.oldAttestationId); if (old) context.Attestation.set({ ...old, supersededBy: event.params.newAttestationId });
-  context.ChainState.set({ id: String(event.chainId), latestBlock: BigInt(event.block.number), latestTimestamp: BigInt(event.block.timestamp) });
+  await checkpoint(context, event);
 });
 indexer.onEvent({ contract: "AttestationRegistry", event: "AttestationRevoked" }, async ({ event, context }) => {
   const claim = await context.Attestation.get(event.params.attestationId); if (claim) context.Attestation.set({ ...claim, revokedAt: event.params.revokedAt });
-  context.ChainState.set({ id: String(event.chainId), latestBlock: BigInt(event.block.number), latestTimestamp: BigInt(event.block.timestamp) });
+  await checkpoint(context, event);
 });

@@ -10,6 +10,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Link href="/contributions/new">Publish</Link>
         <Link href="/#feed">Feed</Link>
         <Link href="/agents">Agents</Link>
+        <Link href={"/workspaces" as never}>Workspaces</Link>
         <Link href="/verify">Verify</Link>
         <Link href="/profile">Profile</Link>
       </nav>

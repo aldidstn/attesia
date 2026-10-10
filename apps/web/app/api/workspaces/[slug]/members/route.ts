@@ -17,3 +17,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
     return json({ id: membership.id, subject: membership.subject, role: membership.role, status: membership.status });
   } catch (error) { return apiError("BAD_REQUEST", error instanceof Error ? error.message : "Member update failed", request); }
 }
+
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
+  try {
+    const session = await currentSession(); if (!session) return apiError("UNAUTHORIZED", "Sign in to view members", request);
+    const { slug } = await params; const [workspace] = await db().select().from(workspaces).where(eq(workspaces.slug, slug)).limit(1); if (!workspace) return apiError("NOT_FOUND", "Workspace not found", request);
+    const [actor] = await db().select().from(workspaceMemberships).where(and(eq(workspaceMemberships.workspaceId, workspace.id), eq(workspaceMemberships.subject, session.subject))).limit(1);
+    if (!actor || !canManageWorkspace(actor.role as never, actor.status as never)) return apiError("UNAUTHORIZED", "Workspace administrator access is required", request);
+    const members = await db().select({ id: workspaceMemberships.id, subject: workspaceMemberships.subject, role: workspaceMemberships.role, status: workspaceMemberships.status, createdAt: workspaceMemberships.createdAt }).from(workspaceMemberships).where(eq(workspaceMemberships.workspaceId, workspace.id));
+    return json({ data: members }, { noStore: true });
+  } catch (error) { return apiError("UPSTREAM_UNAVAILABLE", error instanceof Error ? error.message : "Members unavailable", request); }
+}

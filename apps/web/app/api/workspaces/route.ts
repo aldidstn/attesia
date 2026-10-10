@@ -1,8 +1,19 @@
 import { db } from "@/db/client";
+import { and, eq } from "drizzle-orm";
 import { workspaceAuditEvents, workspaceMemberships, workspaces } from "@/db/schema";
 import { apiError, json } from "@/lib/api";
 import { currentSession } from "@/lib/auth";
 import { validWorkspaceSlug } from "@/lib/workspaces";
+
+export async function GET(request: Request) {
+  try {
+    const session = await currentSession(); if (!session) return apiError("UNAUTHORIZED", "Sign in to view workspaces", request);
+    const rows = await db().select({ slug: workspaces.slug, name: workspaces.name, description: workspaces.description, role: workspaceMemberships.role, status: workspaceMemberships.status })
+      .from(workspaceMemberships).innerJoin(workspaces, eq(workspaceMemberships.workspaceId, workspaces.id))
+      .where(and(eq(workspaceMemberships.subject, session.subject), eq(workspaceMemberships.status, "active"), eq(workspaces.status, "active")));
+    return json({ data: rows }, { noStore: true });
+  } catch (error) { return apiError("UPSTREAM_UNAVAILABLE", error instanceof Error ? error.message : "Workspace list unavailable", request); }
+}
 
 export async function POST(request: Request) {
   try {

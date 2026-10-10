@@ -35,7 +35,7 @@ export async function promoteQuarantineObject(storageKey: string, config: Privat
   if (/text\/html|application\/javascript|application\/x-msdownload/i.test(contentType)) throw new Error("Unsafe private evidence type");
   const upload = await fetch(`${config.url}/storage/v1/object/${config.bucket}/${targetKey}`, { method: "POST", headers: { apikey: config.serviceRoleKey, Authorization: `Bearer ${config.serviceRoleKey}`, "content-type": contentType, "x-upsert": "false" }, body: bytes });
   if (!upload.ok) throw new Error(`Vault promotion failed (${upload.status})`);
-  const remove = await fetch(`${config.url}/storage/v1/object/${config.bucket}/${storageKey}`, { method: "DELETE", headers: headers(config) });
+  const remove = await fetch(`${config.url}/storage/v1/object/${config.bucket}`, { method: "DELETE", headers: headers(config), body: JSON.stringify({ prefixes: [storageKey] }) });
   if (!remove.ok) throw new Error(`Quarantine cleanup failed (${remove.status})`);
   return { storageKey: targetKey, bytes: bytes.byteLength, contentType };
 }

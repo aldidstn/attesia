@@ -21,6 +21,7 @@ describe("private evidence storage", () => {
     });
     await expect(promoteQuarantineObject("quarantine/ws/evidence", config)).resolves.toMatchObject({ storageKey: "vault/ws/evidence", bytes: 5 });
     expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenLastCalledWith(`${config.url}/storage/v1/object/${config.bucket}`, expect.objectContaining({ method: "DELETE", body: JSON.stringify({ prefixes: ["quarantine/ws/evidence"] }) }));
     fetchMock.mockRestore();
   });
   it("rejects unsafe content before vault promotion", async () => {

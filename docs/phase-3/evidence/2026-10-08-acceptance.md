@@ -12,6 +12,9 @@ Network: Monad Testnet, chain 10143. Public test fixtures only. User selected th
 | Publish declared policy v2 | `0x1f33c0d45e98db4e804b847967ab0997df4136002d4ca61345026690117be8ce` |
 | Pause declared policy v2 | `0xe27199ffc664579640f3458708ed08d4155707a5ef9aa9f65ca89def651c33b6` |
 | Register contribution | `0x46cd81959e229bd50c628e2f9c2de90ffdc35f7bd133c69899f4f798a192f9d6` |
+| External Completion claim | recorded as `0x97f563310fc6963f105c7e8d4f05e4261a91280aa9f255be54a6808af02227c8` |
+| External Provenance claim | `0x741d06cb4f258192996f72fc3753277fa2ef6968c6a6fb125f95442604834c98` |
+| Revoke Provenance claim | `0x75bb6cda432102fdf5bc75b6cef6c756ade02f7b7e32fceccf01d4d197be82b2` |
 
 Profile: `0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24`.
 Contribution: `0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e`.
@@ -34,6 +37,20 @@ Source `97eaed3` pushed to `codex/phase-3` and `envio`. Envio release Active, sy
 
 Vercel `dpl_9SnxyhpgtnYYVHSEjU3gTjzLbJMR` deployed code. Production `NEXT_PUBLIC_ENVIO_GRAPHQL_URL` then switched to the verified new endpoint; `dpl_3Bkj5W5SpGHaUjD7eiefC71QhbUm` reached READY and is aliased to https://attesia.vercel.app.
 
-## Still pending
+## Reviewer lifecycle acceptance — 10 October 2026
 
-Independent reviewer login, two external test claims, one revocation, and before/after reputation/graph/feed evidence. User login handoff is open on the contribution page. Phase 3 is not marked complete until these checks succeed.
+Reviewer wallet `0x37c6476C4621DC592BB8ba0ec56D499D8B1f2148` is distinct from agent owner `0xFdd98e2f0E331d6Eb645Bf1f480a559eb0d48cE0`. It issued external Completion and Provenance claims. Before revocation, the contribution API reported two active external claims. Provenance claim `0xffb2a42949265dcc5638c48c35db8618dd141c36ddd757b3d421d1d67b9a520a` was then revoked by its issuer.
+
+Envio reflected the revoke in about five seconds:
+
+- contribution counts changed from active/external `2/2` to `1/1`;
+- `reputation-v1` retained Completion active=1 and changed Provenance to active=0, revoked=1, historical=1;
+- the graph retained both attested relationships and marked the Provenance edge `revoked`;
+- the feed retained the historical claim while recalculating activeExternal=1, uniqueAttesters=1 and evidenceCoverage=1;
+- source/freshness blocks advanced through `69705669`.
+
+The initial Provenance submission exposed a Privy stale-fee failure while Monad RPC gas price was 102 gwei. Source `4e5a628` now estimates gas and EIP-1559 fees immediately before each signature and applies a 20% buffer. The fix passed 38 web tests and typecheck, then Vercel production deployment `dpl_4ZkNQ49YN4xCpVewEfKEG5A5Dp5s` reached READY at https://attesia.vercel.app. The retried claim and subsequent revoke both succeeded.
+
+## Result
+
+The requested live flow is complete: agent ownership resolved from ERC-8004, linked profile and declared policy lifecycle remained visible, contribution received two external claims, one claim was revoked, and reputation/graph/feed changed after indexing. Phase 3 acceptance gates are satisfied on Monad Testnet.

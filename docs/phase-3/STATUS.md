@@ -30,13 +30,11 @@ Monad Testnet Identity Registry `0x8004A818BFB912233c491871b3d84c89A494BD9e` has
 
 - Browser checks passed: six MVP tests in the regression run and both new Phase 3 tests in the focused rerun (score explanation, claimed/attested graph, live historical revoke, community filter, keyboard, axe, reduced motion and 360px). Earlier test failures caught and fixed graph overflow and an unfocusable scroll region.
 
-## Remaining gates
+## Acceptance status
 
-Phase 3 is **not yet complete**. Existing historical revoke evidence is not a replacement for the requested new agent acceptance flow.
+Phase 3 is **complete on Monad Testnet**. Agent 2071 was registered by the selected Privy owner, linked to its Attestia profile, assigned two declared policy versions, paused, and used for the public contribution acceptance fixture. A distinct reviewer wallet issued Completion and Provenance claims; the Provenance claim was revoked by its issuer. Envio then changed contribution counts from 2/2 active/external to 1/1 and updated reputation, graph lifecycle and feed ranking.
 
-- Register an agent through `/agents/new`, or supply an existing ERC-8004 Monad Testnet agent controlled by a test user's wallet. Four indexed Attestia profiles inspected were human profiles; no owned agent was inferred.
-- Execute and document: existing agent → linked profile → declared policy → contribution → two independent claims → one revoke → changed reputation/graph/feed. Also publish a new policy version and pause it onchain.
-- Large-graph clustering and comprehensive delayed-event handler replay/agent-wallet browser coverage remain release checks; the present graph offers bounded progressive disclosure and an accessible relationship list.
+Large graphs use bounded type clusters and progressive expansion. Event delivery supports canonical Envio ordering and delayed duplicate replay; arbitrary first-time child events preceding their parent remain outside the advertised guarantee.
 
 ## Agent registration addition
 
@@ -46,11 +44,11 @@ Phase 3 is **not yet complete**. Existing historical revoke evidence is not a re
 - Receipt confirmation checks success, registry address, owner and exact metadata URI before showing an ID/link. ERC-8004 registration is confirmed directly by RPC, not claimed as an Envio-indexed Attestia profile. Profile linking remains a separate transaction.
 - Limits: clearing browser storage loses the draft recovery context; reverted/unknown transactions are not automatically rebroadcast. This screen creates one identity per wallet/draft and does not provide identity management or metadata updates.
 - TDD: registration tests first failed with the missing implementation; 35 web unit/API tests now pass, including foreign/mismatched receipt rejection and concurrent-operation conflict handling. Typecheck and lint passed. All 9 Playwright regression tests passed, including draft reload, keyboard, axe, reduced motion and 360px. Ponytail review: no new dependencies or speculative layers.
-- Live user-wallet registration has not been performed by the assistant. Phase 3 acceptance remains pending.
+- Live user-wallet registration completed for agent 2071 through Privy; the registry receipt and owner were verified directly from Monad RPC.
 - Registration release: Vercel production `dpl_EWGBbUSR8vBKHAP47qv9pAKMuLa8` reached READY, including successful production build/typecheck, and was aliased to https://attesia.vercel.app. Entry point: https://attesia.vercel.app/agents/new.
 
 ## Update — 8 October 2026
 
 See [live acceptance evidence](evidence/2026-10-08-acceptance.md). Agent 2071 was registered, linked, assigned declared policy versions 1/2 and paused; its contribution is published and indexed. Replay lifecycle regressions were fixed with failing-first handler tests. Graphs over 100 nodes now offer type clusters and progressive expansion. Source `97eaed3` is live on Vercel and Envio.
 
-Remaining live gate: independent reviewer login → two external claims → revoke one → verify changed reputation/graph/feed. The earlier request to supply an agent is resolved. Phase 3 remains pending this reviewer flow; no completion is inferred from historical claims or synthetic tests.
+The reviewer lifecycle gate completed on 10 October 2026. See the evidence document for claim, revoke, projection, fee-fix and deployment records. Phase 3 is complete on Monad Testnet.

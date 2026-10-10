@@ -18,6 +18,7 @@
     "test:phase2": "pnpm --filter @attestia/web test && pnpm --filter @attestia/web typecheck && pnpm --filter @attestia/indexer codegen && pnpm --filter @attestia/indexer typecheck && pnpm --filter @attestia/indexer test && pnpm --filter @attestia/web test:e2e && pnpm test:phase2:anvil",
     "test:phase2:anvil": "bash scripts/test-anvil-phase2.sh",
     "test:phase3": "pnpm --filter @attestia/web test && pnpm --filter @attestia/web typecheck && pnpm --filter @attestia/indexer codegen && pnpm --filter @attestia/indexer typecheck && pnpm --filter @attestia/indexer test && pnpm --filter @attestia/web test:e2e && pnpm --filter @attestia/web build",
+    "test:phase4:privacy": "node docs/phase-4/scripts/check-privacy-model.mjs",
     "test": "pnpm test:phase0 && pnpm test:phase1 && pnpm test:phase2 && pnpm test:phase3"
   },
   "devDependencies": {

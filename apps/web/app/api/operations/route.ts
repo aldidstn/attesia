@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { operations } from "@/db/schema";
 import { apiError, json } from "@/lib/api";
@@ -22,6 +22,9 @@ export async function PATCH(request: Request) {
     const body = await request.json(); if (!body.id || !operationStates.includes(body.state)) return apiError("BAD_REQUEST", "Valid id and state are required", request);
     const [current] = await db().select().from(operations).where(eq(operations.id, body.id)).limit(1); if (!current || current.ownerSubject !== session.subject) return apiError("NOT_FOUND", "Operation not found", request);
     try { transitionOperation(current.state as OperationState, body.state); } catch (error) { return apiError("CONFLICT", error instanceof Error ? error.message : "Invalid state transition", request); }
-    const [updated] = await db().update(operations).set({ state: body.state, transactionHash: body.transactionHash ?? current.transactionHash, lastError: body.lastError ?? null, updatedAt: new Date() }).where(eq(operations.id, body.id)).returning(); return json(updated);
+    if (current.kind === "register_agent" && body.state === "awaiting_signature" && current.state !== "draft") return apiError("CONFLICT", "Registration already started. Recover its receipt before continuing.", request);
+    const [updated] = await db().update(operations).set({ state: body.state, transactionHash: body.transactionHash ?? current.transactionHash, lastError: body.lastError ?? null, updatedAt: new Date() }).where(and(eq(operations.id, body.id), eq(operations.state, current.state))).returning();
+    if (!updated) return apiError("CONFLICT", "Transaction state changed in another session. Reload before continuing.", request);
+    return json(updated);
   } catch (error) { return apiError("CONFIG_REQUIRED", error instanceof Error ? error.message : "Operations unavailable", request); }
 }

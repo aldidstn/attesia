@@ -1,0 +1,300 @@
+{
+  "agent": {
+    "status": 200,
+    "etag": "W/\"0xf85743e848c4e684cc95540b81b53f6ecdad7dc7ceeeab18178178f01db117bb\"",
+    "body": {
+      "data": {
+        "sourceBlock": "69119928",
+        "freshness": {
+          "latestBlock": "69119928",
+          "latestTimestamp": "1791421342"
+        },
+        "metadataIntegrity": "registry-uri-only",
+        "chainId": 10143,
+        "agentId": "2071",
+        "owner": "0xFdd98e2f0E331d6Eb645Bf1f480a559eb0d48cE0",
+        "agentWallet": "0xFdd98e2f0E331d6Eb645Bf1f480a559eb0d48cE0",
+        "agentURI": "ipfs://bafkreidtrd3isa4gxzvtksupxeidnw22urc5oy2m4gg4ojhw5pygtovgti",
+        "metadata": {
+          "active": false,
+          "description": "Inactive test identity for Attestia Phase 3 acceptance on Monad Testnet. Used to verify profile linking, declared policy versions, contribution claims and revocation. No autonomous service is advertised.",
+          "name": "Attestia Phase 3 Acceptance Agent",
+          "registrations": [],
+          "services": [],
+          "supportedTrust": [],
+          "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+          "x402Support": false
+        },
+        "identityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+        "reputationRegistry": "0x8004B663056A597Dffe9eCcC1965A193B7388713",
+        "linkedProfileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+        "policy": {
+          "digest": "0xa7e8e16ba150cfb64c89b3caae6ef5a3ff0e4e92b1e97a2aad22e621352aa0f4",
+          "uri": "ipfs://bafkreicmfitb2oiyrggznlfabl237ihhjzdylxrnbzvoxjq34z3o6dkvgy",
+          "updatedAt": "1791421073",
+          "version": 2,
+          "paused": true
+        },
+        "policyHistory": [
+          {
+            "version": 2,
+            "digest": "0xa7e8e16ba150cfb64c89b3caae6ef5a3ff0e4e92b1e97a2aad22e621352aa0f4",
+            "uri": "ipfs://bafkreicmfitb2oiyrggznlfabl237ihhjzdylxrnbzvoxjq34z3o6dkvgy",
+            "actor": "0xfdd98e2f0e331d6eb645bf1f480a559eb0d48ce0",
+            "publishedAt": "1791420990",
+            "pausedAt": "1791421073"
+          },
+          {
+            "version": 1,
+            "digest": "0x599fe082f76366bf6ee17119bc712988356860a925ccd40728aa5ac6e969c1f1",
+            "uri": "ipfs://bafkreielxa7427sif3s34ran3p3iu3g2q5pcgokfqg2o7sw2j3u574u7ka",
+            "actor": "0xfdd98e2f0e331d6eb645bf1f480a559eb0d48ce0",
+            "publishedAt": "1791420914",
+            "pausedAt": null
+          }
+        ],
+        "erc8004Feedback": [],
+        "feedbackTruncated": false
+      },
+      "sources": {
+        "identity": "ERC-8004 Identity Registry",
+        "reputation": "ERC-8004 Reputation Registry",
+        "claims": "Attestia registries"
+      }
+    }
+  },
+  "reputation": {
+    "status": 200,
+    "etag": "W/\"0xddb967d6b56fb295f4fa69dfba30b3baef5a12d9802158193bc38ca20fc5f886\"",
+    "body": {
+      "data": {
+        "profileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+        "algorithmVersion": "reputation-v1",
+        "computedAt": "1791421342",
+        "categories": {
+          "COMPLETION": {
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "self": 0,
+            "disputed": 0,
+            "undisputed": 0,
+            "revoked": 0,
+            "superseded": 0,
+            "expired": 0,
+            "historical": 0,
+            "outcomes": {
+              "positive": 0,
+              "neutral": 0,
+              "negative": 0
+            }
+          },
+          "AUTHORSHIP": {
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "self": 0,
+            "disputed": 0,
+            "undisputed": 0,
+            "revoked": 0,
+            "superseded": 0,
+            "expired": 0,
+            "historical": 0,
+            "outcomes": {
+              "positive": 0,
+              "neutral": 0,
+              "negative": 0
+            }
+          },
+          "QUALITY": {
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "self": 0,
+            "disputed": 0,
+            "undisputed": 0,
+            "revoked": 0,
+            "superseded": 0,
+            "expired": 0,
+            "historical": 0,
+            "outcomes": {
+              "positive": 0,
+              "neutral": 0,
+              "negative": 0
+            }
+          },
+          "USAGE": {
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "self": 0,
+            "disputed": 0,
+            "undisputed": 0,
+            "revoked": 0,
+            "superseded": 0,
+            "expired": 0,
+            "historical": 0,
+            "outcomes": {
+              "positive": 0,
+              "neutral": 0,
+              "negative": 0
+            }
+          },
+          "PROVENANCE": {
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "self": 0,
+            "disputed": 0,
+            "undisputed": 0,
+            "revoked": 0,
+            "superseded": 0,
+            "expired": 0,
+            "historical": 0,
+            "outcomes": {
+              "positive": 0,
+              "neutral": 0,
+              "negative": 0
+            }
+          }
+        },
+        "sourceBlock": "69119928",
+        "freshness": {
+          "latestBlock": "69119928",
+          "latestTimestamp": "1791421342"
+        }
+      }
+    }
+  },
+  "graph": {
+    "status": 200,
+    "etag": "W/\"0x329da818088c0cebd2004d41ff87da8afa64d2ab4cf93f5d5a3e3da181101c2f\"",
+    "body": {
+      "data": {
+        "algorithmVersion": "reputation-v1",
+        "profileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+        "nodes": [
+          {
+            "id": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+            "kind": "profile",
+            "label": "Creator profile"
+          },
+          {
+            "id": "0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e",
+            "kind": "contribution",
+            "label": "0x3eac9787"
+          }
+        ],
+        "edges": [
+          {
+            "source": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+            "target": "0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e",
+            "relationship": "claimed"
+          }
+        ],
+        "sourceBlock": "69119928",
+        "freshness": {
+          "latestBlock": "69119928",
+          "latestTimestamp": "1791421342"
+        },
+        "truncated": false
+      }
+    }
+  },
+  "feed": {
+    "status": 200,
+    "etag": "W/\"0xa1b372fd167f5f0a6c3e9b8ed36ce492d6304cc7cef79a77a98f284af3dd7521\"",
+    "body": {
+      "data": {
+        "algorithmVersion": "reputation-v1",
+        "items": [
+          {
+            "id": "0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e",
+            "creatorProfileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+            "artifactDigest": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+            "metadataDigest": "0x3c934f45dd4a798ad595a68faa70701ad53fcc04d6f793eb4c7484829d52677d",
+            "metadataURI": "ipfs://bafkreiappy7emdj5qvacbkbgq3qh4v6h6cyso6iqfjh6ioq65wyx4wpg3m",
+            "parentId": null,
+            "registeredBy": "0xfdd98e2f0e331d6eb645bf1f480a559eb0d48ce0",
+            "createdAt": "1791421273",
+            "archivedAt": null,
+            "attestations": [],
+            "creator": {
+              "id": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+              "owner": "0xfdd98e2f0e331d6eb645bf1f480a559eb0d48ce0",
+              "metadataURI": "ipfs://bafkreigvrr2sh4l36gkaefcnwhn7oia5wb5tr274myrbg35tg5t4nmrxlq",
+              "metadataDigest": "0x1066e50550c8259257787bd13832e047ee25354f381c228d0286e918ea495bb1",
+              "isAgent": true,
+              "agentId": "2071"
+            },
+            "activeExternal": 0,
+            "uniqueAttesters": 0,
+            "evidenceCoverage": 0,
+            "mutualAttestationCluster": false,
+            "workspaceRelevance": "not_applicable",
+            "freshnessBucket": "2962",
+            "metadata": {
+              "artifact": {
+                "byteLength": 765,
+                "fileName": "agent-2071-acceptance.md",
+                "mediaType": "text/markdown",
+                "sha256": "0x364fc3befa643637c53077937805165f6715d6543b57cbce80d3fae8bb256564",
+                "uri": "ipfs://bafkreibwj7b356tegy34kmdxsn4akfs7m4k5mvb3k7f45agt7lulwjlfmq"
+              },
+              "collaborators": [],
+              "createdAt": "2026-09-15T15:40:03.092Z",
+              "creatorProfileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+              "provenance": {
+                "aiAssistance": "assistive",
+                "disclosureVersion": 1,
+                "humanInput": "Creator reviewed and accepted disclosed AI-assisted output.",
+                "schema": "attestia.provenance.v1",
+                "sources": [],
+                "tools": [
+                  "OpenAI Codex"
+                ]
+              },
+              "revision": {
+                "notes": "Initial version.",
+                "parentId": null
+              },
+              "schema": "attestia.contribution.v1",
+              "summary": "Public AI-assisted test artifact for agent identity, declared policy versioning, contribution claims and revocation. This validates testnet mechanics, not production service quality.",
+              "title": "Agent 2071 — Phase 3 acceptance fixture",
+              "type": "other",
+              "visibility": "public",
+              "workspaceId": "0x5ae218453460de40ffcfd63b41820e3d4d6ccb6d8425f89778c4f84c1d8bb6b8"
+            },
+            "creatorMetadata": {
+              "agentLink": {
+                "agentId": "2071",
+                "chainId": 10143
+              },
+              "bio": "ERC-8004 linked agent",
+              "communities": [],
+              "displayName": "Attestia Phase 3 Acceptance Agent",
+              "role": "Agent",
+              "schema": "attestia.profile.v1",
+              "skills": [],
+              "type": "agent"
+            },
+            "claimCategories": [],
+            "rankExplanation": {
+              "workspaceRelevance": "not_applicable",
+              "activeExternal": 0,
+              "evidenceCoverage": 0,
+              "uniqueAttesters": 0,
+              "freshnessBucket": "2962"
+            }
+          }
+        ],
+        "nextCursor": null,
+        "sourceBlock": "69119928",
+        "freshness": {
+          "latestBlock": "69119928",
+          "latestTimestamp": "1791421342"
+        }
+      }
+    }
+  }
+}

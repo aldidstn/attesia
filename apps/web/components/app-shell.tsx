@@ -8,6 +8,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Link className="brand" href="/" aria-label="Attestia home"><span className="brand-mark" aria-hidden="true">A</span>Attestia</Link>
       <nav aria-label="Primary navigation">
         <Link href="/contributions/new">Publish</Link>
+        <Link href="/#feed">Feed</Link>
+        <Link href="/agents">Agents</Link>
         <Link href="/verify">Verify</Link>
         <Link href="/profile">Profile</Link>
       </nav>

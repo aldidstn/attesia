@@ -1,0 +1,20 @@
+{
+  "capturedAt": "2026-10-10T02:26:17Z",
+  "chainId": 10143,
+  "profileId": "0x68b14aa3328a48a10602a401aaafcc80e71f5cf4b6c5cb98a3edb6cc2c81ac24",
+  "contributionId": "0x3eac97873259cafae332c5554bcff3fbb524e33d761ead9a188bf5d02312a99e",
+  "reviewer": "0x37c6476c4621dc592bb8ba0ec56d499d8b1f2148",
+  "provenanceAttestationId": "0xffb2a42949265dcc5638c48c35db8618dd141c36ddd757b3d421d1d67b9a520a",
+  "provenanceClaimTransaction": "0x741d06cb4f258192996f72fc3753277fa2ef6968c6a6fb125f95442604834c98",
+  "revokeTransaction": "0x75bb6cda432102fdf5bc75b6cef6c756ade02f7b7e32fceccf01d4d197be82b2",
+  "beforeRevoke": { "active": 2, "external": 2 },
+  "afterRevoke": { "active": 1, "external": 1, "self": 0, "disputed": 0, "undisputed": 1 },
+  "reputation": {
+    "algorithmVersion": "reputation-v1",
+    "completion": { "activeExternal": 1, "revoked": 0 },
+    "provenance": { "activeExternal": 0, "revoked": 1, "historical": 1 },
+    "sourceBlock": "69705646"
+  },
+  "graph": { "activeAttestedEdges": 1, "revokedAttestedEdges": 1, "sourceBlock": "69705669" },
+  "feed": { "activeExternal": 1, "uniqueAttesters": 1, "evidenceCoverage": 1 }
+}

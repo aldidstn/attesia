@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+vi.mock("./onchain", () => ({ publicClient: { getBlock: vi.fn().mockResolvedValue({ timestamp: 99n }) } }));
 import { indexerCheckpoint, indexerEndpoint, indexerOperationVisible } from "./indexer";
 
 afterEach(() => { vi.unstubAllGlobals(); delete process.env.ENVIO_GRAPHQL_URL; delete process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL; });
@@ -9,13 +10,13 @@ describe("Envio projection", () => {
     process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL = "https://public.example/graphql";
     expect(indexerEndpoint()).toBe("https://server.example/graphql");
   });
-  it("uses the String primary-key type expected by HyperIndex", async () => {
+  it("uses processed block time even when no contract event occurs", async () => {
     process.env.NEXT_PUBLIC_ENVIO_GRAPHQL_URL = "https://indexer.example/v1/graphql";
-    const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { ChainState_by_pk: { latestBlock: "42", latestTimestamp: "7" } } }) });
+    const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ data: { ChainState_by_pk: { latestBlock: "42", latestTimestamp: "7" }, chain_metadata: [{ latest_processed_block: 100 }] } }) });
     vi.stubGlobal("fetch", fetch);
-    expect(await indexerCheckpoint()).toEqual({ latestBlock: "42", latestTimestamp: "7" });
+    expect(await indexerCheckpoint()).toEqual({ latestBlock: "100", latestTimestamp: "99" });
     const body = JSON.parse(fetch.mock.calls[0][1].body);
-    expect(body.query).toContain("$id:String!");
+    expect(body.query).toContain("latest_processed_block");
     expect(body.variables.chainId).toBe(10143);
   });
 

@@ -57,3 +57,13 @@ pnpm --filter @attestia/web build
 ```
 
 The Envio Cloud deployment is active and its GraphQL schema, chain checkpoint, and indexed lifecycle records have been queried successfully. The two-user Privy, PostgreSQL, Pinata, and wallet-paid Monad acceptance flow completed on 2026-09-15; its transaction evidence is recorded in `docs/phase-2/STATUS.md`.
+
+## Phase 3
+
+Vitest covers category counts, self/dispute treatment, expiry, evidence coverage, deterministic feed order, policy versions, pause state, duplicate replay, and lifecycle rebuilds. Playwright keeps the existing recovery suite and adds accessible 360 px agent discovery. Live probes cover canonical ERC-8004 ownership, metadata, wallet, and native feedback reads.
+
+```sh
+pnpm test:phase3
+```
+
+Release acceptance additionally requires the hosted Envio schema, Vercel deployment, versioned public APIs, and a Monad revoke/policy flow to be recorded in `docs/phase-3/STATUS.md`.
